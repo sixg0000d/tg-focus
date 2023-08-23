@@ -191,6 +191,15 @@ async fn async_main() -> Result<()> {
     }
 
     dbg!(collector_id);
+
+    let pchat = grammers_client::types::PackedChat {
+        ty: grammers_session::PackedType::Chat,
+        id: collector_id,
+        access_hash: None,
+    };
+
+    client.send_message(pchat, "hi from test").await?;
+
     return Ok(());
     println!("Waiting for messages...");
 
