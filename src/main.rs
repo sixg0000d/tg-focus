@@ -166,6 +166,32 @@ async fn async_main() -> Result<()> {
         println!("Signed in!");
     }
 
+    println!("Create chat...");
+    let create_res = client
+        .invoke(&grammers_tl_types::functions::messages::CreateChat {
+            users: vec![],
+            title: String::from("xxx"),
+        })
+        .await;
+
+    let mut collector_id = 0i64;
+    if let Ok(grammers_tl_types::enums::Updates::Updates(grammers_tl_types::types::Updates {
+        chats,
+        ..
+    })) = create_res
+    {
+        if chats.len() == 1 {
+            if let grammers_tl_types::enums::Chat::Chat(grammers_tl_types::types::Chat {
+                id, ..
+            }) = chats[0]
+            {
+                collector_id = id;
+            }
+        }
+    }
+
+    dbg!(collector_id);
+    return Ok(());
     println!("Waiting for messages...");
 
     loop {
