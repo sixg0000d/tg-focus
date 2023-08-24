@@ -136,7 +136,7 @@ async fn async_main() -> Result<()> {
         println!("Signing in...");
         let token = client.request_login_code(&phone, api_id, &api_hash).await?;
 
-        dbg!("waiting phone...");
+        dbg!("waiting vcode...");
         let may_vcode: Option<String>;
         loop {
             let readres = fs::read_to_string(wdir.vcode()).unwrap();

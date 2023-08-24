@@ -15,7 +15,6 @@ serde = { version = "1.0.183", features = ["derive"] }
 # tdlib = { path = "/root/tdlib" }
 # tokio = { version = "1.29.1", features = ["sync", "rt-multi-thread", "macros"] }
 tokio = { version = "1.5.0", default-features = false, features = [
-    "fs",
     "rt",
     "signal"
 ] }
