@@ -1,7 +1,5 @@
 use futures_util::future::{select, Either};
 use futures_util::pin_mut;
-use grammers_client::types;
-use grammers_client::types::PackedChat;
 use grammers_client::SignInError;
 use grammers_client::{Client, Config, InitParams, Update};
 use grammers_session::Session;
@@ -12,6 +10,10 @@ use std::env;
 use std::pin::pin;
 use tokio::{runtime, task};
 
+use grammers_client::types::PackedChat;
+use grammers_tl_types::enums;
+use grammers_tl_types::functions;
+use grammers_tl_types::types;
 use std::fs;
 
 use tg_focus::init_data;
@@ -30,7 +32,7 @@ async fn handle_update(
     match update {
         Update::NewMessage(message) if !message.outgoing() => {
             let mut sender = String::from("???");
-            if let Some(types::chat::Chat::User(usr)) = message.sender() {
+            if let Some(grammers_client::types::chat::Chat::User(usr)) = message.sender() {
                 sender = format!(
                     "{} @{}",
                     usr.full_name(),
@@ -73,7 +75,7 @@ async fn async_main() -> Result<()> {
         .init()
         .unwrap();
 
-    dbg!("waiting api id...");
+    log::info!("waiting api id...");
     let may_api_id: Option<i32>;
     loop {
         let readres = fs::read_to_string(wdir.api_id()).unwrap(); // FIXME: too many io
@@ -83,7 +85,7 @@ async fn async_main() -> Result<()> {
         }
     }
 
-    dbg!("waiting api hash...");
+    log::info!("waiting api hash...");
     let may_api_hash: Option<String>;
     loop {
         let readres = fs::read_to_string(wdir.api_hash()).unwrap();
@@ -93,7 +95,7 @@ async fn async_main() -> Result<()> {
         }
     }
 
-    dbg!("waiting phone...");
+    log::info!("waiting phone...");
     let may_phone: Option<String>;
     loop {
         let readres = fs::read_to_string(wdir.phone()).unwrap();
@@ -107,7 +109,7 @@ async fn async_main() -> Result<()> {
     let api_hash = may_api_hash.unwrap();
     let phone = may_phone.unwrap();
 
-    dbg!((&api_id, &api_hash, &phone));
+    log::info!("{:?}", (&api_id, &api_hash, &phone));
 
     log::info!("Connecting to Telegram...");
     let client = Client::connect(Config {
@@ -127,7 +129,7 @@ async fn async_main() -> Result<()> {
         println!("Signing in...");
         let token = client.request_login_code(&phone, api_id, &api_hash).await?;
 
-        dbg!("waiting vcode...");
+        log::info!("waiting vcode...");
         let may_vcode: Option<String>;
         loop {
             let readres = fs::read_to_string(wdir.vcode()).unwrap();
@@ -159,23 +161,18 @@ async fn async_main() -> Result<()> {
 
     println!("Create chat...");
     let create_res = client
-        .invoke(&grammers_tl_types::functions::messages::CreateChat {
+        .invoke(&functions::messages::CreateChat {
             users: vec![],
-            title: String::from("xxx"),
+            title: chrono::Local::now()
+                .format("TG-FOCUS %Y-%m-%d %H:%M:%S%z")
+                .to_string(),
         })
         .await;
 
     let mut collector_id = 0i64;
-    if let Ok(grammers_tl_types::enums::Updates::Updates(grammers_tl_types::types::Updates {
-        chats,
-        ..
-    })) = create_res
-    {
+    if let Ok(enums::Updates::Updates(types::Updates { chats, .. })) = create_res {
         if chats.len() == 1 {
-            if let grammers_tl_types::enums::Chat::Chat(grammers_tl_types::types::Chat {
-                id, ..
-            }) = chats[0]
-            {
+            if let enums::Chat::Chat(types::Chat { id, .. }) = chats[0] {
                 collector_id = id;
             }
         }
@@ -183,13 +180,16 @@ async fn async_main() -> Result<()> {
 
     dbg!(collector_id);
 
+    if collector_id == 0 {
+        panic!("create collector failed");
+    }
+
     let collector = PackedChat {
         ty: grammers_session::PackedType::Chat,
         id: collector_id,
         access_hash: None,
     };
 
-    // return Ok(());
     println!("Waiting for messages...");
 
     loop {
