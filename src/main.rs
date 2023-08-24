@@ -1,11 +1,13 @@
 use futures_util::future::{select, Either};
 use futures_util::pin_mut;
 use grammers_client::types;
+use grammers_client::types::PackedChat;
 use grammers_client::SignInError;
 use grammers_client::{Client, Config, InitParams, Update};
 use grammers_session::Session;
 use log;
 use simple_logger::SimpleLogger;
+use std::borrow::Cow;
 use std::env;
 use std::pin::pin;
 use tokio::{runtime, task};
@@ -19,7 +21,12 @@ use tg_focus::WorkDir;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
-async fn handle_update(client: Client, update: Update, wdir: WorkDir) -> Result<()> {
+async fn handle_update(
+    client: Client,
+    update: Update,
+    wdir: WorkDir,
+    collector: PackedChat,
+) -> Result<()> {
     match update {
         Update::NewMessage(message) if !message.outgoing() => {
             let mut sender = String::from("???");
@@ -33,32 +40,16 @@ async fn handle_update(client: Client, update: Update, wdir: WorkDir) -> Result<
 
             let chat = message.chat();
             let tstamp = message.date().format("%Y-%m-%d %H:%M:%S%z").to_string();
-            let ctn = message.text();
+            let ctn = message.text().to_string();
 
             let coll_msg = CollectedMsg {
-                title: &chat.name(),
-                sender: &sender,
-                ctn: &ctn,
-                tstamp: &tstamp,
+                title: Cow::Owned(chat.name().to_string()),
+                sender: Cow::Owned(sender),
+                ctn: Cow::Owned(ctn),
+                tstamp: Cow::Owned(tstamp),
             };
 
-            let mut focus_filter = TgFilters::from_file(wdir.filter()).unwrap();
-            dbg!(("filter init", &focus_filter));
-
-            if focus_filter.is_match(&coll_msg).0 {
-                collect_msg(coll_msg.to_string(), 123, 123).await;
-            } else {
-                dbg!(format!("message ignored: {}", &ctn));
-            }
-
-            // println!(
-            //     "<{}> <{}> <{}>: {}",
-            //     chat.name(),
-            //     sender,
-            //     message.date().format("%Y-%m-%d %H:%M:%S%z").to_string(),
-            //     message.text(),
-            // );
-            // client.send_message(&chat, message.text()).await?;
+            try_collect_msg(coll_msg, collector, wdir, client).await;
         }
         _ => {}
     }
@@ -192,15 +183,13 @@ async fn async_main() -> Result<()> {
 
     dbg!(collector_id);
 
-    let pchat = grammers_client::types::PackedChat {
+    let collector = PackedChat {
         ty: grammers_session::PackedType::Chat,
         id: collector_id,
         access_hash: None,
     };
 
-    client.send_message(pchat, "hi from test").await?;
-
-    return Ok(());
+    // return Ok(());
     println!("Waiting for messages...");
 
     loop {
@@ -221,16 +210,12 @@ async fn async_main() -> Result<()> {
             Some(u) => u?.unwrap(),
         };
 
-        let handle = client.clone();
+        let client_tmp = client.clone();
         let wdir = wdir.clone();
         task::spawn(async move {
-            if let Err(e) = handle_update(handle, update, wdir).await {
+            if let Err(e) = handle_update(client_tmp, update, wdir, collector).await {
                 eprintln!("Error handling updates!: {}", e)
             }
-            // match handle_update(handle, update).await {
-            //     Ok(_) => {}
-            //     Err(e) => eprintln!("Error handling updates!: {}", e),
-            // }
         });
     }
 
@@ -239,24 +224,20 @@ async fn async_main() -> Result<()> {
     Ok(())
 }
 
-async fn collect_msg(msg: String, chat_id: i64, client_id: i32) {
-    // let mut msg_to_send = types::InputMessageText::default();
-    // msg_to_send.text.text = msg;
+async fn try_collect_msg(msg: CollectedMsg<'_>, pchat: PackedChat, wdir: WorkDir, client: Client) {
+    let mut focus_filter = TgFilters::from_file(wdir.filter()).unwrap();
+    dbg!(("filter init", &focus_filter));
 
-    // let res_sent = functions::send_message(
-    //     chat_id,
-    //     0,
-    //     None,
-    //     None,
-    //     None,
-    //     enums::InputMessageContent::InputMessageText(msg_to_send),
-    //     client_id,
-    // )
-    // .await;
-
-    // dbg!(res_sent.is_ok());
-
-    dbg!(msg);
+    if focus_filter.is_match(&msg).0 {
+        match client.send_message(pchat, msg.to_string()).await {
+            Ok(_) => {}
+            Err(_e) => {
+                dbg!(_e);
+            }
+        }
+    } else {
+        dbg!(format!("message ignored: {:?}", &msg));
+    }
 }
 
 fn main() -> Result<()> {

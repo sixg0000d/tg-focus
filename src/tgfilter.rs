@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use std::fs;
 use std::path::Path;
 
@@ -6,10 +7,10 @@ use serde::Deserialize;
 
 #[derive(Debug)]
 pub struct CollectedMsg<'a> {
-    pub title: &'a str,
-    pub sender: &'a str,
-    pub ctn: &'a str,
-    pub tstamp: &'a str,
+    pub title: Cow<'a, str>,
+    pub sender: Cow<'a, str>,
+    pub ctn: Cow<'a, str>,
+    pub tstamp: Cow<'a, str>,
 }
 
 impl CollectedMsg<'_> {
@@ -58,7 +59,7 @@ impl TgFilters {
 
             // title: not matching means msg not matching
             if let Some(title_f) = &filter.title {
-                if title_f.is_match(msg.title) {
+                if title_f.is_match(&msg.title) {
                     is_curr_flt_match = true;
                 }
                 if !is_curr_flt_match {
@@ -70,7 +71,7 @@ impl TgFilters {
             if let Some(flt_list) = &filter.sender {
                 let mut sub_match = false;
                 for flt in flt_list {
-                    if flt.is_match(msg.sender) {
+                    if flt.is_match(&msg.sender) {
                         sub_match = true;
                         break; // small
                     }
@@ -86,7 +87,7 @@ impl TgFilters {
             if let Some(nflt_list) = &filter.no_sender {
                 let mut sub_match = true;
                 for nflt in nflt_list {
-                    if nflt.is_match(msg.sender) {
+                    if nflt.is_match(&msg.sender) {
                         sub_match = false;
                         break; // small
                     }
@@ -102,7 +103,7 @@ impl TgFilters {
             if let Some(flt_list) = &filter.keyword {
                 let mut sub_match = false;
                 for flt in flt_list {
-                    if flt.is_match(msg.ctn) {
+                    if flt.is_match(&msg.ctn) {
                         sub_match = true;
                         break; // small
                     }
@@ -118,7 +119,7 @@ impl TgFilters {
             if let Some(nflt_list) = &filter.no_keyword {
                 let mut sub_match = true;
                 for nflt in nflt_list {
-                    if nflt.is_match(msg.ctn) {
+                    if nflt.is_match(&msg.ctn) {
                         sub_match = false;
                         break; // small
                     }
