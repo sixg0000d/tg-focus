@@ -23,42 +23,6 @@ use tg_focus::WorkDir;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
-async fn handle_update(
-    client: Client,
-    update: Update,
-    wdir: WorkDir,
-    collector: PackedChat,
-) -> Result<()> {
-    match update {
-        Update::NewMessage(message) if !message.outgoing() => {
-            let mut sender = String::from("???");
-            if let Some(grammers_client::types::chat::Chat::User(usr)) = message.sender() {
-                sender = format!(
-                    "{} @{}",
-                    usr.full_name(),
-                    usr.username().unwrap_or_else(|| "???")
-                )
-            }
-
-            let chat = message.chat();
-            let tstamp = message.date().format("%Y-%m-%d %H:%M:%S%z").to_string();
-            let ctn = message.text().to_string();
-
-            let coll_msg = CollectedMsg {
-                title: Cow::Owned(chat.name().to_string()),
-                sender: Cow::Owned(sender),
-                ctn: Cow::Owned(ctn),
-                tstamp: Cow::Owned(tstamp),
-            };
-
-            try_collect_msg(coll_msg, collector, wdir, client).await;
-        }
-        _ => {}
-    }
-
-    Ok(())
-}
-
 fn ask_user(hint: &str) -> String {
     println!("{}", hint);
     let mut input = String::new();
@@ -67,6 +31,8 @@ fn ask_user(hint: &str) -> String {
 }
 
 async fn async_main() -> Result<()> {
+    let keyword = env::args().skip(1).next().expect("keyword missing");
+
     let wdir = init_data(None, false);
 
     SimpleLogger::new()
@@ -159,85 +125,27 @@ async fn async_main() -> Result<()> {
         println!("Signed in!");
     }
 
-    println!("Create chat...");
-    let create_res = client
-        .invoke(&functions::messages::CreateChat {
-            users: vec![],
-            title: chrono::Local::now()
-                .format("TG-FOCUS %Y-%m-%d %H:%M:%S%z")
-                .to_string(),
-        })
-        .await;
-
-    let mut collector_id = 0i64;
-    if let Ok(enums::Updates::Updates(types::Updates { chats, .. })) = create_res {
-        if chats.len() == 1 {
-            if let enums::Chat::Chat(types::Chat { id, .. }) = chats[0] {
-                collector_id = id;
-            }
-        }
+    let mut messages = client.search_all_messages().query(&keyword);
+    let n_total = messages.total().await.unwrap();
+    while let Some(message) = messages.next().await? {
+        println!(
+            "---------- <{}> <{}> <{}> \n{}\n----------\n",
+            message.chat().name(),
+            match message.sender() {
+                Some(c) => c.name().to_string(),
+                None => {
+                    "".to_string()
+                }
+            },
+            message.date(),
+            message.text()
+        );
     }
-
-    dbg!(collector_id);
-
-    if collector_id == 0 {
-        panic!("create collector failed");
-    }
-
-    let collector = PackedChat {
-        ty: grammers_session::PackedType::Chat,
-        id: collector_id,
-        access_hash: None,
-    };
-
-    println!("Waiting for messages...");
-
-    loop {
-        let update = {
-            let exit = async { tokio::signal::ctrl_c().await };
-            let upd = async { client.next_update().await };
-            pin_mut!(exit);
-            pin_mut!(upd);
-
-            match select(exit, upd).await {
-                Either::Left((_, _)) => None,
-                Either::Right((u, _)) => Some(u),
-            }
-        };
-
-        let update = match update {
-            None | Some(Ok(None)) => break,
-            Some(u) => u?.unwrap(),
-        };
-
-        let client_tmp = client.clone();
-        let wdir = wdir.clone();
-        task::spawn(async move {
-            if let Err(e) = handle_update(client_tmp, update, wdir, collector).await {
-                eprintln!("Error handling updates!: {}", e)
-            }
-        });
-    }
+    println!("Total: {}", n_total);
 
     println!("Saving session file and exiting...");
     client.session().save_to_file(wdir.session())?;
     Ok(())
-}
-
-async fn try_collect_msg(msg: CollectedMsg<'_>, pchat: PackedChat, wdir: WorkDir, client: Client) {
-    let mut focus_filter = TgFilters::from_file(wdir.filter()).unwrap();
-    dbg!(("filter init", &focus_filter));
-
-    if focus_filter.is_match(&msg).0 {
-        match client.send_message(pchat, msg.to_string()).await {
-            Ok(_) => {}
-            Err(_e) => {
-                dbg!(_e);
-            }
-        }
-    } else {
-        dbg!(format!("message ignored: {:?}", &msg));
-    }
 }
 
 fn main() -> Result<()> {
