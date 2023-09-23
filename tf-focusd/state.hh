@@ -23,4 +23,12 @@ extern TdCollector collector;
 extern TgFocusData tf_data;
 extern std::atomic<int> producer_hang_period;
 
+template <class... Args>
+void
+log (fmt::format_string<Args...> fmt, Args &&...args)
+{
+  constexpr std::string_view header{"[tf-focusd] "};
+  std::cout << header << fmt::format (fmt, args...) << std::endl;
+}
+
 #endif // _TGFOCUS_STATE_H
