@@ -25,8 +25,8 @@ TgMsg::TgMsg (std::string &&chat_title, std::string &&sender,
   this->tstamp_ = make_timestamp_readable (tstamp);
 }
 
-TgMsg::TgMsg (std::string &chat_title, std::string &sender,
-	      std::string &text_content, int32_t tstamp)
+TgMsg::TgMsg (const std::string &chat_title, const std::string &sender,
+	      const std::string &text_content, int32_t tstamp)
 {
   this->title_ = (chat_title);
   this->sender_ = (sender);

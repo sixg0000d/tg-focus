@@ -9,8 +9,8 @@ class TgMsg
 public:
   TgMsg () = default;
 
-  TgMsg (std::string &chat_title, std::string &sender,
-	 std::string &text_content, int32_t tstamp = 0);
+  TgMsg (const std::string &chat_title, const std::string &sender,
+	 const std::string &text_content, int32_t tstamp = 0);
 
   TgMsg (std::string &&chat_title, std::string &&sender,
 	 std::string &&text_content, int32_t tstamp = 0);

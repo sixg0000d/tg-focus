@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <cstdlib>
 #include <vector>
 #include <atomic>
@@ -148,7 +149,6 @@ TdCollector::send_query (td_api::object_ptr<td_api::Function> f,
 			 std::function<void (Object)> handler)
 {
   auto query_id = next_query_id ();
-  std::cout << "send_query!!!" << std::endl;
   if (handler)
     {
       handlers_.emplace (query_id, std::move (handler));
@@ -234,21 +234,21 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
       }
 
       case updateNewChat::ID: {
-	auto casted = static_cast<updateNewChat *> (update.get ());
-	this->chat_title_[casted->chat_->id_] = casted->chat_->title_;
+	// auto casted = static_cast<updateNewChat *> (update.get ());
+	// this->chat_title_[casted->chat_->id_] = casted->chat_->title_;
 	break;
       }
 
       case updateChatTitle::ID: {
-	auto casted = static_cast<updateChatTitle *> (update.get ());
-	this->chat_title_[casted->chat_id_] = casted->title_;
+	// auto casted = static_cast<updateChatTitle *> (update.get ());
+	// this->chat_title_[casted->chat_id_] = casted->title_;
 	break;
       }
 
       case updateUser::ID: {
-	auto casted = static_cast<updateUser *> (update.get ());
-	auto user_id = casted->user_->id_;
-	this->users_[user_id] = std::move (casted->user_);
+	// auto casted = static_cast<updateUser *> (update.get ());
+	// auto user_id = casted->user_->id_;
+	// this->users_[user_id] = std::move (casted->user_);
 	break;
       }
 
@@ -259,16 +259,22 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	auto chat_id = casted->message_->chat_id_;
 	std::string sender_name;
 	auto sender_id = std::move (casted->message_->sender_id_);
+	int32_t sender_id_as_userid = 0;
 	switch (sender_id->get_id ())
 	  {
 	    case messageSenderUser::ID: {
 	      auto casted = static_cast<messageSenderUser *> (sender_id.get ());
-	      sender_name = get_user_name (casted->user_id_);
+	      sender_name
+		= fmt::format ("<sender-userid:{}>", casted->user_id_);
+	      sender_id_as_userid = casted->user_id_;
+	      // sender_name = get_user_name (casted->user_id_);
 	      break;
 	    }
 	    case messageSenderChat::ID: {
 	      auto casted = static_cast<messageSenderChat *> (sender_id.get ());
-	      sender_name = get_chat_title (casted->chat_id_);
+	      sender_name
+		= fmt::format ("<sender-chatid:{}>", casted->chat_id_);
+	      // sender_name = get_chat_title (casted->chat_id_);
 	      break;
 	    }
 	  }
@@ -317,13 +323,57 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 
 	std::int32_t tstamp = casted->message_->date_;
 
-	// ---
-	std::lock_guard<std::mutex> mq_guard (mq_lock);
+	std::cout
+	  << fmt::format ("update new message! sender_id_as_userid:{}, text:{}",
+			  sender_id_as_userid, text)
+	  << std::endl;
+	if (sender_id_as_userid != 0)
+	  {
+	    send_query (
+	      td_api::make_object<td_api::getUser> (sender_id_as_userid),
+	      [this, chat_id, text, tstamp] (Object obj) {
+		std::string readable_usrname{"unknown user"};
 
-	TgMsg msg (chat_title_[chat_id], sender_name, text, tstamp);
+		if (obj->get_id () == td_api::user::ID)
+		  {
+		    auto userinfo = td::move_tl_object_as<td_api::user> (obj);
 
-	if (!msg.is_from_tgfocus ())
-	  mq.insert (mq.begin (), std::move (msg));
+		    readable_usrname
+		      = fmt::format ("{} {}", userinfo->first_name_,
+				     userinfo->last_name_);
+		    if (userinfo->usernames_)
+		      {
+			readable_usrname
+			  += "@" + userinfo->usernames_->editable_username_;
+		      }
+		  }
+
+		send_query (td_api::make_object<td_api::getChat> (chat_id),
+			    [chat_id, readable_usrname, text,
+			     tstamp] (Object obj) {
+			      std::string readable_chattitle{"unknown chat"};
+			      if (obj->get_id () == td_api::chat::ID)
+				{
+				  auto chatinfo
+				    = td::move_tl_object_as<td_api::chat> (obj);
+				  readable_chattitle
+				    = chatinfo->title_; // FIXME: move
+				}
+
+			      // ---
+			      std::lock_guard<std::mutex> mq_guard (mq_lock);
+
+			      TgMsg msg (readable_chattitle, readable_usrname,
+					 text, tstamp); // FIXME:move
+
+			      if (!msg.is_from_tgfocus ())
+				{
+				  std::cout << "mq inserted!!!" << std::endl;
+				  mq.insert (mq.begin (), std::move (msg));
+				}
+			    });
+	      });
+	  }
 
 	break;
       }
