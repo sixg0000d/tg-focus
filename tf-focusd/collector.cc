@@ -15,6 +15,8 @@
 #include <td/telegram/td_api.h>
 #include <td/telegram/td_api.hpp>
 
+#include "state.hh"
+
 #include "common.hh"
 #include "tf_data.hh"
 #include "collector.hh"
@@ -259,7 +261,9 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	auto chat_id = casted->message_->chat_id_;
 	std::string sender_name;
 	auto sender_id = std::move (casted->message_->sender_id_);
+
 	int32_t sender_id_as_userid = 0;
+	int32_t sender_id_as_chatid = 0;
 	switch (sender_id->get_id ())
 	  {
 	    case messageSenderUser::ID: {
@@ -267,14 +271,13 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	      sender_name
 		= fmt::format ("<sender-userid:{}>", casted->user_id_);
 	      sender_id_as_userid = casted->user_id_;
-	      // sender_name = get_user_name (casted->user_id_);
 	      break;
 	    }
 	    case messageSenderChat::ID: {
 	      auto casted = static_cast<messageSenderChat *> (sender_id.get ());
 	      sender_name
 		= fmt::format ("<sender-chatid:{}>", casted->chat_id_);
-	      // sender_name = get_chat_title (casted->chat_id_);
+	      sender_id_as_chatid = casted->chat_id_;
 	      break;
 	    }
 	  }
@@ -327,17 +330,16 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	  << fmt::format ("update new message! sender_id_as_userid:{}, text:{}",
 			  sender_id_as_userid, text)
 	  << std::endl;
+
 	if (sender_id_as_userid != 0)
 	  {
 	    send_query (
 	      td_api::make_object<td_api::getUser> (sender_id_as_userid),
-	      [this, chat_id, text, tstamp] (Object obj) {
+	      [this, sender_id_as_userid, chat_id, text, tstamp] (Object obj) {
 		std::string readable_usrname{"unknown user"};
-
 		if (obj->get_id () == td_api::user::ID)
 		  {
 		    auto userinfo = td::move_tl_object_as<td_api::user> (obj);
-
 		    readable_usrname
 		      = fmt::format ("{} {}", userinfo->first_name_,
 				     userinfo->last_name_);
@@ -346,6 +348,14 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 			readable_usrname
 			  += "@" + userinfo->usernames_->editable_username_;
 		      }
+		  }
+		else if (obj->get_id () == td_api::error::ID)
+		  {
+		    auto errinfo = td::move_tl_object_as<td_api::error> (obj);
+		    log ("readable_usrname not user ecode:{} emsg:{} ",
+			 errinfo->code_, errinfo->message_);
+		    readable_usrname
+		      = fmt::format ("unknown user({})", sender_id_as_userid);
 		  }
 
 		send_query (td_api::make_object<td_api::getChat> (chat_id),
@@ -364,11 +374,52 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 			      std::lock_guard<std::mutex> mq_guard (mq_lock);
 
 			      TgMsg msg (readable_chattitle, readable_usrname,
-					 text, tstamp); // FIXME:move
+					 text,
+					 tstamp); // FIXME:move
 
 			      if (!msg.is_from_tgfocus ())
 				{
-				  std::cout << "mq inserted!!!" << std::endl;
+				  mq.insert (mq.begin (), std::move (msg));
+				}
+			    });
+	      });
+	  }
+
+	if (sender_id_as_chatid != 0)
+	  {
+	    send_query (
+	      td_api::make_object<td_api::getChat> (sender_id_as_chatid),
+	      [this, chat_id, text, tstamp] (Object obj) {
+		std::string readable_usrname{"unknown chat"};
+		if (obj->get_id () == td_api::chat::ID)
+		  {
+		    auto userinfo_chat
+		      = td::move_tl_object_as<td_api::chat> (obj);
+		    readable_usrname
+		      = fmt::format ("{}(chat)", userinfo_chat->title_);
+		  }
+
+		send_query (td_api::make_object<td_api::getChat> (chat_id),
+			    [chat_id, readable_usrname, text,
+			     tstamp] (Object obj) {
+			      std::string readable_chattitle{"unknown chat"};
+			      if (obj->get_id () == td_api::chat::ID)
+				{
+				  auto chatinfo
+				    = td::move_tl_object_as<td_api::chat> (obj);
+				  readable_chattitle
+				    = chatinfo->title_; // FIXME: move
+				}
+
+			      // ---
+			      std::lock_guard<std::mutex> mq_guard (mq_lock);
+
+			      TgMsg msg (readable_chattitle, readable_usrname,
+					 text,
+					 tstamp); // FIXME:move
+
+			      if (!msg.is_from_tgfocus ())
+				{
 				  mq.insert (mq.begin (), std::move (msg));
 				}
 			    });
