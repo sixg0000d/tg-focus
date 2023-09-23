@@ -4,22 +4,6 @@
 #include "state.hh"
 #include "worker.hh"
 
-template <class... Args>
-void
-log (fmt::format_string<Args...> fmt, Args &&...args)
-{
-  constexpr std::string_view header{"[tf-focusd] "};
-  std::cout << header << fmt::format (fmt, args...) << std::endl;
-}
-
-template <class... Args>
-void
-log_flush (fmt::format_string<Args...> fmt, Args &&...args)
-{
-  constexpr std::string_view header{"[tf-focusd] "};
-  std::cout << header << fmt::format (fmt, args...) << std::flush;
-}
-
 int
 main ()
 {
