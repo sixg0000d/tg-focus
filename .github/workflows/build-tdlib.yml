@@ -1,0 +1,28 @@
+name: build-tdlib
+run-name: Build TDLib
+on:
+  push:
+    branches:
+      - build-tdlib
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Deps
+        run: sudo apt-get update && sudo apt-get install buildah -y
+      - name: Build TDLib
+        run: bash oci/build-tdlib.bash
+      - run: buildah ps
+      - name: OCI Image
+        uses: actions/upload-artifact@v3
+        with:
+          name: tg-focus-tdlib-1817
+          path: |
+            tg-focus-tdlib-1817*
+
+
+
+
+      
