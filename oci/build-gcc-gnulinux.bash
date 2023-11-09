@@ -50,13 +50,13 @@ buildah run $CTN_BUILD -- \
 
 test $? -eq 0 || exit 4
 
-buildah run $CTN_BUILD -- \
+$PXY_FRONTEND buildah run $CTN_BUILD -- \
 	bash -c "cd gcc-12.3.0 && ./contrib/download_prerequisites"
 
 test $? -eq 0 || exit 4
 
 buildah run $CTN_BUILD -- \
-	bash -c "mkdir objdir && cd objdir && ../gcc-12.3.0/configure --prefix=/mygcc12 --program-prefix=my --disable-multilib --disable-libsanitizer --enable-languages=c,c++"
+	bash -c "mkdir objdir && cd objdir && ../gcc-12.3.0/configure --program-prefix='alt-' --disable-multilib --disable-libsanitizer --enable-languages=c,c++"
 
 test $? -eq 0 || exit 4
 
@@ -81,7 +81,7 @@ test $? -eq 0 || exit 4
 # package
 
 buildah from --name $CTN_PACK $PICK_BASEIMG
-buildah copy --from $CTN_BUILD $CTN_PACK '/mygcc12' '/mygcc12'
+buildah copy --from $CTN_BUILD $CTN_PACK '/usr/local' '/usr/local'
 
 TAR_NAME="gcc-$PICK_PLATFORM"
 
