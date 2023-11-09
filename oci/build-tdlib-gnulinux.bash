@@ -2,9 +2,10 @@
 
 CTN_TDLIB="build-tdlib-gnulinux-container"
 CTN_PACK="package-tdlib-gnulinux-container"
+CTN_GCC="package-gcc-gnulinux-container"
 PICK_SRC="030e440757478ef5f5fdb01f60c3c6d885330c72"
-PICK_PLATFORM="gnulinux"
-PICK_BASEIMG="quay.io/centos/centos:stream9"
+PICK_PLATFORM="x86_64-linux-gnu"
+PICK_BASEIMG="debian:buster-slim"
 PXY_FRONTEND=""
 APT_COUNTRY_CODE="us"
 
@@ -22,6 +23,8 @@ fi
 
 
 ###
+
+
 
 # skip building if already built
 flag=$(buildah ps | grep $CTN_TDLIB | wc -l)
@@ -51,9 +54,31 @@ buildah run $CTN_TDLIB -- \
 
 test $? -eq 0 || exit 4
 
-# FIXEM: handle rpath
+# gcc
+buildah copy --from $CTN_GCC $CTN_TDLIB '/usr/local' '/usr/local'
+
+test $? -eq 0 || exit 4
+
+# FIXME: handle potential rpath
 buildah run $CTN_TDLIB -- \
-	bash -c "cd td && mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DZLIB_USE_STATIC_LIBS=ON -DOPENSSL_USE_STATIC_LIBS=TRUE .. && make -j$(nproc) && make install"
+	bash -c "cd td && mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DZLIB_LIBRARY=/usr/lib/x86_64-linux-gnu/libz.a  -DOPENSSL_USE_STATIC_LIBS=TRUE -DCMAKE_C_COMPILER=/usr/local/bin/alt-gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/alt-g++ .."
+
+test $? -eq 0 || exit 4
+
+buildah run $CTN_TDLIB -- \
+	bash -c 'cd td/build && LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH make -j$(nproc)'
+
+test $? -eq 0 || exit 4
+
+buildah run $CTN_TDLIB -- \
+	bash -c 'cd td/build && LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH make test'
+
+test $? -eq 0 || exit 4
+
+buildah run $CTN_TDLIB -- \
+	bash -c "cd td/build && LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH make install"
+
+test $? -eq 0 || exit 4
 
 # package
 

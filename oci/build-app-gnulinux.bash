@@ -1,9 +1,10 @@
 ###
 
+CTN_GCC="package-gcc-gnulinux-container"
 CTN_TDLIB="package-tdlib-gnulinux-container"
 CTN_TGFOCUS="build-tgfocus-gnulinux-container"
 PICK_PLATFORM="gnulinux"
-PICK_BASEIMG="debian:bookworm-slim"
+PICK_BASEIMG="debian:buster-slim"
 PXY_FRONTEND=""
 APT_COUNTRY_CODE="us"
 
@@ -26,9 +27,13 @@ test $flag -eq 0 || buildah rm $CTN_TGFOCUS
 
 buildah from --name $CTN_TGFOCUS $PICK_BASEIMG
 
-buildah copy --from $CTN_TDLIB $CTN_TGFOCUS '/usr/local/include' '/usr/local/include'
-buildah copy --from $CTN_TDLIB $CTN_TGFOCUS '/usr/local/lib' '/usr/local/lib'
+test $? -eq 0 || exit 1
 
+buildah copy --from $CTN_GCC $CTN_TGFOCUS '/usr/local' '/usr/local'
+test $? -eq 0 || exit 1
+buildah copy --from $CTN_TDLIB $CTN_TGFOCUS '/usr/local/include' '/usr/local/include'
+test $? -eq 0 || exit 1
+buildah copy --from $CTN_TDLIB $CTN_TGFOCUS '/usr/local/lib' '/usr/local/lib'
 test $? -eq 0 || exit 1
 
 buildah run $CTN_TGFOCUS -- \
@@ -58,7 +63,12 @@ $PXY_FRONTEND buildah run $CTN_TGFOCUS -- \
 test $? -eq 0 || exit 4
 
 buildah run $CTN_TGFOCUS -- \
-	bash -c "cd tg-focus && cmake -DCMAKE_BUILD_TYPE=Release -B build && cmake --build build"
+	bash -c "cd tg-focus && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=/usr/local/bin/alt-gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/alt-g++ -B build && cmake --build build"
+
+test $? -eq 0 || exit 5
+
+buildah run $CTN_TGFOCUS -- \
+	bash -c 'cd tg-focus/build && LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH make -j$(nproc)'
 
 test $? -eq 0 || exit 5
 
@@ -73,7 +83,7 @@ buildah run $CTN_TGFOCUS -- \
 test $? -eq 0 || exit 7
 
 buildah run $CTN_TGFOCUS -- \
-	bash -c "cd tg-focus/build && ctest"
+	bash -c "cd tg-focus/build && make test"
 
 test $? -eq 0 || exit 8
 

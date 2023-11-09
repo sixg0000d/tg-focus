@@ -56,7 +56,7 @@ $PXY_FRONTEND buildah run $CTN_BUILD -- \
 test $? -eq 0 || exit 4
 
 buildah run $CTN_BUILD -- \
-	bash -c "mkdir objdir && cd objdir && ../gcc-12.3.0/configure --program-prefix='alt-' --disable-multilib --disable-libsanitizer --enable-languages=c,c++"
+	bash -c "mkdir objdir && cd objdir && ../gcc-12.3.0/configure --program-prefix='alt-' --disable-multilib --disable-libsanitizer --enable-languages=c,c++ --enable-shared=libgcc,libstdc++"
 
 test $? -eq 0 || exit 4
 
