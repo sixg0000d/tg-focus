@@ -4,7 +4,7 @@ CTN_TGFOCUS="build-tgfocus-gnulinux-container"
 CTN_PACK="package-tgfocus-gnulinux-container"
 PICK_PLATFORM="gnulinux"
 FINAL_IMGNAME="tg-focus-$PICK_PLATFORM"
-PICK_BASEIMG="debian:bookworm-slim"
+PICK_BASEIMG="debian:buster-slim"
 APT_COUNTRY_CODE="us"
 
 if [[ -v CURR_LOC ]]
@@ -33,7 +33,7 @@ test $? -eq 0 || exit 2
 buildah run $CTN_PACK -- \
 	sed -i \
 	"s/deb\.debian\.org/ftp\.$APT_COUNTRY_CODE\.debian\.org/" \
-	/etc/apt/sources.list.d/debian.sources
+	/etc/apt/sources.list
 buildah run $CTN_PACK -- \
 	apt-get -o Acquire::ForceIPv4=true update
 buildah run $CTN_PACK -- \
