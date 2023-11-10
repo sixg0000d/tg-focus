@@ -1,8 +1,11 @@
 ### 
 
-CTN_BUILD="build-gcc-gnulinux-container"
-CTN_PACK="package-gcc-gnulinux-container"
-PICK_PLATFORM="x86_64-linux-gnu"
+PICK_GCC_MVER="12"
+PICK_GCC_FULLVER="12.3.0"
+PICK_OS="deb10"
+PICK_TARGET="${PICK_GCC_FULLVER}-${PICK_OS}-x86_64"
+CTN_BUILD="build-gcc-$PICK_TARGET-container"
+CTN_PACK="package-gcc-$PICK_TARGET-container"
 PICK_BASEIMG="debian:buster-slim"
 PXY_FRONTEND=""
 APT_COUNTRY_CODE="us"
@@ -41,22 +44,22 @@ buildah run $CTN_BUILD -- \
 test $? -eq 0 || exit 2
 
 $PXY_FRONTEND buildah run $CTN_BUILD -- \
-	bash -c "wget https://ftp.gnu.org/gnu/gcc/gcc-12.3.0/gcc-12.3.0.tar.gz"
+	bash -c "wget https://ftp.gnu.org/gnu/gcc/gcc-${PICK_GCC_FULLVER}/gcc-${PICK_GCC_FULLVER}.tar.gz"
 
 test $? -eq 0 || exit 3
 
 buildah run $CTN_BUILD -- \
-	bash -c "tar xf gcc-12.3.0.tar.gz"
+	bash -c "tar xf gcc-${PICK_GCC_FULLVER}.tar.gz"
 
 test $? -eq 0 || exit 4
 
 $PXY_FRONTEND buildah run $CTN_BUILD -- \
-	bash -c "cd gcc-12.3.0 && ./contrib/download_prerequisites"
+	bash -c "cd gcc-${PICK_GCC_FULLVER} && ./contrib/download_prerequisites"
 
 test $? -eq 0 || exit 4
 
 buildah run $CTN_BUILD -- \
-	bash -c "mkdir objdir && cd objdir && ../gcc-12.3.0/configure --program-prefix='alt-' --disable-multilib --disable-libsanitizer --enable-languages=c,c++ --enable-shared=libgcc,libstdc++"
+	bash -c "mkdir objdir && cd objdir && ../${PICK_GCC_FULLVER}/configure --program-prefix='alt-' --disable-multilib --disable-libsanitizer --enable-languages=c,c++ --enable-shared=libgcc,libstdc++"
 
 test $? -eq 0 || exit 4
 
@@ -83,10 +86,19 @@ test $? -eq 0 || exit 4
 buildah from --name $CTN_PACK $PICK_BASEIMG
 buildah copy --from $CTN_BUILD $CTN_PACK '/usr/local' '/usr/local'
 
-TAR_NAME="gcc-$PICK_PLATFORM"
+test $? -eq 0 || exit 5
 
-buildah commit $CTN_PACK $TAR_NAME
+OCIIMG_NAME="gcc-voa"
+OCIIMG_FULLNAME="localhost/$OCIIMG_NAME:$PICK_TARGET"
 
-podman save --output $TAR_NAME.tar --format oci-archive localhost/$TAR_NAME:latest
+buildah commit $CTN_PACK $OCIIMG_FULLNAME
 
-podman inspect localhost/$TAR_NAME:latest >$TAR_NAME.json
+test $? -eq 0 || exit 5
+
+podman save --output $OCIIMG_NAME.tar --format oci-archive $OCIIMG_FULLNAME
+
+test $? -eq 0 || exit 5
+
+podman inspect $OCIIMG_FULLNAME >$OCIIMG_NAME.json
+
+test $? -eq 0 || exit 5
