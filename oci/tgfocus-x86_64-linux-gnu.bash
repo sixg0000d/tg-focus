@@ -23,8 +23,12 @@ fi
 ###
 
 # prepare tdlib
-buildah from --name $CTN_TDLIB $IMGNAMETAG_TDLIB
-test $? -eq 0 || exit 1
+buildah ps | grep $CTN_TDLIB
+if [[ $? -ne 0 ]]
+then
+    buildah from --name $CTN_TDLIB $IMGNAMETAG_TDLIB
+    test $? -eq 0 || exit 1
+fi
 
 # delete existing build
 flag=$(buildah ps | grep $CTN_TGFOCUS | wc -l)
