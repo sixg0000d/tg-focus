@@ -112,5 +112,8 @@ test $? -eq 0 || exit 12
 tar --create --gzip --file $artifacts_dir.tar.gz $artifacts_dir
 test $? -eq 0 || exit 13
 
+podman rm $tmpctn
+test $? -eq 0 || exit 14
+
 
 
