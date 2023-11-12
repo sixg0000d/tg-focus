@@ -89,4 +89,28 @@ buildah run $CTN_TGFOCUS -- \
 test $? -eq 0 || exit 9
 
 
+# package
+
+PACK_IMGNAME="localhost/tgfocus-$PICK_PLATFORM"
+
+buildah commit $CTN_TGFOCUS $PACK_IMGNAME
+test $? -eq 0 || exit 10
+
+tmpctn=$(podman create $PACK_IMGNAME)
+test $? -eq 0 || exit 11
+
+artifacts_dir="tg-focus-$PICK_PLATFORM"
+rm -rf $artifacts_dir
+mkdir -p $artifacts_dir
+
+podman cp $tmpctn:/tg-focus/build/tf-conf $artifacts_dir/tf-conf
+test $? -eq 0 || exit 12
+podman cp $tmpctn:/tg-focus/build/tf-focusd $artifacts_dir/tf-focusd
+test $? -eq 0 || exit 12
+sha512sum $artifacts_dir/tf-* > $artifacts_dir/checksums
+test $? -eq 0 || exit 12
+tar --create --gzip --file $artifacts_dir.tar.gz $artifacts_dir
+test $? -eq 0 || exit 13
+
+
 
