@@ -1,8 +1,9 @@
 ###
 
-IMGNAMETAG_TDLIB="localhost/tdlib-x86_64-linux-gnu:030e440757478ef5f5fdb01f60c3c6d885330c72"
-PICK_PLATFORM="x86_64-linux-gnu"
-CTN_TDLIB="package-tdlib-gnulinux-container" # FIXME
+PICK_PLATFORM="x64-linux-gnu"
+PICK_TDLIB_SRC="030e440757478ef5f5fdb01f60c3c6d885330c72"
+IMGNAMETAG_TDLIB="docker.io/micl2e2/gcc-voa-tdlib:$PICK_TDLIB_SRC-$PICK_PLATFORM"
+CTN_TDLIB="package-tdlib-$PICK_PLATFORM-container"
 CTN_TGFOCUS="build-tgfocus-$PICK_PLATFORM-container"
 PICK_BASEIMG="debian:buster-slim"
 PXY_FRONTEND=""

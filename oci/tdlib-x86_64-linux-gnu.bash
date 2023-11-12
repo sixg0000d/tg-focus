@@ -1,11 +1,14 @@
 ### 
- 
-IMGNAME_GCC="localhost/gcc-voa:12.3.0-deb10-x86_64" #FIXME: tag name
-CTN_TDLIB="build-tdlib-gnulinux-container"
-CTN_PACK="package-tdlib-gnulinux-container"
-CTN_GCC="package-gcc-gnulinux-container"
+
+PICK_PLATFORM="x64-linux-gnu"
+PICK_GCC_VER="12.3.0"
+PICK_GCC_OS="deb10"
+PICK_GCC_ARCH="x64"
+IMGNAME_GCC="docker.io/micl2e2/gcc-voa:$PICK_GCC_VER-$PICK_GCC_OS-$PICK_GCC_ARCH"
+CTN_TDLIB="build-tdlib-$PICK_PLATFORM-container"
+CTN_PACK="package-tdlib-$PICK_PLATFORM-container"
+CTN_GCC="package-gcc-$PICK_PLATFORM-container"
 PICK_SRC="030e440757478ef5f5fdb01f60c3c6d885330c72"
-PICK_PLATFORM="x86_64-linux-gnu"
 PICK_BASEIMG="debian:buster-slim"
 PXY_FRONTEND=""
 APT_COUNTRY_CODE="us"
