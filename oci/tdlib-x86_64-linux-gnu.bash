@@ -1,5 +1,6 @@
 ### 
-
+ 
+IMGNAME_GCC="localhost/gcc-voa:12.3.0-deb10-x86_64" #FIXME: tag name
 CTN_TDLIB="build-tdlib-gnulinux-container"
 CTN_PACK="package-tdlib-gnulinux-container"
 CTN_GCC="package-gcc-gnulinux-container"
@@ -24,6 +25,12 @@ fi
 
 ###
 
+buildah images | grep $IMGNAME_GCC
+test $? -ne 0 || exit 1
+
+buildah from --name $CTN_GCC $IMGNAME_GCC
+
+test $? -eq 0 || exit 1
 
 
 # skip building if already built
@@ -59,7 +66,6 @@ buildah copy --from $CTN_GCC $CTN_TDLIB '/usr/local' '/usr/local'
 
 test $? -eq 0 || exit 4
 
-# FIXME: handle potential rpath
 buildah run $CTN_TDLIB -- \
 	bash -c "cd td && mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DZLIB_LIBRARY=/usr/lib/x86_64-linux-gnu/libz.a  -DOPENSSL_USE_STATIC_LIBS=TRUE -DCMAKE_C_COMPILER=/usr/local/bin/alt-gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/alt-g++ .."
 
@@ -83,13 +89,14 @@ test $? -eq 0 || exit 4
 # package
 
 buildah from --name $CTN_PACK $PICK_BASEIMG
-buildah copy --from $CTN_TDLIB $CTN_PACK '/usr/local/include' '/usr/local/include'
-buildah copy --from $CTN_TDLIB $CTN_PACK '/usr/local/lib' '/usr/local/lib'
+buildah copy --from $CTN_TDLIB $CTN_PACK '/usr/local' '/usr/local'
+buildah copy --from $CTN_GCC $CTN_PACK '/usr/local' '/usr/local'
 
-TAR_NAME="tdlib-$PICK_SRC-$PICK_PLATFORM"
+PACK_IMGNAME="tdlib-$PICK_PLATFORM"
+PACK_IMGTAG="$PICK_SRC"
 
-buildah commit $CTN_PACK $TAR_NAME
+buildah commit $CTN_PACK "$PACK_IMGNAME:$PACK_IMGTAG"
 
-podman save --output $TAR_NAME.tar --format oci-archive localhost/$TAR_NAME:latest
+podman save --output $PACK_IMGNAME.tar --format oci-archive localhost/"$PACK_IMGNAME:$PACK_IMGTAG"
 
-podman inspect localhost/$TAR_NAME:latest >$TAR_NAME.json
+podman inspect localhost/"$PACK_IMGNAME:$PACK_IMGTAG" >$PACK_IMGNAME.json
