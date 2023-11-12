@@ -1,9 +1,9 @@
 ###
 
-CTN_GCC="package-gcc-gnulinux-container"
-CTN_TDLIB="package-tdlib-gnulinux-container"
-CTN_TGFOCUS="build-tgfocus-gnulinux-container"
-PICK_PLATFORM="gnulinux"
+IMGNAMETAG_TDLIB="localhost/tdlib-x86_64-linux-gnu:030e440757478ef5f5fdb01f60c3c6d885330c72"
+PICK_PLATFORM="x86_64-linux-gnu"
+CTN_TDLIB="package-tdlib-gnulinux-container" # FIXME
+CTN_TGFOCUS="build-tgfocus-$PICK_PLATFORM-container"
 PICK_BASEIMG="debian:buster-slim"
 PXY_FRONTEND=""
 APT_COUNTRY_CODE="us"
@@ -22,18 +22,18 @@ fi
 
 ###
 
+# prepare tdlib
+buildah from --name $CTN_TDLIB $IMGNAMETAG_TDLIB
+test $? -eq 0 || exit 1
+
+# delete existing build
 flag=$(buildah ps | grep $CTN_TGFOCUS | wc -l)
 test $flag -eq 0 || buildah rm $CTN_TGFOCUS
 
 buildah from --name $CTN_TGFOCUS $PICK_BASEIMG
-
 test $? -eq 0 || exit 1
 
-buildah copy --from $CTN_GCC $CTN_TGFOCUS '/usr/local' '/usr/local'
-test $? -eq 0 || exit 1
-buildah copy --from $CTN_TDLIB $CTN_TGFOCUS '/usr/local/include' '/usr/local/include'
-test $? -eq 0 || exit 1
-buildah copy --from $CTN_TDLIB $CTN_TGFOCUS '/usr/local/lib' '/usr/local/lib'
+buildah copy --from $CTN_TDLIB $CTN_TGFOCUS '/usr/local' '/usr/local'
 test $? -eq 0 || exit 1
 
 buildah run $CTN_TGFOCUS -- \
@@ -50,8 +50,6 @@ buildah run $CTN_TGFOCUS -- \
 
 test $? -eq 0 || exit 2
 
-test -z $HTTPS_PROXY || echo use https proxy $HTTPS_PROXY
-
 $PXY_FRONTEND buildah run $CTN_TGFOCUS -- \
         git clone --depth=1 https://github.com/micl2e2/tg-focus
 
@@ -63,33 +61,27 @@ $PXY_FRONTEND buildah run $CTN_TGFOCUS -- \
 test $? -eq 0 || exit 4
 
 buildah run $CTN_TGFOCUS -- \
-	bash -c "cd tg-focus && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=/usr/local/bin/alt-gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/alt-g++ -B build && cmake --build build"
-
+	bash -c "cd tg-focus && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=/usr/local/bin/alt-gcc -DCMAKE_CXX_COMPILER=/usr/local/bin/alt-g++ -B build"
 test $? -eq 0 || exit 5
 
 buildah run $CTN_TGFOCUS -- \
 	bash -c 'cd tg-focus/build && LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH make -j$(nproc)'
-
 test $? -eq 0 || exit 5
 
 buildah run $CTN_TGFOCUS -- \
         bash -c 'sed -i "s/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen'
-
 test $? -eq 0 || exit 6
 
 buildah run $CTN_TGFOCUS -- \
         locale-gen
-
 test $? -eq 0 || exit 7
 
 buildah run $CTN_TGFOCUS -- \
 	bash -c 'cd tg-focus/build && LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH make test'
-
 test $? -eq 0 || exit 8
 
 buildah run $CTN_TGFOCUS -- \
 	bash -c "cd tg-focus && strip /tg-focus/build/tf-conf && strip /tg-focus/build/tf-focusd"
-
 test $? -eq 0 || exit 9
 
 
