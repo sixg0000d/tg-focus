@@ -59,6 +59,134 @@ decor_pos_to_str (const std::vector<std::tuple<int, int>> &pos)
   return ret;
 }
 
+namespace lang_en {
+std::optional<size_t>
+get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  if (cuseq[begi] == 0x5b && begi + 7 < cuseq.size ())
+    if (cuseq[begi + 1] == ' ' && cuseq[begi + 2] == 'C'
+	&& cuseq[begi + 3] == 'H' && cuseq[begi + 4] == 'A'
+	&& cuseq[begi + 5] == 'T' && cuseq[begi + 6] == ' '
+	&& cuseq[begi + 7] == ']')
+      return std::make_optional<size_t> (7);
+
+  return {};
+}
+
+std::optional<size_t>
+get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  if (cuseq[begi] == 0x5b && begi + 9 < cuseq.size ())
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x53
+	&& cuseq[begi + 3] == 0x45 && cuseq[begi + 4] == 0x4e
+	&& cuseq[begi + 5] == 0x44 && cuseq[begi + 6] == 0x45
+	&& cuseq[begi + 7] == 0x52 && cuseq[begi + 8] == 0x20
+	&& cuseq[begi + 9] == 0x5d)
+      return std::make_optional<size_t> (9);
+
+  return {};
+}
+
+std::optional<size_t>
+get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  if (cuseq[begi] == 0x5b && begi + 10 < cuseq.size ())
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x43
+	&& cuseq[begi + 3] == 0x4f && cuseq[begi + 4] == 0x4e
+	&& cuseq[begi + 5] == 0x54 && cuseq[begi + 6] == 0x45
+	&& cuseq[begi + 7] == 0x4e && cuseq[begi + 8] == 0x54
+	&& cuseq[begi + 9] == 0x20 && cuseq[begi + 10] == 0x5d)
+      return std::make_optional<size_t> (10);
+
+  return {};
+}
+
+std::optional<size_t>
+get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  if (cuseq[begi] == 0x5b && begi + 7 < cuseq.size ())
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x44
+	&& cuseq[begi + 3] == 0x41 && cuseq[begi + 4] == 0x54
+	&& cuseq[begi + 5] == 0x45 && cuseq[begi + 6] == 0x20
+	&& cuseq[begi + 7] == 0x5d)
+      return std::make_optional<size_t> (7);
+
+  return {};
+}
+
+std::optional<size_t>
+get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  if (cuseq[begi] == 0x5b && begi + 5 < cuseq.size ())
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x49
+	&& cuseq[begi + 3] == 0x44 && cuseq[begi + 4] == 0x20
+	&& cuseq[begi + 5] == 0x5d)
+      return std::make_optional<size_t> (5);
+
+  return {};
+}
+} // namespace lang_en
+
+std::optional<size_t>
+get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+{
+  switch (lang)
+    {
+    case 0:
+      return lang_en::get_end_chat_seq (cuseq, begi);
+    default:
+      return {};
+    }
+}
+
+std::optional<size_t>
+get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+{
+  switch (lang)
+    {
+    case 0:
+      return lang_en::get_end_sender_seq (cuseq, begi);
+    default:
+      return {};
+    }
+}
+
+std::optional<size_t>
+get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+{
+  switch (lang)
+    {
+    case 0:
+      return lang_en::get_end_content_seq (cuseq, begi);
+    default:
+      return {};
+    }
+}
+
+std::optional<size_t>
+get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+{
+  switch (lang)
+    {
+    case 0:
+      return lang_en::get_end_date_seq (cuseq, begi);
+    default:
+      return {};
+    }
+}
+
+std::optional<size_t>
+get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+{
+  switch (lang)
+    {
+    case 0:
+      return lang_en::get_end_id_seq (cuseq, begi);
+    default:
+      return {};
+    }
+}
+
 std::vector<std::tuple<int, int>>
 get_decor_pos (const std::string &str)
 {
@@ -95,47 +223,26 @@ get_decor_pos (const std::string &str)
   std::vector<std::tuple<int, int>> ret;
   for (size_t i = 0; i < cuseq.size (); i++)
     {
-      if (cuseq[i] == 0x5b && i + 7 < cuseq.size ())
-	if (cuseq[i + 1] == 0x20 && cuseq[i + 2] == 0x43 && cuseq[i + 3] == 0x48
-	    && cuseq[i + 4] == 0x41 && cuseq[i + 5] == 0x54
-	    && cuseq[i + 6] == 0x20 && cuseq[i + 7] == 0x5d)
-	  {
-	    ret.emplace_back (std::make_tuple (i, 7 + 1));
-	  }
-
-      if (cuseq[i] == 0x5b && i + 9 < cuseq.size ())
-	if (cuseq[i + 1] == 0x20 && cuseq[i + 2] == 0x53 && cuseq[i + 3] == 0x45
-	    && cuseq[i + 4] == 0x4e && cuseq[i + 5] == 0x44
-	    && cuseq[i + 6] == 0x45 && cuseq[i + 7] == 0x52
-	    && cuseq[i + 8] == 0x20 && cuseq[i + 9] == 0x5d)
-	  {
-	    ret.emplace_back (std::make_tuple (i, 9 + 1));
-	  }
-
-      if (cuseq[i] == 0x5b && i + 10 < cuseq.size ())
-	if (cuseq[i + 1] == 0x20 && cuseq[i + 2] == 0x43 && cuseq[i + 3] == 0x4f
-	    && cuseq[i + 4] == 0x4e && cuseq[i + 5] == 0x54
-	    && cuseq[i + 6] == 0x45 && cuseq[i + 7] == 0x4e
-	    && cuseq[i + 8] == 0x54 && cuseq[i + 9] == 0x20
-	    && cuseq[i + 10] == 0x5d)
-	  {
-	    ret.emplace_back (std::make_tuple (i, 10 + 1));
-	  }
-
-      if (cuseq[i] == 0x5b && i + 7 < cuseq.size ())
-	if (cuseq[i + 1] == 0x20 && cuseq[i + 2] == 0x44 && cuseq[i + 3] == 0x41
-	    && cuseq[i + 4] == 0x54 && cuseq[i + 5] == 0x45
-	    && cuseq[i + 6] == 0x20 && cuseq[i + 7] == 0x5d)
-	  {
-	    ret.emplace_back (std::make_tuple (i, 7 + 1));
-	  }
-
-      if (cuseq[i] == 0x5b && i + 5 < cuseq.size ())
-	if (cuseq[i + 1] == 0x20 && cuseq[i + 2] == 0x49 && cuseq[i + 3] == 0x44
-	    && cuseq[i + 4] == 0x20 && cuseq[i + 5] == 0x5d)
-	  {
-	    ret.emplace_back (std::make_tuple (i, 5 + 1));
-	  }
+      if (auto endi = get_end_chat_seq (cuseq, i, 0))
+	{
+	  ret.emplace_back (std::make_tuple (i, *endi + 1));
+	}
+      if (auto endi = get_end_sender_seq (cuseq, i, 0))
+	{
+	  ret.emplace_back (std::make_tuple (i, *endi + 1));
+	}
+      if (auto endi = get_end_content_seq (cuseq, i, 0))
+	{
+	  ret.emplace_back (std::make_tuple (i, *endi + 1));
+	}
+      if (auto endi = get_end_date_seq (cuseq, i, 0))
+	{
+	  ret.emplace_back (std::make_tuple (i, *endi + 1));
+	}
+      if (auto endi = get_end_id_seq (cuseq, i, 0))
+	{
+	  ret.emplace_back (std::make_tuple (i, *endi + 1));
+	}
     }
 
   return ret;
