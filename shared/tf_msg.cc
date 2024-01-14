@@ -133,7 +133,10 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (HOST_LANG)
     {
-    case en_AU | en_HK | en_GB | en_US:
+    case en_AU:
+    case en_HK:
+    case en_GB:
+    case en_US:
       return lang_en::get_end_chat_seq (cuseq, begi);
     default:
       return {};
@@ -145,7 +148,10 @@ get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (HOST_LANG)
     {
-    case en_AU | en_HK | en_GB | en_US:
+    case en_AU:
+    case en_HK:
+    case en_GB:
+    case en_US:
       return lang_en::get_end_sender_seq (cuseq, begi);
     default:
       return {};
@@ -157,7 +163,10 @@ get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (HOST_LANG)
     {
-    case en_AU | en_HK | en_GB | en_US:
+    case en_AU:
+    case en_HK:
+    case en_GB:
+    case en_US:
       return lang_en::get_end_content_seq (cuseq, begi);
     default:
       return {};
@@ -169,7 +178,10 @@ get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (HOST_LANG)
     {
-    case en_AU | en_HK | en_GB | en_US:
+    case en_AU:
+    case en_HK:
+    case en_GB:
+    case en_US:
       return lang_en::get_end_date_seq (cuseq, begi);
     default:
       return {};
@@ -181,7 +193,10 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (HOST_LANG)
     {
-    case en_AU | en_HK | en_GB | en_US:
+    case en_AU:
+    case en_HK:
+    case en_GB:
+    case en_US:
       return lang_en::get_end_id_seq (cuseq, begi);
     default:
       return {};
