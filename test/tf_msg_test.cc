@@ -1,13 +1,17 @@
-#include <iostream>
-#include <assert.h>
 #include "tf_msg.hh"
+#include <assert.h>
+#include <iostream>
+
+using namespace std;
 
 int
 main ()
 {
   using namespace std;
 
-  std::setlocale (LC_ALL, "en_HK.ISO-8859-1"); // FIXME
+  assert (can_decor ());
+
+  cerr << "picked locale: " << setlocale (LC_ALL, nullptr) << endl;
 
   // ascii + nonascii
   {
@@ -72,7 +76,8 @@ main ()
 
   // ascii + nonascii + emoji
   {
-    string s = R"([ CHAT ] michael2🐰🐭🐹🐻🐶🐱🌼🏵️💮🌸🪷🌺 | TG-Focusing
+    string s
+      = R"([ CHAT ] michael2🐰🐭🐹🐻🐶🐱🌼🏵️💮🌸🪷🌺 | TG-Focusing
 [ SENDER ] michael2🐰🐭🐹🐻🐶🐱🌼🏵️💮🌸🪷🌺 | TG-Focusing
 [ CONTENT ] 🤣🤣🤣🤣🤣のののののAAAAA好好好好好
 [ DATE ] 2023-10-25 21:28:50 +0800 HKT

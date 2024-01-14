@@ -1,13 +1,13 @@
 #ifndef _TF_MSG_H
 #define _TF_MSG_H
 
+#include <iostream>
 #include <stdint.h>
+#include <string>
+#include <time.h>
+#include <tuple>
 #include <uchar.h>
 #include <vector>
-#include <tuple>
-#include <time.h>
-#include <iostream>
-#include <string>
 
 #include "fmt/core.h"
 
@@ -52,6 +52,11 @@ private:
   std::string txt_;
   std::string tstamp_;
 };
+
+// Check host environment supports decoration.
+// Note: If it is decorable, this will change the default locale.
+bool
+can_decor ();
 
 std::vector<std::tuple<int, int>>
 get_decor_pos (const std::string &str);

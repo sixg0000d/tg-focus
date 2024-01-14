@@ -1,5 +1,5 @@
-
 #include "tf_msg.hh"
+#include "common.hh"
 
 std::string
 make_timestamp_readable (uint32_t tstamp)
@@ -40,6 +40,12 @@ operator<< (std::ostream &os, const TgMsg &msg)
      << "<txt," << msg.txt_ << ">"
      << "<tstamp," << msg.tstamp_ << ">";
   return os;
+}
+
+bool
+can_decor ()
+{
+  return ensure_locale_utf8 ();
 }
 
 std::string
