@@ -59,6 +59,10 @@ private:
 bool
 can_decor ();
 
+//
+// Decorate the incoming TfMsg if any suitable locale is supported on host,
+// otherwise rendering a empty result.
+//
 std::vector<std::tuple<int, int>>
 get_decor_pos (const std::string &str);
 

@@ -19,7 +19,7 @@ main (int argc, char *argv[])
 {
   using namespace std;
 
-  if (!ensure_locale_utf8 ())
+  if (!try_ensure_locale ())
     {
       lv_log (LogLv::WARNING, "WARN! Available utf8 locales not found");
     }

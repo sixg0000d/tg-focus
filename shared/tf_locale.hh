@@ -156,10 +156,16 @@ enum Lang
   zu_ZA,
 };
 
+// Note: this ties to process's locale setting.
 extern enum Lang HOST_LANG;
 
-// side effect: HOST_LANG will be initialized
+//
+// Try to ensure there is any suitable locale (including language and character
+// set) ,if so, return true, with one additional side effect is that process's
+// locale and HOST_LANG will be initialized. If not, return false. Note that
+// this exists for internationalization and decoration.
+//
 bool
-ensure_locale_utf8 ();
+try_ensure_locale ();
 
 #endif

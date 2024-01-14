@@ -25,7 +25,7 @@ test_not_decorate ()
 void
 test_should_decorate ()
 {
-  assert (ensure_locale_utf8 ());
+  assert (try_ensure_locale ());
 
   // ascii + nonascii
   {
@@ -135,10 +135,10 @@ test_should_decorate ()
 int
 main ()
 {
-  // C.UTF-8
+  // C or POSIX
   test_not_decorate ();
 
-  if (ensure_locale_utf8 ())
+  if (try_ensure_locale ())
     test_should_decorate ();
 
   return 0;

@@ -7,9 +7,12 @@
 enum Lang HOST_LANG = unknown;
 
 bool
-ensure_locale_utf8 ()
+try_ensure_locale ()
 {
   using namespace std;
+
+  if (HOST_LANG != unknown)
+    return true;
 
   vector<tuple<string, Lang>> lclist = {
     // {"C.UTF-8", unknown}, // we dont need this
@@ -69,7 +72,6 @@ ensure_locale_utf8 ()
   for (const tuple<string, Lang> &lc : lclist)
     if (setlocale (LC_ALL, get<0> (lc).c_str ()) != nullptr)
       {
-	// setLang (lc);
 	HOST_LANG = get<1> (lc);
 	return true;
       }

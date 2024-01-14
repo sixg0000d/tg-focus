@@ -46,7 +46,7 @@ operator<< (std::ostream &os, const TgMsg &msg)
 bool
 can_decor ()
 {
-  return ensure_locale_utf8 ();
+  return try_ensure_locale ();
 }
 
 std::string
@@ -211,8 +211,8 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 std::vector<std::tuple<int, int>>
 get_decor_pos (const std::string &str)
 {
-  // if (!ensure_locale_utf8 ())
-  // return std::vector<std::tuple<int, int>>{};
+  if (HOST_LANG == unknown)
+    return std::vector<std::tuple<int, int>>{};
 
   std::vector<char16_t> cuseq{};
   std::mbstate_t state{};
