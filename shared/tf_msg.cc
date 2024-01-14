@@ -206,6 +206,9 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 std::vector<std::tuple<int, int>>
 get_decor_pos (const std::string &str)
 {
+  // if (!ensure_locale_utf8 ())
+  // return std::vector<std::tuple<int, int>>{};
+
   std::vector<char16_t> cuseq{};
   std::mbstate_t state{};
   char16_t c16;

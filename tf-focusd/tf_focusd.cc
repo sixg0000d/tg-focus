@@ -18,8 +18,6 @@ main (int argc, char *argv[])
 {
   using namespace std;
 
-  setlocale (LC_ALL, "en_US.UTF-8");
-
   handle_opts (argc, argv);
 
   while (!tf_data.get_auth_hint ())

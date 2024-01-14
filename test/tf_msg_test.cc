@@ -5,15 +5,27 @@
 
 using namespace std;
 
-int
-main ()
+void
+test_not_decorate ()
 {
-  using namespace std;
+  {
+    string s = R"([ CHAT ] michael2 | TG-Focusing
+[ SENDER ] michael2 | TG-Focusing
+[ CONTENT ] XXXXXXXXX
+[ DATE ] 2023-10-25 21:18:13 +0800 HKT
+[ ID ] 0)";
 
-  assert (can_decor ());
+    vector<tuple<int, int>> pos_info = get_decor_pos (s);
 
-  cerr << "picked locale: " << setlocale (LC_ALL, nullptr) << endl;
-  cerr << "picked host land: " << HOST_LANG << endl;
+    cout << pos_info.size () << endl;
+    assert (pos_info.size () == 0);
+  }
+}
+
+void
+test_should_decorate ()
+{
+  assert (ensure_locale_utf8 ());
 
   // ascii + nonascii
   {
@@ -118,6 +130,15 @@ main ()
     assert ((pos_info[3] == make_tuple<int, int> (100, 8)));
     assert ((pos_info[4] == make_tuple<int, int> (139, 6)));
   }
+}
+
+int
+main ()
+{
+  test_not_decorate ();
+
+  if (ensure_locale_utf8 ())
+    test_should_decorate ();
 
   return 0;
 }
