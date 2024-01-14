@@ -4,6 +4,7 @@
 #include "lv_log.hh"
 #include "state.hh"
 #include "worker.hh"
+#include "tf_locale.hh"
 
 void
 handle_opts (int argc, char *argv[])
@@ -17,6 +18,11 @@ int
 main (int argc, char *argv[])
 {
   using namespace std;
+
+  if (!ensure_locale_utf8 ())
+    {
+      lv_log (LogLv::WARNING, "WARN! Available utf8 locales not found");
+    }
 
   handle_opts (argc, argv);
 

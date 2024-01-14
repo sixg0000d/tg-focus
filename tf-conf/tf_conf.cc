@@ -20,6 +20,7 @@
 #include "state.hh"
 #include "auth.hh"
 #include "focus_filter.hh"
+#include "tf_locale.hh"
 
 int
 print_usage (char *argv[])
@@ -138,6 +139,11 @@ handle_loglv (int argc, char *argv[])
 int
 main (int argc, char *argv[])
 {
+  if (!ensure_locale_utf8 ())
+    {
+      lv_log (LogLv::WARNING, "Available locales not found");
+    }
+
   if (argc != 2)
     return print_usage (argv);
   handle_loglv (argc, argv);

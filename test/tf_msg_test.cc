@@ -135,6 +135,7 @@ test_should_decorate ()
 int
 main ()
 {
+  // C.UTF-8
   test_not_decorate ();
 
   if (ensure_locale_utf8 ())
