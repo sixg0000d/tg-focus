@@ -1,4 +1,5 @@
 #include "tf_msg.hh"
+#include "tf_locale.hh"
 #include <assert.h>
 #include <iostream>
 
@@ -12,6 +13,7 @@ main ()
   assert (can_decor ());
 
   cerr << "picked locale: " << setlocale (LC_ALL, nullptr) << endl;
+  cerr << "picked host land: " << HOST_LANG << endl;
 
   // ascii + nonascii
   {

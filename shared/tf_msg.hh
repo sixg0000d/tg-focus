@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "fmt/core.h"
+#include "common.hh"
 
 class TgMsg
 {

@@ -44,6 +44,7 @@ add_executable(
   ${PROJECT_SOURCE_DIR}/shared/posix_regex.cc
   ${PROJECT_SOURCE_DIR}/shared/focus_filter.cc
   ${PROJECT_SOURCE_DIR}/shared/lv_log.cc
+  ${PROJECT_SOURCE_DIR}/shared/tf_locale.cc
 )
 target_include_directories(
   tf-conf
@@ -74,6 +75,7 @@ add_executable(
   ${PROJECT_SOURCE_DIR}/shared/focus_filter.cc
   ${PROJECT_SOURCE_DIR}/shared/tf_msg.cc
   ${PROJECT_SOURCE_DIR}/shared/lv_log.cc
+  ${PROJECT_SOURCE_DIR}/shared/tf_locale.cc  
 )
 target_include_directories(
   tf-focusd

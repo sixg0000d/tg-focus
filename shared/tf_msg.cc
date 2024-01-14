@@ -1,3 +1,4 @@
+#include "tf_locale.hh"
 #include "tf_msg.hh"
 #include "common.hh"
 
@@ -128,11 +129,11 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 } // namespace lang_en
 
 std::optional<size_t>
-get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (lang)
+  switch (HOST_LANG)
     {
-    case 0:
+    case en_AU | en_HK | en_GB | en_US:
       return lang_en::get_end_chat_seq (cuseq, begi);
     default:
       return {};
@@ -140,11 +141,11 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
 }
 
 std::optional<size_t>
-get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (lang)
+  switch (HOST_LANG)
     {
-    case 0:
+    case en_AU | en_HK | en_GB | en_US:
       return lang_en::get_end_sender_seq (cuseq, begi);
     default:
       return {};
@@ -152,11 +153,11 @@ get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
 }
 
 std::optional<size_t>
-get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (lang)
+  switch (HOST_LANG)
     {
-    case 0:
+    case en_AU | en_HK | en_GB | en_US:
       return lang_en::get_end_content_seq (cuseq, begi);
     default:
       return {};
@@ -164,11 +165,11 @@ get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
 }
 
 std::optional<size_t>
-get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (lang)
+  switch (HOST_LANG)
     {
-    case 0:
+    case en_AU | en_HK | en_GB | en_US:
       return lang_en::get_end_date_seq (cuseq, begi);
     default:
       return {};
@@ -176,11 +177,11 @@ get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
 }
 
 std::optional<size_t>
-get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi, int lang)
+get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (lang)
+  switch (HOST_LANG)
     {
-    case 0:
+    case en_AU | en_HK | en_GB | en_US:
       return lang_en::get_end_id_seq (cuseq, begi);
     default:
       return {};
@@ -223,23 +224,23 @@ get_decor_pos (const std::string &str)
   std::vector<std::tuple<int, int>> ret;
   for (size_t i = 0; i < cuseq.size (); i++)
     {
-      if (auto endi = get_end_chat_seq (cuseq, i, 0))
+      if (auto endi = get_end_chat_seq (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
-      if (auto endi = get_end_sender_seq (cuseq, i, 0))
+      if (auto endi = get_end_sender_seq (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
-      if (auto endi = get_end_content_seq (cuseq, i, 0))
+      if (auto endi = get_end_content_seq (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
-      if (auto endi = get_end_date_seq (cuseq, i, 0))
+      if (auto endi = get_end_date_seq (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
-      if (auto endi = get_end_id_seq (cuseq, i, 0))
+      if (auto endi = get_end_id_seq (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
