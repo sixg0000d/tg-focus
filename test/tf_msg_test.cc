@@ -23,7 +23,31 @@ test_not_decorate ()
 }
 
 void
-test_should_decorate ()
+test_should_decorate_zh_cn ()
+{
+  assert (try_ensure_locale ());
+
+  // ascii + nonascii
+  {
+    string s = R"([ 群组 ] michael2
+[ 用户 ] michael2
+[ 信息 ] 好好好。
+[ 时间 ] 2023-10-25 21:18:13 +0800 HKT
+[ 标识 ] 0)";
+    vector<tuple<int, int>> pos_info = get_decor_pos (s);
+    cout << pos_info.size () << endl;
+    assert (pos_info.size () == 5);
+
+    assert ((pos_info[0] == make_tuple<int, int> (0, 6)));
+    assert ((pos_info[1] == make_tuple<int, int> (16, 6)));
+    assert ((pos_info[2] == make_tuple<int, int> (32, 6)));
+    assert ((pos_info[3] == make_tuple<int, int> (44, 6)));
+    assert ((pos_info[4] == make_tuple<int, int> (81, 6)));
+  }
+}
+
+void
+test_should_decorate_en_us ()
 {
   assert (try_ensure_locale ());
 
@@ -138,8 +162,22 @@ main ()
   // C or POSIX
   test_not_decorate ();
 
-  if (try_ensure_locale ())
-    test_should_decorate ();
+  bool is_good_locale = try_ensure_locale ();
+
+  cout << "HOST_LANG:" << HOST_LANG << endl;
+
+  if (is_good_locale)
+    switch (HOST_LANG)
+      {
+      case en_US:
+	test_should_decorate_en_us ();
+	break;
+      case zh_CN:
+	test_should_decorate_zh_cn ();
+	break;
+      default:
+	assert (false);
+      }
 
   return 0;
 }

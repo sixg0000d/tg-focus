@@ -36,6 +36,8 @@ public:
 
   inline const std::string &get_timestamp () const { return this->tstamp_; }
 
+  std::string to_locale_string () const;
+
   std::string to_string () const
   {
     std::string ret = fmt::format (
