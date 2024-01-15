@@ -172,9 +172,9 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
-    if (cuseq[begi + 1] == ' ' && cuseq[begi + 2] == 0x7fa4
-	&& cuseq[begi + 3] == 0x7ec4 && cuseq[begi + 4] == ' '
-	&& cuseq[begi + n] == ']')
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x7fa4
+	&& cuseq[begi + 3] == 0x7ec4 && cuseq[begi + 4] == 0x20
+	&& cuseq[begi + n] == 0x5d)
       return std::make_optional<size_t> (n);
 
   return {};
@@ -242,7 +242,6 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
     case en_HK:
     case en_GB:
     case en_US:
-    case ja_JP:
       return lang_en::get_end_chat_seq (cuseq, begi);
     case zh_CN:
       return lang_sc::get_end_chat_seq (cuseq, begi);
@@ -260,7 +259,6 @@ get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
     case en_HK:
     case en_GB:
     case en_US:
-    case ja_JP:
       return lang_en::get_end_sender_seq (cuseq, begi);
     case zh_CN:
       return lang_sc::get_end_sender_seq (cuseq, begi);
@@ -278,7 +276,6 @@ get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
     case en_HK:
     case en_GB:
     case en_US:
-    case ja_JP:
       return lang_en::get_end_content_seq (cuseq, begi);
     case zh_CN:
       return lang_sc::get_end_content_seq (cuseq, begi);
@@ -296,7 +293,6 @@ get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
     case en_HK:
     case en_GB:
     case en_US:
-    case ja_JP:
       return lang_en::get_end_date_seq (cuseq, begi);
     case zh_CN:
       return lang_sc::get_end_date_seq (cuseq, begi);
@@ -314,7 +310,6 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
     case en_HK:
     case en_GB:
     case en_US:
-    case ja_JP:
       return lang_en::get_end_id_seq (cuseq, begi);
     case zh_CN:
       return lang_sc::get_end_id_seq (cuseq, begi);

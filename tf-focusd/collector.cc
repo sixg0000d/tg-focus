@@ -140,20 +140,11 @@ void
 TdCollector::collect_msg (const TgMsg &msg, size_t c_count)
 {
   std::string tfmsg_str = msg.to_locale_string ();
-  auto text_ctn
-    = fmt::format (R"([ CHAT ] {}
-[ SENDER ] {}
-[ CONTENT ] {}
-[ DATE ] {}
-[ ID ] {}
-)",
-		   msg.get_chat_title (), msg.get_sender (),
-		   msg.get_text_content (), msg.get_timestamp (), c_count);
 
-  auto text_deco_list = decorate_msg (text_ctn);
+  auto text_deco_list = decorate_msg (tfmsg_str);
 
   auto message_text
-    = td_api::make_object<td_api::formattedText> (text_ctn,
+    = td_api::make_object<td_api::formattedText> (tfmsg_str,
 						  std::move (text_deco_list));
   td_api::object_ptr<td_api::Function> send_message_request
     = td_api::make_object<td_api::sendMessage> (

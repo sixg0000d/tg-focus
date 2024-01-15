@@ -9,6 +9,8 @@
 void
 handle_opts (int argc, char *argv[])
 {
+  // TODO: --prefer-lang
+
   if (argc > 1)
     if (strcmp (argv[1], "--verbose") == 0)
       g_log_lv = LogLv::DEBUG;
