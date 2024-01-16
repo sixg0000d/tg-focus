@@ -170,6 +170,7 @@ main ()
     switch (HOST_LANG)
       {
       case en_US:
+      case en_HK:
 	test_should_decorate_en_us ();
 	break;
       case zh_CN:

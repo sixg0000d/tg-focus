@@ -1,6 +1,8 @@
 #ifndef _TF_LOCALE_H
 #define _TF_LOCALE_H
 
+#include <iostream>
+
 enum Lang
 {
   unknown,
@@ -155,6 +157,9 @@ enum Lang
   zh_TW,
   zu_ZA,
 };
+
+std::ostream &
+operator<< (std::ostream &os, const Lang l);
 
 // process's locale setting.
 extern enum Lang HOST_LANG;

@@ -8,6 +8,470 @@ enum Lang HOST_LANG = unknown;
 
 enum Lang USER_LANG = unknown;
 
+std::ostream &
+operator<< (std::ostream &os, const Lang l)
+{
+  switch (l)
+    {
+    case aa_DJ:
+      os << "aa_DJ";
+      break;
+    case af_ZA:
+      os << "af_ZA";
+      break;
+    case an_ES:
+      os << "an_ES";
+      break;
+    case ar_AE:
+      os << "ar_AE";
+      break;
+    case ar_BH:
+      os << "ar_BH";
+      break;
+    case ar_DZ:
+      os << "ar_DZ";
+      break;
+    case ar_EG:
+      os << "ar_EG";
+      break;
+    case ar_IQ:
+      os << "ar_IQ";
+      break;
+    case ar_JO:
+      os << "ar_JO";
+      break;
+    case ar_KW:
+      os << "ar_KW";
+      break;
+    case ar_LB:
+      os << "ar_LB";
+      break;
+    case ar_LY:
+      os << "ar_LY";
+      break;
+    case ar_MA:
+      os << "ar_MA";
+      break;
+    case ar_OM:
+      os << "ar_OM";
+      break;
+    case ar_QA:
+      os << "ar_QA";
+      break;
+    case ar_SA:
+      os << "ar_SA";
+      break;
+    case ar_SD:
+      os << "ar_SD";
+      break;
+    case ar_SY:
+      os << "ar_SY";
+      break;
+    case ar_TN:
+      os << "ar_TN";
+      break;
+    case ar_YE:
+      os << "ar_YE";
+      break;
+    case ast_ES:
+      os << "ast_ES";
+      break;
+    case be_BY:
+      os << "be_BY";
+      break;
+    case bg_BG:
+      os << "bg_BG";
+      break;
+    case bhb_IN:
+      os << "bhb_IN";
+      break;
+    case br_FR:
+      os << "br_FR";
+      break;
+    case bs_BA:
+      os << "bs_BA";
+      break;
+    case ca_AD:
+      os << "ca_AD";
+      break;
+    case ca_ES:
+      os << "ca_ES";
+      break;
+    case ca_FR:
+      os << "ca_FR";
+      break;
+    case ca_IT:
+      os << "ca_IT";
+      break;
+    case cs_CZ:
+      os << "cs_CZ";
+      break;
+    case cy_GB:
+      os << "cy_GB";
+      break;
+    case da_DK:
+      os << "da_DK";
+      break;
+    case de_AT:
+      os << "de_AT";
+      break;
+    case de_BE:
+      os << "de_BE";
+      break;
+    case de_CH:
+      os << "de_CH";
+      break;
+    case de_DE:
+      os << "de_DE";
+      break;
+    case de_IT:
+      os << "de_IT";
+      break;
+    case de_LI:
+      os << "de_LI";
+      break;
+    case de_LU:
+      os << "de_LU";
+      break;
+    case el_CY:
+      os << "el_CY";
+      break;
+    case el_GR:
+      os << "el_GR";
+      break;
+    case en_AU:
+      os << "en_AU";
+      break;
+    case en_BW:
+      os << "en_BW";
+      break;
+    case en_CA:
+      os << "en_CA";
+      break;
+    case en_DK:
+      os << "en_DK";
+      break;
+    case en_GB:
+      os << "en_GB";
+      break;
+    case en_HK:
+      os << "en_HK";
+      break;
+    case en_IE:
+      os << "en_IE";
+      break;
+    case en_NZ:
+      os << "en_NZ";
+      break;
+    case en_PH:
+      os << "en_PH";
+      break;
+    case en_SC:
+      os << "en_SC";
+      break;
+    case en_SG:
+      os << "en_SG";
+      break;
+    case en_US:
+      os << "en_US";
+      break;
+    case en_ZA:
+      os << "en_ZA";
+      break;
+    case en_ZW:
+      os << "en_ZW";
+      break;
+    case es_AR:
+      os << "es_AR";
+      break;
+    case es_BO:
+      os << "es_BO";
+      break;
+    case es_CL:
+      os << "es_CL";
+      break;
+    case es_CO:
+      os << "es_CO";
+      break;
+    case es_CR:
+      os << "es_CR";
+      break;
+    case es_DO:
+      os << "es_DO";
+      break;
+    case es_EC:
+      os << "es_EC";
+      break;
+    case es_ES:
+      os << "es_ES";
+      break;
+    case es_GT:
+      os << "es_GT";
+      break;
+    case es_HN:
+      os << "es_HN";
+      break;
+    case es_MX:
+      os << "es_MX";
+      break;
+    case es_NI:
+      os << "es_NI";
+      break;
+    case es_PA:
+      os << "es_PA";
+      break;
+    case es_PE:
+      os << "es_PE";
+      break;
+    case es_PR:
+      os << "es_PR";
+      break;
+    case es_PY:
+      os << "es_PY";
+      break;
+    case es_SV:
+      os << "es_SV";
+      break;
+    case es_US:
+      os << "es_US";
+      break;
+    case es_UY:
+      os << "es_UY";
+      break;
+    case es_VE:
+      os << "es_VE";
+      break;
+    case et_EE:
+      os << "et_EE";
+      break;
+    case eu_ES:
+      os << "eu_ES";
+      break;
+    case eu_FR:
+      os << "eu_FR";
+      break;
+    case fi_FI:
+      os << "fi_FI";
+      break;
+    case fo_FO:
+      os << "fo_FO";
+      break;
+    case fr_BE:
+      os << "fr_BE";
+      break;
+    case fr_CA:
+      os << "fr_CA";
+      break;
+    case fr_CH:
+      os << "fr_CH";
+      break;
+    case fr_FR:
+      os << "fr_FR";
+      break;
+    case fr_LU:
+      os << "fr_LU";
+      break;
+    case ga_IE:
+      os << "ga_IE";
+      break;
+    case gd_GB:
+      os << "gd_GB";
+      break;
+    case gl_ES:
+      os << "gl_ES";
+      break;
+    case gv_GB:
+      os << "gv_GB";
+      break;
+    case he_IL:
+      os << "he_IL";
+      break;
+    case hr_HR:
+      os << "hr_HR";
+      break;
+    case hsb_DE:
+      os << "hsb_DE";
+      break;
+    case hu_HU:
+      os << "hu_HU";
+      break;
+    case id_ID:
+      os << "id_ID";
+      break;
+    case is_IS:
+      os << "is_IS";
+      break;
+    case it_CH:
+      os << "it_CH";
+      break;
+    case it_IT:
+      os << "it_IT";
+      break;
+    case ja_JP:
+      os << "ja_JP";
+      break;
+    case ka_GE:
+      os << "ka_GE";
+      break;
+    case kk_KZ:
+      os << "kk_KZ";
+      break;
+    case kl_GL:
+      os << "kl_GL";
+      break;
+    case ko_KR:
+      os << "ko_KR";
+      break;
+    case ku_TR:
+      os << "ku_TR";
+      break;
+    case kw_GB:
+      os << "kw_GB";
+      break;
+    case lg_UG:
+      os << "lg_UG";
+      break;
+    case lt_LT:
+      os << "lt_LT";
+      break;
+    case lv_LV:
+      os << "lv_LV";
+      break;
+    case mg_MG:
+      os << "mg_MG";
+      break;
+    case mi_NZ:
+      os << "mi_NZ";
+      break;
+    case mk_MK:
+      os << "mk_MK";
+      break;
+    case ms_MY:
+      os << "ms_MY";
+      break;
+    case mt_MT:
+      os << "mt_MT";
+      break;
+    case nb_NO:
+      os << "nb_NO";
+      break;
+    case nl_BE:
+      os << "nl_BE";
+      break;
+    case nl_NL:
+      os << "nl_NL";
+      break;
+    case nn_NO:
+      os << "nn_NO";
+      break;
+    case oc_FR:
+      os << "os";
+      break;
+    case om_KE:
+      os << "os";
+      break;
+    case pl_PL:
+      os << "pl_PL";
+      break;
+    case pt_BR:
+      os << "pt_BR";
+      break;
+    case pt_PT:
+      os << "pt_PT";
+      break;
+    case ro_RO:
+      os << "ro_RO";
+      break;
+    case ru_RU:
+      os << "ru_RU";
+      break;
+    case ru_UA:
+      os << "ru_UA";
+      break;
+    case sk_SK:
+      os << "sk_SK";
+      break;
+    case sl_SI:
+      os << "sl_SI";
+      break;
+    case so_DJ:
+      os << "so_DJ";
+      break;
+    case so_KE:
+      os << "so_KE";
+      break;
+    case so_SO:
+      os << "so_SO";
+      break;
+    case sq_AL:
+      os << "sq_AL";
+      break;
+    case st_ZA:
+      os << "st_ZA";
+      break;
+    case sv_FI:
+      os << "sv_FI";
+      break;
+    case sv_SE:
+      os << "sv_SE";
+      break;
+    case tcy_IN:
+      os << "tcy_IN";
+      break;
+    case tg_TJ:
+      os << "tg_TJ";
+      break;
+    case th_TH:
+      os << "th_TH";
+      break;
+    case tl_PH:
+      os << "tl_PH";
+      break;
+    case tr_CY:
+      os << "tr_CY";
+      break;
+    case tr_TR:
+      os << "tr_TR";
+      break;
+    case uk_UA:
+      os << "uk_UA";
+      break;
+    case uz_UZ:
+      os << "uz_UZ";
+      break;
+    case wa_BE:
+      os << "wa_BE";
+      break;
+    case xh_ZA:
+      os << "xh_ZA";
+      break;
+    case yi_US:
+      os << "yi_US";
+      break;
+    case zh_CN:
+      os << "zh_CN";
+      break;
+    case zh_HK:
+      os << "zh_HK";
+      break;
+    case zh_SG:
+      os << "zh_SG";
+      break;
+    case zh_TW:
+      os << "zh_TW";
+      break;
+    case zu_ZA:
+      os << "zu_ZA";
+      break;
+
+    default:
+      os << "???_???";
+      break;
+    }
+
+  return os;
+}
+
 bool
 try_ensure_locale ()
 {

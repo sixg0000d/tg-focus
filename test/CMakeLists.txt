@@ -48,8 +48,16 @@ add_test(NAME ${CurrTestName} COMMAND ${CurrTestName})
 set(CurrTestName tf_msg_test)
 add_executable(${CurrTestName} ${CurrTestName}.cc
   ${PROJECT_SOURCE_DIR}/shared/tf_msg.cc
-     ${PROJECT_SOURCE_DIR}/shared/tf_locale.cc
+  ${PROJECT_SOURCE_DIR}/shared/tf_locale.cc
+)
+target_include_directories(${CurrTestName} PRIVATE ${PROJECT_SOURCE_DIR}/shared)
+add_test(NAME ${CurrTestName} COMMAND ${CurrTestName})
 
+
+# add a test
+set(CurrTestName tf_locale)
+add_executable(${CurrTestName} ${CurrTestName}.cc
+  ${PROJECT_SOURCE_DIR}/shared/tf_locale.cc
 )
 target_include_directories(${CurrTestName} PRIVATE ${PROJECT_SOURCE_DIR}/shared)
 add_test(NAME ${CurrTestName} COMMAND ${CurrTestName})

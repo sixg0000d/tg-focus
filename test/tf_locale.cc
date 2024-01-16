@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "tf_locale.hh"
 
 int
