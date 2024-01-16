@@ -156,8 +156,11 @@ enum Lang
   zu_ZA,
 };
 
-// Note: this ties to process's locale setting.
+// process's locale setting.
 extern enum Lang HOST_LANG;
+
+// user's prefer locale setting.
+extern enum Lang USER_LANG;
 
 //
 // Try to ensure there is any suitable locale (including language and character
