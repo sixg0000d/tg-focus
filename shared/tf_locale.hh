@@ -165,7 +165,7 @@ operator<< (std::ostream &os, const Lang l);
 extern enum Lang HOST_LANG;
 
 // user's prefer locale setting.
-extern enum Lang USER_LANG;
+extern enum Lang PREFER_LANG;
 
 //
 // Try to ensure there is any suitable locale (including language and character

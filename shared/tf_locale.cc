@@ -6,7 +6,7 @@
 
 enum Lang HOST_LANG = unknown;
 
-enum Lang USER_LANG = unknown;
+enum Lang PREFER_LANG = unknown;
 
 std::ostream &
 operator<< (std::ostream &os, const Lang l)
@@ -535,12 +535,30 @@ try_ensure_locale ()
     {"zu_ZA.UTF-8", zu_ZA},
   };
 
-  for (const tuple<string, Lang> &lc : lclist)
-    if (setlocale (LC_ALL, get<0> (lc).c_str ()) != nullptr)
+  vector<Lang> supported = {};
+  std::cout << PREFER_LANG << "___ " << std::endl;
+
+  for (const tuple<string, Lang> &t : lclist)
+    if (setlocale (LC_ALL, get<0> (t).c_str ()) != nullptr)
       {
-	HOST_LANG = get<1> (lc);
-	return true;
+	auto lc = get<1> (t);
+	std::cout << PREFER_LANG << " " << lc << std::endl;
+	if (lc == PREFER_LANG)
+	  {
+	    HOST_LANG = lc;
+	    return true;
+	  }
+	else
+	  {
+	    supported.push_back (lc);
+	  }
       }
+
+  if (supported.size () > 0)
+    {
+      HOST_LANG = supported[0];
+      return true;
+    }
 
   return false;
 }
