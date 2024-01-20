@@ -12,8 +12,16 @@ handle_opts (int argc, char *argv[])
   // TODO: --prefer-lang
 
   if (argc > 1)
-    if (strcmp (argv[1], "--verbose") == 0)
-      g_log_lv = LogLv::DEBUG;
+    {
+      for (int i = 1; i < argc; i++)
+	{
+	  if (strcmp (argv[i], "--verbose") == 0)
+	    g_log_lv = LogLv::DEBUG;
+	  if (strcmp (argv[i], "--prefer-lang") && i + 1 < argc
+	      && strlen (argv[i + 1]) >= 5)
+	    tgf::PREFER_LANG = tgf::lang_from_cstr (argv[++i]);
+	}
+    }
 }
 
 int

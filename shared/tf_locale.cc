@@ -2,6 +2,7 @@
 #include <locale.h>
 #include <string>
 #include <vector>
+#include <string.h>
 
 #include "tf_locale.hh"
 
@@ -10,459 +11,769 @@ namespace tgf {
 enum Lang HOST_LANG = Lang::unknown;
 enum Lang PREFER_LANG = Lang::unknown;
 
+extern Lang
+lang_from_cstr (const char *cstr)
+{
+  if (strlen (cstr) < 5)
+    return Lang::unknown;
+
+  if (strcmp (cstr, "aa_DJ") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "af_ZA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "an_ES") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_AE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_BH") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_DZ") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_EG") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_IQ") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_JO") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_KW") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_LB") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_LY") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_MA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_OM") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_QA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_SA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_SD") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_SY") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_TN") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ar_YE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ast_ES") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "be_BY") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "bg_BG") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "bhb_IN") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "br_FR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "bs_BA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ca_AD") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ca_ES") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ca_FR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ca_IT") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "cs_CZ") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "cy_GB") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "da_DK") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "de_AT") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "de_BE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "de_CH") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "de_DE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "de_IT") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "de_LI") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "de_LU") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "el_CY") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "el_GR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "en_AU") == 0)
+    return Lang::en_AU;
+  if (strcmp (cstr, "en_BW") == 0)
+    return Lang::en_BW;
+  if (strcmp (cstr, "en_CA") == 0)
+    return Lang::en_CA;
+  if (strcmp (cstr, "en_DK") == 0)
+    return Lang::en_DK;
+  if (strcmp (cstr, "en_GB") == 0)
+    return Lang::en_GB;
+  if (strcmp (cstr, "en_HK") == 0)
+    return Lang::en_HK;
+  if (strcmp (cstr, "en_IE") == 0)
+    return Lang::en_IE;
+  if (strcmp (cstr, "en_NZ") == 0)
+    return Lang::en_NZ;
+  if (strcmp (cstr, "en_PH") == 0)
+    return Lang::en_PH;
+  if (strcmp (cstr, "en_SC") == 0)
+    return Lang::en_SC;
+  if (strcmp (cstr, "en_SG") == 0)
+    return Lang::en_SG;
+  if (strcmp (cstr, "en_US") == 0)
+    return Lang::en_US;
+  if (strcmp (cstr, "en_ZA") == 0)
+    return Lang::en_ZA;
+  if (strcmp (cstr, "en_ZW") == 0)
+    return Lang::en_ZW;
+  if (strcmp (cstr, "es_AR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_BO") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_CL") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_CO") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_CR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_DO") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_EC") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_ES") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_GT") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_HN") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_MX") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_NI") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_PA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_PE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_PR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_PY") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_SV") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_US") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_UY") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "es_VE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "et_EE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "eu_ES") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "eu_FR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "fi_FI") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "fo_FO") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "fr_BE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "fr_CA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "fr_CH") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "fr_FR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "fr_LU") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ga_IE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "gd_GB") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "gl_ES") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "gv_GB") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "he_IL") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "hr_HR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "hsb_DE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "hu_HU") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "id_ID") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "is_IS") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "it_CH") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "it_IT") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ja_JP") == 0)
+    return Lang::ja_JP;
+  if (strcmp (cstr, "ka_GE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "kk_KZ") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "kl_GL") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ko_KR") == 0)
+    return Lang::ko_KR;
+  if (strcmp (cstr, "ku_TR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "kw_GB") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "lg_UG") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "lt_LT") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "lv_LV") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "mg_MG") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "mi_NZ") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "mk_MK") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ms_MY") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "mt_MT") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "nb_NO") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "nl_BE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "nl_NL") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "nn_NO") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "oc_FR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "om_KE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "pl_PL") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "pt_BR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "pt_PT") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ro_RO") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ru_RU") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "ru_UA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "sk_SK") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "sl_SI") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "so_DJ") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "so_KE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "so_SO") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "sq_AL") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "st_ZA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "sv_FI") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "sv_SE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "tcy_IN") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "tg_TJ") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "th_TH") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "tl_PH") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "tr_CY") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "tr_TR") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "uk_UA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "uz_UZ") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "wa_BE") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "xh_ZA") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "yi_US") == 0)
+    return Lang::unknown;
+  if (strcmp (cstr, "zh_CN") == 0)
+    return Lang::zh_CN;
+  if (strcmp (cstr, "zh_HK") == 0)
+    return Lang::zh_HK;
+  if (strcmp (cstr, "zh_SG") == 0)
+    return Lang::zh_SG;
+  if (strcmp (cstr, "zh_TW") == 0)
+    return Lang::zh_TW;
+  if (strcmp (cstr, "zu_ZA") == 0)
+    return Lang::unknown;
+
+  return Lang::unknown;
+}
+
 std::ostream &
 operator<< (std::ostream &os, const Lang l)
 {
   switch (l)
     {
-    case aa_DJ:
+    case Lang::aa_DJ:
       os << "aa_DJ";
       break;
-    case af_ZA:
+    case Lang::af_ZA:
       os << "af_ZA";
       break;
-    case an_ES:
+    case Lang::an_ES:
       os << "an_ES";
       break;
-    case ar_AE:
+    case Lang::ar_AE:
       os << "ar_AE";
       break;
-    case ar_BH:
+    case Lang::ar_BH:
       os << "ar_BH";
       break;
-    case ar_DZ:
+    case Lang::ar_DZ:
       os << "ar_DZ";
       break;
-    case ar_EG:
+    case Lang::ar_EG:
       os << "ar_EG";
       break;
-    case ar_IQ:
+    case Lang::ar_IQ:
       os << "ar_IQ";
       break;
-    case ar_JO:
+    case Lang::ar_JO:
       os << "ar_JO";
       break;
-    case ar_KW:
+    case Lang::ar_KW:
       os << "ar_KW";
       break;
-    case ar_LB:
+    case Lang::ar_LB:
       os << "ar_LB";
       break;
-    case ar_LY:
+    case Lang::ar_LY:
       os << "ar_LY";
       break;
-    case ar_MA:
+    case Lang::ar_MA:
       os << "ar_MA";
       break;
-    case ar_OM:
+    case Lang::ar_OM:
       os << "ar_OM";
       break;
-    case ar_QA:
+    case Lang::ar_QA:
       os << "ar_QA";
       break;
-    case ar_SA:
+    case Lang::ar_SA:
       os << "ar_SA";
       break;
-    case ar_SD:
+    case Lang::ar_SD:
       os << "ar_SD";
       break;
-    case ar_SY:
+    case Lang::ar_SY:
       os << "ar_SY";
       break;
-    case ar_TN:
+    case Lang::ar_TN:
       os << "ar_TN";
       break;
-    case ar_YE:
+    case Lang::ar_YE:
       os << "ar_YE";
       break;
-    case ast_ES:
+    case Lang::ast_ES:
       os << "ast_ES";
       break;
-    case be_BY:
+    case Lang::be_BY:
       os << "be_BY";
       break;
-    case bg_BG:
+    case Lang::bg_BG:
       os << "bg_BG";
       break;
-    case bhb_IN:
+    case Lang::bhb_IN:
       os << "bhb_IN";
       break;
-    case br_FR:
+    case Lang::br_FR:
       os << "br_FR";
       break;
-    case bs_BA:
+    case Lang::bs_BA:
       os << "bs_BA";
       break;
-    case ca_AD:
+    case Lang::ca_AD:
       os << "ca_AD";
       break;
-    case ca_ES:
+    case Lang::ca_ES:
       os << "ca_ES";
       break;
-    case ca_FR:
+    case Lang::ca_FR:
       os << "ca_FR";
       break;
-    case ca_IT:
+    case Lang::ca_IT:
       os << "ca_IT";
       break;
-    case cs_CZ:
+    case Lang::cs_CZ:
       os << "cs_CZ";
       break;
-    case cy_GB:
+    case Lang::cy_GB:
       os << "cy_GB";
       break;
-    case da_DK:
+    case Lang::da_DK:
       os << "da_DK";
       break;
-    case de_AT:
+    case Lang::de_AT:
       os << "de_AT";
       break;
-    case de_BE:
+    case Lang::de_BE:
       os << "de_BE";
       break;
-    case de_CH:
+    case Lang::de_CH:
       os << "de_CH";
       break;
-    case de_DE:
+    case Lang::de_DE:
       os << "de_DE";
       break;
-    case de_IT:
+    case Lang::de_IT:
       os << "de_IT";
       break;
-    case de_LI:
+    case Lang::de_LI:
       os << "de_LI";
       break;
-    case de_LU:
+    case Lang::de_LU:
       os << "de_LU";
       break;
-    case el_CY:
+    case Lang::el_CY:
       os << "el_CY";
       break;
-    case el_GR:
+    case Lang::el_GR:
       os << "el_GR";
       break;
-    case en_AU:
+    case Lang::en_AU:
       os << "en_AU";
       break;
-    case en_BW:
+    case Lang::en_BW:
       os << "en_BW";
       break;
-    case en_CA:
+    case Lang::en_CA:
       os << "en_CA";
       break;
-    case en_DK:
+    case Lang::en_DK:
       os << "en_DK";
       break;
-    case en_GB:
+    case Lang::en_GB:
       os << "en_GB";
       break;
-    case en_HK:
+    case Lang::en_HK:
       os << "en_HK";
       break;
-    case en_IE:
+    case Lang::en_IE:
       os << "en_IE";
       break;
-    case en_NZ:
+    case Lang::en_NZ:
       os << "en_NZ";
       break;
-    case en_PH:
+    case Lang::en_PH:
       os << "en_PH";
       break;
-    case en_SC:
+    case Lang::en_SC:
       os << "en_SC";
       break;
-    case en_SG:
+    case Lang::en_SG:
       os << "en_SG";
       break;
-    case en_US:
+    case Lang::en_US:
       os << "en_US";
       break;
-    case en_ZA:
+    case Lang::en_ZA:
       os << "en_ZA";
       break;
-    case en_ZW:
+    case Lang::en_ZW:
       os << "en_ZW";
       break;
-    case es_AR:
+    case Lang::es_AR:
       os << "es_AR";
       break;
-    case es_BO:
+    case Lang::es_BO:
       os << "es_BO";
       break;
-    case es_CL:
+    case Lang::es_CL:
       os << "es_CL";
       break;
-    case es_CO:
+    case Lang::es_CO:
       os << "es_CO";
       break;
-    case es_CR:
+    case Lang::es_CR:
       os << "es_CR";
       break;
-    case es_DO:
+    case Lang::es_DO:
       os << "es_DO";
       break;
-    case es_EC:
+    case Lang::es_EC:
       os << "es_EC";
       break;
-    case es_ES:
+    case Lang::es_ES:
       os << "es_ES";
       break;
-    case es_GT:
+    case Lang::es_GT:
       os << "es_GT";
       break;
-    case es_HN:
+    case Lang::es_HN:
       os << "es_HN";
       break;
-    case es_MX:
+    case Lang::es_MX:
       os << "es_MX";
       break;
-    case es_NI:
+    case Lang::es_NI:
       os << "es_NI";
       break;
-    case es_PA:
+    case Lang::es_PA:
       os << "es_PA";
       break;
-    case es_PE:
+    case Lang::es_PE:
       os << "es_PE";
       break;
-    case es_PR:
+    case Lang::es_PR:
       os << "es_PR";
       break;
-    case es_PY:
+    case Lang::es_PY:
       os << "es_PY";
       break;
-    case es_SV:
+    case Lang::es_SV:
       os << "es_SV";
       break;
-    case es_US:
+    case Lang::es_US:
       os << "es_US";
       break;
-    case es_UY:
+    case Lang::es_UY:
       os << "es_UY";
       break;
-    case es_VE:
+    case Lang::es_VE:
       os << "es_VE";
       break;
-    case et_EE:
+    case Lang::et_EE:
       os << "et_EE";
       break;
-    case eu_ES:
+    case Lang::eu_ES:
       os << "eu_ES";
       break;
-    case eu_FR:
+    case Lang::eu_FR:
       os << "eu_FR";
       break;
-    case fi_FI:
+    case Lang::fi_FI:
       os << "fi_FI";
       break;
-    case fo_FO:
+    case Lang::fo_FO:
       os << "fo_FO";
       break;
-    case fr_BE:
+    case Lang::fr_BE:
       os << "fr_BE";
       break;
-    case fr_CA:
+    case Lang::fr_CA:
       os << "fr_CA";
       break;
-    case fr_CH:
+    case Lang::fr_CH:
       os << "fr_CH";
       break;
-    case fr_FR:
+    case Lang::fr_FR:
       os << "fr_FR";
       break;
-    case fr_LU:
+    case Lang::fr_LU:
       os << "fr_LU";
       break;
-    case ga_IE:
+    case Lang::ga_IE:
       os << "ga_IE";
       break;
-    case gd_GB:
+    case Lang::gd_GB:
       os << "gd_GB";
       break;
-    case gl_ES:
+    case Lang::gl_ES:
       os << "gl_ES";
       break;
-    case gv_GB:
+    case Lang::gv_GB:
       os << "gv_GB";
       break;
-    case he_IL:
+    case Lang::he_IL:
       os << "he_IL";
       break;
-    case hr_HR:
+    case Lang::hr_HR:
       os << "hr_HR";
       break;
-    case hsb_DE:
+    case Lang::hsb_DE:
       os << "hsb_DE";
       break;
-    case hu_HU:
+    case Lang::hu_HU:
       os << "hu_HU";
       break;
-    case id_ID:
+    case Lang::id_ID:
       os << "id_ID";
       break;
-    case is_IS:
+    case Lang::is_IS:
       os << "is_IS";
       break;
-    case it_CH:
+    case Lang::it_CH:
       os << "it_CH";
       break;
-    case it_IT:
+    case Lang::it_IT:
       os << "it_IT";
       break;
-    case ja_JP:
+    case Lang::ja_JP:
       os << "ja_JP";
       break;
-    case ka_GE:
+    case Lang::ka_GE:
       os << "ka_GE";
       break;
-    case kk_KZ:
+    case Lang::kk_KZ:
       os << "kk_KZ";
       break;
-    case kl_GL:
+    case Lang::kl_GL:
       os << "kl_GL";
       break;
-    case ko_KR:
+    case Lang::ko_KR:
       os << "ko_KR";
       break;
-    case ku_TR:
+    case Lang::ku_TR:
       os << "ku_TR";
       break;
-    case kw_GB:
+    case Lang::kw_GB:
       os << "kw_GB";
       break;
-    case lg_UG:
+    case Lang::lg_UG:
       os << "lg_UG";
       break;
-    case lt_LT:
+    case Lang::lt_LT:
       os << "lt_LT";
       break;
-    case lv_LV:
+    case Lang::lv_LV:
       os << "lv_LV";
       break;
-    case mg_MG:
+    case Lang::mg_MG:
       os << "mg_MG";
       break;
-    case mi_NZ:
+    case Lang::mi_NZ:
       os << "mi_NZ";
       break;
-    case mk_MK:
+    case Lang::mk_MK:
       os << "mk_MK";
       break;
-    case ms_MY:
+    case Lang::ms_MY:
       os << "ms_MY";
       break;
-    case mt_MT:
+    case Lang::mt_MT:
       os << "mt_MT";
       break;
-    case nb_NO:
+    case Lang::nb_NO:
       os << "nb_NO";
       break;
-    case nl_BE:
+    case Lang::nl_BE:
       os << "nl_BE";
       break;
-    case nl_NL:
+    case Lang::nl_NL:
       os << "nl_NL";
       break;
-    case nn_NO:
+    case Lang::nn_NO:
       os << "nn_NO";
       break;
-    case oc_FR:
+    case Lang::oc_FR:
       os << "os";
       break;
-    case om_KE:
+    case Lang::om_KE:
       os << "os";
       break;
-    case pl_PL:
+    case Lang::pl_PL:
       os << "pl_PL";
       break;
-    case pt_BR:
+    case Lang::pt_BR:
       os << "pt_BR";
       break;
-    case pt_PT:
+    case Lang::pt_PT:
       os << "pt_PT";
       break;
-    case ro_RO:
+    case Lang::ro_RO:
       os << "ro_RO";
       break;
-    case ru_RU:
+    case Lang::ru_RU:
       os << "ru_RU";
       break;
-    case ru_UA:
+    case Lang::ru_UA:
       os << "ru_UA";
       break;
-    case sk_SK:
+    case Lang::sk_SK:
       os << "sk_SK";
       break;
-    case sl_SI:
+    case Lang::sl_SI:
       os << "sl_SI";
       break;
-    case so_DJ:
+    case Lang::so_DJ:
       os << "so_DJ";
       break;
-    case so_KE:
+    case Lang::so_KE:
       os << "so_KE";
       break;
-    case so_SO:
+    case Lang::so_SO:
       os << "so_SO";
       break;
-    case sq_AL:
+    case Lang::sq_AL:
       os << "sq_AL";
       break;
-    case st_ZA:
+    case Lang::st_ZA:
       os << "st_ZA";
       break;
-    case sv_FI:
+    case Lang::sv_FI:
       os << "sv_FI";
       break;
-    case sv_SE:
+    case Lang::sv_SE:
       os << "sv_SE";
       break;
-    case tcy_IN:
+    case Lang::tcy_IN:
       os << "tcy_IN";
       break;
-    case tg_TJ:
+    case Lang::tg_TJ:
       os << "tg_TJ";
       break;
-    case th_TH:
+    case Lang::th_TH:
       os << "th_TH";
       break;
-    case tl_PH:
+    case Lang::tl_PH:
       os << "tl_PH";
       break;
-    case tr_CY:
+    case Lang::tr_CY:
       os << "tr_CY";
       break;
-    case tr_TR:
+    case Lang::tr_TR:
       os << "tr_TR";
       break;
-    case uk_UA:
+    case Lang::uk_UA:
       os << "uk_UA";
       break;
-    case uz_UZ:
+    case Lang::uz_UZ:
       os << "uz_UZ";
       break;
-    case wa_BE:
+    case Lang::wa_BE:
       os << "wa_BE";
       break;
-    case xh_ZA:
+    case Lang::xh_ZA:
       os << "xh_ZA";
       break;
-    case yi_US:
+    case Lang::yi_US:
       os << "yi_US";
       break;
-    case zh_CN:
+    case Lang::zh_CN:
       os << "zh_CN";
       break;
-    case zh_HK:
+    case Lang::zh_HK:
       os << "zh_HK";
       break;
-    case zh_SG:
+    case Lang::zh_SG:
       os << "zh_SG";
       break;
-    case zh_TW:
+    case Lang::zh_TW:
       os << "zh_TW";
       break;
-    case zu_ZA:
+    case Lang::zu_ZA:
       os << "zu_ZA";
       break;
 
