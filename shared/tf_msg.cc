@@ -40,6 +40,32 @@ TgMsg::to_locale_string () const
   switch (tgf::HOST_LANG)
     {
       //
+      case tgf::Lang::zh_TW: {
+	ret += "[ 群組 ] ";
+	ret += this->title_;
+	ret += "\n";
+	ret += "[ 用戶 ] ";
+	ret += this->sender_;
+	ret += "\n";
+	ret += "[ 訊息 ] ";
+	ret += this->txt_;
+	ret += "\n";
+	ret += "[ 時間 ] ";
+	ret += this->tstamp_;
+	ret += "\n";
+	ret += "[ 標識 ] ";
+	ret += "-1";
+	ret += "\n";
+
+	// R"([ 群组 ] {}
+	// [ 用户 ] {}
+	// [ 信息 ] {}
+	// [ 时间 ] {}
+	// [ 标识 ] {}
+	// )"
+	break;
+      }
+      //
       case tgf::Lang::zh_CN: {
 	ret += "[ 群组 ] ";
 	ret += this->title_;
@@ -198,6 +224,74 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 } // namespace lang_en
 
+namespace lang_tc { // --------------------------------------------------------
+
+std::optional<size_t>
+get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  constexpr size_t n = 5;
+  if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x7fa4
+	&& cuseq[begi + 3] == 0x7d44 && cuseq[begi + 4] == 0x20
+	&& cuseq[begi + n] == 0x5d)
+      return std::make_optional<size_t> (n);
+
+  return {};
+}
+
+std::optional<size_t>
+get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  constexpr size_t n = 5;
+  if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x7528
+	&& cuseq[begi + 3] == 0x6236 && cuseq[begi + 4] == 0x20
+	&& cuseq[begi + n] == 0x5d)
+      return std::make_optional<size_t> (n);
+
+  return {};
+}
+
+std::optional<size_t>
+get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  constexpr size_t n = 5;
+  if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x8a0a
+	&& cuseq[begi + 3] == 0x606f && cuseq[begi + 4] == 0x20
+	&& cuseq[begi + n] == 0x5d)
+      return std::make_optional<size_t> (n);
+
+  return {};
+}
+
+std::optional<size_t>
+get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  constexpr size_t n = 5;
+  if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x6642
+	&& cuseq[begi + 3] == 0x9593 && cuseq[begi + 4] == 0x20
+	&& cuseq[begi + n] == 0x5d)
+      return std::make_optional<size_t> (n);
+
+  return {};
+}
+
+std::optional<size_t>
+get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
+{
+  constexpr size_t n = 5;
+  if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
+    if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x6a19
+	&& cuseq[begi + 3] == 0x8b58 && cuseq[begi + 4] == 0x20
+	&& cuseq[begi + n] == 0x5d)
+      return std::make_optional<size_t> (n);
+
+  return {};
+}
+} // namespace lang_tc
+
 namespace lang_sc {
 
 std::optional<size_t>
@@ -276,6 +370,8 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return lang_en::get_end_chat_seq (cuseq, begi);
+    case tgf::Lang::zh_TW:
+      return lang_tc::get_end_chat_seq (cuseq, begi);
     case tgf::Lang::zh_CN:
       return lang_sc::get_end_chat_seq (cuseq, begi);
     default:
@@ -293,6 +389,8 @@ get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return lang_en::get_end_sender_seq (cuseq, begi);
+    case tgf::Lang::zh_TW:
+      return lang_tc::get_end_sender_seq (cuseq, begi);
     case tgf::Lang::zh_CN:
       return lang_sc::get_end_sender_seq (cuseq, begi);
     default:
@@ -310,6 +408,8 @@ get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return lang_en::get_end_content_seq (cuseq, begi);
+    case tgf::Lang::zh_TW:
+      return lang_tc::get_end_content_seq (cuseq, begi);
     case tgf::Lang::zh_CN:
       return lang_sc::get_end_content_seq (cuseq, begi);
     default:
@@ -327,6 +427,8 @@ get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return lang_en::get_end_date_seq (cuseq, begi);
+    case tgf::Lang::zh_TW:
+      return lang_tc::get_end_date_seq (cuseq, begi);
     case tgf::Lang::zh_CN:
       return lang_sc::get_end_date_seq (cuseq, begi);
     default:
@@ -344,6 +446,8 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return lang_en::get_end_id_seq (cuseq, begi);
+    case tgf::Lang::zh_TW:
+      return lang_tc::get_end_id_seq (cuseq, begi);
     case tgf::Lang::zh_CN:
       return lang_sc::get_end_id_seq (cuseq, begi);
     default:

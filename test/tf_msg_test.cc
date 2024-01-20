@@ -205,6 +205,36 @@ test_should_decorate_zh_cn ()
   }
 }
 
+void
+test_should_decorate_zh_tw ()
+{
+  assert (tgf::try_ensure_locale ());
+
+  // ascii + nonascii
+  {
+    TgMsg msg (("michael2"), ("michael2"), ("好好好。"), (1705740724));
+    string msg_lcstr = msg.to_locale_string ();
+    string expected = R"([ 群組 ] michael2
+[ 用戶 ] michael2
+[ 訊息 ] 好好好。
+[ 時間 ] 2024-01-20 16:52:04 +0800 HKT
+[ 標識 ] -1
+)";
+    cout << msg_lcstr << endl;
+    assert (msg_lcstr == expected);
+
+    vector<tuple<int, int>> pos_info = get_decor_pos (msg_lcstr);
+    cout << pos_info.size () << endl;
+    assert (pos_info.size () == 5);
+
+    assert ((pos_info[0] == make_tuple<int, int> (0, 6)));
+    assert ((pos_info[1] == make_tuple<int, int> (16, 6)));
+    assert ((pos_info[2] == make_tuple<int, int> (32, 6)));
+    assert ((pos_info[3] == make_tuple<int, int> (44, 6)));
+    assert ((pos_info[4] == make_tuple<int, int> (81, 6)));
+  }
+}
+
 int
 main ()
 {
@@ -215,6 +245,12 @@ main ()
   if (tgf::try_ensure_locale ())
     {
       test_should_decorate_en_us ();
+    }
+
+  tgf::PREFER_LANG = tgf::Lang::zh_TW;
+  if (tgf::try_ensure_locale ())
+    {
+      test_should_decorate_zh_tw ();
     }
 
   tgf::PREFER_LANG = tgf::Lang::zh_CN;
