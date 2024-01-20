@@ -1,12 +1,14 @@
 #include <tuple>
+#include <locale.h>
 #include <string>
 #include <vector>
 
 #include "tf_locale.hh"
 
-enum Lang HOST_LANG = unknown;
+namespace tgf {
 
-enum Lang PREFER_LANG = unknown;
+enum Lang HOST_LANG = Lang::unknown;
+enum Lang PREFER_LANG = Lang::unknown;
 
 std::ostream &
 operator<< (std::ostream &os, const Lang l)
@@ -477,9 +479,6 @@ try_ensure_locale ()
 {
   using namespace std;
 
-  // if (HOST_LANG != unknown)
-  // return true;
-
   vector<tuple<string, Lang>> lclist = {
     // {"C.UTF-8", unknown}, // we dont need this
     {"aa_DJ.UTF-8", aa_DJ},   {"af_ZA.UTF-8", af_ZA}, {"an_ES.UTF-8", an_ES},
@@ -561,3 +560,5 @@ try_ensure_locale ()
 
   return false;
 }
+
+} // namespace tgf

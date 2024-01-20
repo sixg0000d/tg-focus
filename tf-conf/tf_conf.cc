@@ -139,7 +139,7 @@ handle_loglv (int argc, char *argv[])
 int
 main (int argc, char *argv[])
 {
-  if (!try_ensure_locale ())
+  if (!tgf::try_ensure_locale ())
     {
       lv_log (LogLv::WARNING, "Available locales not found");
     }

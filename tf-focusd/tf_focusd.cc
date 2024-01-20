@@ -21,7 +21,7 @@ main (int argc, char *argv[])
 {
   using namespace std;
 
-  if (!try_ensure_locale ())
+  if (!tgf::try_ensure_locale ())
     {
       lv_log (LogLv::WARNING, "WARN! Available utf8 locales not found");
     }

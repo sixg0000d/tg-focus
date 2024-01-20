@@ -37,10 +37,10 @@ TgMsg::to_locale_string () const
 {
   std::string ret;
 
-  switch (HOST_LANG)
+  switch (tgf::HOST_LANG)
     {
       //
-      case zh_CN: {
+      case tgf::Lang::zh_CN: {
 	ret = fmt::format (R"([ 群组 ] {}
 [ 用户 ] {}
 [ 信息 ] {}
@@ -83,7 +83,7 @@ operator<< (std::ostream &os, const TgMsg &msg)
 bool
 can_decor ()
 {
-  return try_ensure_locale ();
+  return tgf::try_ensure_locale ();
 }
 
 std::string
@@ -236,14 +236,14 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 std::optional<size_t>
 get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (HOST_LANG)
+  switch (tgf::HOST_LANG)
     {
-    case en_AU:
-    case en_HK:
-    case en_GB:
-    case en_US:
+    case tgf::Lang::en_AU:
+    case tgf::Lang::en_HK:
+    case tgf::Lang::en_GB:
+    case tgf::Lang::en_US:
       return lang_en::get_end_chat_seq (cuseq, begi);
-    case zh_CN:
+    case tgf::Lang::zh_CN:
       return lang_sc::get_end_chat_seq (cuseq, begi);
     default:
       return {};
@@ -253,14 +253,14 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
 std::optional<size_t>
 get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (HOST_LANG)
+  switch (tgf::HOST_LANG)
     {
-    case en_AU:
-    case en_HK:
-    case en_GB:
-    case en_US:
+    case tgf::Lang::en_AU:
+    case tgf::Lang::en_HK:
+    case tgf::Lang::en_GB:
+    case tgf::Lang::en_US:
       return lang_en::get_end_sender_seq (cuseq, begi);
-    case zh_CN:
+    case tgf::Lang::zh_CN:
       return lang_sc::get_end_sender_seq (cuseq, begi);
     default:
       return {};
@@ -270,14 +270,14 @@ get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
 std::optional<size_t>
 get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (HOST_LANG)
+  switch (tgf::HOST_LANG)
     {
-    case en_AU:
-    case en_HK:
-    case en_GB:
-    case en_US:
+    case tgf::Lang::en_AU:
+    case tgf::Lang::en_HK:
+    case tgf::Lang::en_GB:
+    case tgf::Lang::en_US:
       return lang_en::get_end_content_seq (cuseq, begi);
-    case zh_CN:
+    case tgf::Lang::zh_CN:
       return lang_sc::get_end_content_seq (cuseq, begi);
     default:
       return {};
@@ -287,14 +287,14 @@ get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
 std::optional<size_t>
 get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (HOST_LANG)
+  switch (tgf::HOST_LANG)
     {
-    case en_AU:
-    case en_HK:
-    case en_GB:
-    case en_US:
+    case tgf::Lang::en_AU:
+    case tgf::Lang::en_HK:
+    case tgf::Lang::en_GB:
+    case tgf::Lang::en_US:
       return lang_en::get_end_date_seq (cuseq, begi);
-    case zh_CN:
+    case tgf::Lang::zh_CN:
       return lang_sc::get_end_date_seq (cuseq, begi);
     default:
       return {};
@@ -304,14 +304,14 @@ get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
 std::optional<size_t>
 get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 {
-  switch (HOST_LANG)
+  switch (tgf::HOST_LANG)
     {
-    case en_AU:
-    case en_HK:
-    case en_GB:
-    case en_US:
+    case tgf::Lang::en_AU:
+    case tgf::Lang::en_HK:
+    case tgf::Lang::en_GB:
+    case tgf::Lang::en_US:
       return lang_en::get_end_id_seq (cuseq, begi);
-    case zh_CN:
+    case tgf::Lang::zh_CN:
       return lang_sc::get_end_id_seq (cuseq, begi);
     default:
       return {};
@@ -321,7 +321,7 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 std::vector<std::tuple<int, int>>
 get_decor_pos (const std::string &str)
 {
-  if (HOST_LANG == unknown)
+  if (tgf::HOST_LANG == tgf::Lang::unknown)
     return std::vector<std::tuple<int, int>>{};
 
   std::vector<char16_t> cuseq{};

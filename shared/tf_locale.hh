@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+namespace tgf {
+
 enum Lang
 {
   unknown,
@@ -158,9 +160,6 @@ enum Lang
   zu_ZA,
 };
 
-std::ostream &
-operator<< (std::ostream &os, const Lang l);
-
 // process's locale setting.
 extern enum Lang HOST_LANG;
 
@@ -175,5 +174,10 @@ extern enum Lang PREFER_LANG;
 //
 bool
 try_ensure_locale ();
+
+std::ostream &
+operator<< (std::ostream &os, const Lang l);
+
+} // namespace tgf
 
 #endif

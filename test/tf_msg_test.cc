@@ -25,7 +25,7 @@ test_not_decorate ()
 void
 test_should_decorate_zh_cn ()
 {
-  assert (try_ensure_locale ());
+  assert (tgf::try_ensure_locale ());
 
   // ascii + nonascii
   {
@@ -49,7 +49,7 @@ test_should_decorate_zh_cn ()
 void
 test_should_decorate_en_us ()
 {
-  assert (try_ensure_locale ());
+  assert (tgf::try_ensure_locale ());
 
   // ascii + nonascii
   {
@@ -162,18 +162,18 @@ main ()
   // C or POSIX
   test_not_decorate ();
 
-  bool is_good_locale = try_ensure_locale ();
+  bool is_good_locale = tgf::try_ensure_locale ();
 
-  cout << "HOST_LANG:" << HOST_LANG << endl;
+  cout << "tgf::HOST_LANG:" << tgf::HOST_LANG << endl;
 
   if (is_good_locale)
-    switch (HOST_LANG)
+    switch (tgf::HOST_LANG)
       {
-      case en_US:
-      case en_HK:
+      case tgf::Lang::en_US:
+      case tgf::Lang::en_HK:
 	test_should_decorate_en_us ();
 	break;
-      case zh_CN:
+      case tgf::Lang::zh_CN:
 	test_should_decorate_zh_cn ();
 	break;
       default:
