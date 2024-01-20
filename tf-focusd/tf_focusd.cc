@@ -30,14 +30,9 @@ main (int argc, char *argv[])
   handle_opts (argc, argv);
 
   if (!tgf::try_ensure_locale ())
-    {
-      lv_log (LogLv::WARNING, "WARN! Available utf8 locales not found");
-    }
+    lv_log (LogLv::WARNING, "WARN! Available utf8 locales not found");
   else
-    {
-      // std::cout << "HOST_LANG: " << tgf::HOST_LANG << endl;
-      lvlog (LogLv::WARNING, tgf::HOST_LANG);
-    }
+    lvlog (LogLv::WARNING, tgf::HOST_LANG);
 
   while (!tf_data.get_auth_hint ())
     {

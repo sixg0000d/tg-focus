@@ -44,7 +44,7 @@ lvlog (LogLv lv, Args &&...args)
   if (g_log_lv >= lv)
     {
       std::cout << "[tgf ";
-      std::cout << g_log_lv;
+      std::cout << lv;
       std::cout << "] ";
       for (const auto arg : {args...})
 	{
