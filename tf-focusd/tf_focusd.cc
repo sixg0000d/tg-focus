@@ -30,19 +30,19 @@ main (int argc, char *argv[])
   handle_opts (argc, argv);
 
   if (!tgf::try_ensure_locale ())
-    lv_log (LogLv::WARNING, "WARN! Available utf8 locales not found");
+    lvlog (LogLv::WARNING, "Available utf8 locales not found");
   else
     lvlog (LogLv::WARNING, tgf::HOST_LANG);
 
   while (!tf_data.get_auth_hint ())
     {
-      lv_log (LogLv::INFO, "Waiting for authorization");
+      lvlog (LogLv::INFO, "Waiting for authorization");
       std::this_thread::sleep_for (std::chrono::seconds (3));
     }
 
   if (!tf_data.get_auth_hint ())
     {
-      lv_log (LogLv::INFO, "Not authorized");
+      lvlog (LogLv::INFO, "Not authorized");
       return 1;
     }
 

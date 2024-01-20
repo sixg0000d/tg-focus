@@ -36,23 +36,34 @@ lv_log (LogLv lv, fmt::format_string<Args...> fmt, Args &&...args)
 		<< std::endl;
     }
 }
+template <class T>
+void
+print (T t)
+{
+  std::cout << t;
+}
+
+template <class T, class... Args>
+void
+print (T t, Args... args)
+{
+  std::cout << t;
+  print (args...);
+}
 
 template <class... Args>
 void
-lvlog (LogLv lv, Args &&...args)
+lvlog (LogLv lv, const Args &...args)
 {
   if (g_log_lv >= lv)
     {
       std::cout << "[tgf ";
       std::cout << lv;
       std::cout << "] ";
-      for (const auto arg : {args...})
-	{
-	  std::cout << arg;
-	}
+      print (args...);
+      std::cout << std::endl;
+      std::cout << std::flush;
     }
-  std::cout << std::endl;
-  std::cout << std::flush;
 }
 
 template <class... Args>
