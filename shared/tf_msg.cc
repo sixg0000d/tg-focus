@@ -40,7 +40,7 @@ TgMsg::to_locale_string () const
   switch (tgf::HOST_LANG)
     {
       //
-      case tgf::Lang::zh_TW: {
+      case tgf::Lang::zh_HK: {
 	ret += "[ 群組 ] ";
 	ret += this->title_;
 	ret += "\n";
@@ -224,7 +224,7 @@ get_endi_id (std::vector<char16_t> &cuseq, size_t begi)
 }
 } // namespace l_en_us
 
-namespace l_zh_tw { // --------------------------------------------------------
+namespace l_zh_hk { // --------------------------------------------------------
 
 std::optional<size_t>
 get_endi_chat (std::vector<char16_t> &cuseq, size_t begi)
@@ -290,7 +290,7 @@ get_endi_id (std::vector<char16_t> &cuseq, size_t begi)
 
   return {};
 }
-} // namespace l_zh_tw
+} // namespace l_zh_hk
 
 namespace l_zh_cn {
 
@@ -370,8 +370,8 @@ get_endi_chat (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return l_en_us::get_endi_chat (cuseq, begi);
-    case tgf::Lang::zh_TW:
-      return l_zh_tw::get_endi_chat (cuseq, begi);
+    case tgf::Lang::zh_HK:
+      return l_zh_hk::get_endi_chat (cuseq, begi);
     case tgf::Lang::zh_CN:
       return l_zh_cn::get_endi_chat (cuseq, begi);
     default:
@@ -389,8 +389,8 @@ get_endi_sender (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return l_en_us::get_endi_sender (cuseq, begi);
-    case tgf::Lang::zh_TW:
-      return l_zh_tw::get_endi_sender (cuseq, begi);
+    case tgf::Lang::zh_HK:
+      return l_zh_hk::get_endi_sender (cuseq, begi);
     case tgf::Lang::zh_CN:
       return l_zh_cn::get_endi_sender (cuseq, begi);
     default:
@@ -408,8 +408,8 @@ get_endi_content (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return l_en_us::get_endi_content (cuseq, begi);
-    case tgf::Lang::zh_TW:
-      return l_zh_tw::get_endi_content (cuseq, begi);
+    case tgf::Lang::zh_HK:
+      return l_zh_hk::get_endi_content (cuseq, begi);
     case tgf::Lang::zh_CN:
       return l_zh_cn::get_endi_content (cuseq, begi);
     default:
@@ -427,8 +427,8 @@ get_endi_date (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return l_en_us::get_endi_date (cuseq, begi);
-    case tgf::Lang::zh_TW:
-      return l_zh_tw::get_endi_date (cuseq, begi);
+    case tgf::Lang::zh_HK:
+      return l_zh_hk::get_endi_date (cuseq, begi);
     case tgf::Lang::zh_CN:
       return l_zh_cn::get_endi_date (cuseq, begi);
     default:
@@ -446,8 +446,8 @@ get_endi_id (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
       return l_en_us::get_endi_id (cuseq, begi);
-    case tgf::Lang::zh_TW:
-      return l_zh_tw::get_endi_id (cuseq, begi);
+    case tgf::Lang::zh_HK:
+      return l_zh_hk::get_endi_id (cuseq, begi);
     case tgf::Lang::zh_CN:
       return l_zh_cn::get_endi_id (cuseq, begi);
     default:

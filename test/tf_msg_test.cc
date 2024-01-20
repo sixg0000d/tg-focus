@@ -206,7 +206,7 @@ test_should_decorate_zh_cn ()
 }
 
 void
-test_should_decorate_zh_tw ()
+test_should_decorate_zh_hk ()
 {
   assert (tgf::try_ensure_locale ());
 
@@ -247,10 +247,10 @@ main ()
       test_should_decorate_en_us ();
     }
 
-  tgf::PREFER_LANG = tgf::Lang::zh_TW;
+  tgf::PREFER_LANG = tgf::Lang::zh_HK;
   if (tgf::try_ensure_locale ())
     {
-      test_should_decorate_zh_tw ();
+      test_should_decorate_zh_hk ();
     }
 
   tgf::PREFER_LANG = tgf::Lang::zh_CN;
