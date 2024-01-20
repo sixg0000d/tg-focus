@@ -67,7 +67,7 @@ TgMsg::to_locale_string () const
       }
 
       default: {
-	ret += "[ XCHAT ] ";
+	ret += "[ CHAT ] ";
 	ret += this->title_;
 	ret += "\n";
 	ret += "[ SENDER ] ";

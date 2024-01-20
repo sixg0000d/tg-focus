@@ -9,13 +9,22 @@ void
 test_not_decorate ()
 {
   {
-    string s = R"([ CHAT ] michael2 | TG-Focusing
+    TgMsg msg (("michael2 | TG-Focusing"), ("michael2 | TG-Focusing"),
+	       ("XXXXXXXXX"), (1705740724));
+
+    string locale_str = msg.to_locale_string ();
+
+    string expected = R"([ CHAT ] michael2 | TG-Focusing
 [ SENDER ] michael2 | TG-Focusing
 [ CONTENT ] XXXXXXXXX
-[ DATE ] 2023-10-25 21:18:13 +0800 HKT
-[ ID ] 0)";
+[ DATE ] 2024-01-20 16:52:04 +0800 HKT
+[ ID ] -1
+)";
 
-    vector<tuple<int, int>> pos_info = get_decor_pos (s);
+    cout << locale_str << endl;
+    assert (locale_str == expected);
+
+    vector<tuple<int, int>> pos_info = get_decor_pos (expected);
 
     cout << pos_info.size () << endl;
     assert (pos_info.size () == 0);
