@@ -12,7 +12,7 @@ test_not_decorate ()
     TgMsg msg (("michael2 | TG-Focusing"), ("michael2 | TG-Focusing"),
 	       ("XXXXXXXXX"), (1705740724));
 
-    string locale_str = msg.to_locale_string ();
+    string msg_lcstr = msg.to_locale_string ();
 
     string expected = R"([ CHAT ] michael2 | TG-Focusing
 [ SENDER ] michael2 | TG-Focusing
@@ -21,8 +21,8 @@ test_not_decorate ()
 [ ID ] -1
 )";
 
-    cout << locale_str << endl;
-    assert (locale_str == expected);
+    cout << msg_lcstr << endl;
+    assert (msg_lcstr == expected);
 
     vector<tuple<int, int>> pos_info = get_decor_pos (expected);
 
@@ -38,12 +38,18 @@ test_should_decorate_zh_cn ()
 
   // ascii + nonascii
   {
-    string s = R"([ 群组 ] michael2
+    TgMsg msg (("michael2"), ("michael2"), ("好好好。"), (1705740724));
+    string msg_lcstr = msg.to_locale_string ();
+    string expected = R"([ 群组 ] michael2
 [ 用户 ] michael2
 [ 信息 ] 好好好。
-[ 时间 ] 2023-10-25 21:18:13 +0800 HKT
-[ 标识 ] 0)";
-    vector<tuple<int, int>> pos_info = get_decor_pos (s);
+[ 时间 ] 2024-01-20 16:52:04 +0800 HKT
+[ 标识 ] -1
+)";
+    cout << msg_lcstr << endl;
+    assert (msg_lcstr == expected);
+
+    vector<tuple<int, int>> pos_info = get_decor_pos (msg_lcstr);
     cout << pos_info.size () << endl;
     assert (pos_info.size () == 5);
 
@@ -170,6 +176,14 @@ main ()
 {
   // C or POSIX
   test_not_decorate ();
+
+  tgf::PREFER_LANG = tgf::Lang::zh_CN;
+  if (tgf::try_ensure_locale ())
+    {
+      test_should_decorate_zh_cn ();
+    }
+
+  return 0;
 
   bool is_good_locale = tgf::try_ensure_locale ();
 
