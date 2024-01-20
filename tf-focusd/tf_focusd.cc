@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <string.h>
 
 #include "lv_log.hh"
 #include "state.hh"

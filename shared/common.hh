@@ -11,8 +11,6 @@
 #include <string>
 #include <vector>
 
-#include <fmt/core.h>
-
 constexpr auto TF_DEV = "TG-FOCUS";
 constexpr auto TF_VER = "1.5";
 constexpr auto TF_COLL_CHAT_TITLE = "TG-FOCUS";
@@ -128,8 +126,8 @@ is_valid_int32 (const std::string &in)
 
   if (as_num < INT_MIN || as_num > INT_MAX)
     return false;
-  if (fmt::format ("{}", as_num) != in)
-    return false;
+  // if (fmt::format ("{}", as_num) != in)
+  // return false;
 
   return true;
 }

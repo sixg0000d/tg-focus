@@ -27,8 +27,8 @@ if (DEFINED ENV{WITH_SANITIZERS})
 endif()
 
 # deps
-add_subdirectory(${PROJECT_SOURCE_DIR}/3rd/fmt)
-link_libraries(fmt)
+# add_subdirectory(${PROJECT_SOURCE_DIR}/3rd/fmt)
+# link_libraries(fmt)
 
 
 # TDLib versions

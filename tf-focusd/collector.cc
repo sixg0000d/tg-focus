@@ -9,7 +9,6 @@
 #include <map>
 #include <functional>
 #include <atomic>
-#include <fmt/core.h>
 #include <chrono>
 #include <iostream>
 
@@ -299,8 +298,10 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	    }
 	    case messageSenderChat::ID: {
 	      auto casted = static_cast<messageSenderChat *> (sender_id.get ());
-	      sender_name
-		= fmt::format ("{}(chat)", get_chat_title (casted->chat_id_));
+	      sender_name += get_chat_title (casted->chat_id_);
+	      sender_name += "(chat)";
+	      // sender_name
+	      // = fmt::format ("{}(chat)", get_chat_title (casted->chat_id_));
 	      break;
 	    }
 	  }
@@ -320,7 +321,12 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	      auto orig_txt_ctn = static_cast<td_api::messagePhoto &> (
 				    *casted->message_->content_)
 				    .caption_->text_;
-	      text = fmt::format ("<photo>({})", std::move (orig_txt_ctn));
+
+	      text += "<photo>";
+	      text += "(";
+	      text += std::move (orig_txt_ctn);
+	      text += ")";
+	      // text = fmt::format ("<photo>({})", std::move (orig_txt_ctn));
 	      break;
 	    }
 
@@ -328,7 +334,11 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	      auto orig_txt_ctn = static_cast<td_api::messageAnimatedEmoji &> (
 				    *casted->message_->content_)
 				    .emoji_;
-	      text = fmt::format ("<emoji>({})", std::move (orig_txt_ctn));
+	      text += "<emoji>";
+	      text += "(";
+	      text += std::move (orig_txt_ctn);
+	      text += ")";
+	      // text = fmt::format ("<emoji>({})", std::move (orig_txt_ctn));
 	      break;
 	    }
 
@@ -336,13 +346,19 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	      auto orig_txt_ctn = static_cast<td_api::messageSticker &> (
 				    *casted->message_->content_)
 				    .sticker_->emoji_;
-	      text = fmt::format ("<sticker>({})", std::move (orig_txt_ctn));
+	      text += "<sticker>";
+	      text += "(";
+	      text += std::move (orig_txt_ctn);
+	      text += ")";
+	      // text = fmt::format ("<sticker>({})", std::move (orig_txt_ctn));
 	      break;
 	    }
 
 	    default: {
-	      text = fmt::format ("ignored message with ID {}",
-				  casted->message_->content_->get_id ());
+	      text += "ignored message with ID ";
+	      text += casted->message_->content_->get_id ();
+	      // text = fmt::format ("ignored message with ID {}",
+	      // casted->message_->content_->get_id ());
 	      break;
 	    }
 	  }

@@ -9,7 +9,6 @@
 #include <optional>
 #include <sstream>
 #include <string>
-#include <fmt/core.h>
 #include <string_view>
 #include <thread>
 #include <unistd.h>
@@ -94,7 +93,11 @@ handle_filters ()
   auto fpath_cstr = fpath.c_str ();
 
   // std::system (fmt::format ("$EDITOR {}", fpath_cstr).c_str ());
-  std::system (fmt::format ("nano {}", fpath_cstr).c_str ());
+  std::string runcmd = "nano ";
+  runcmd += fpath_cstr;
+
+  // std::system (fmt::format ("nano {}", fpath_cstr).c_str ());cmdline
+  std::system (runcmd.c_str ());
 
   lvlog (LogLv::INFO, "Verifying filters...");
 

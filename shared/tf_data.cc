@@ -6,7 +6,6 @@
 #include <cstdlib>
 #include <optional>
 #include <string>
-#include <fmt/core.h>
 #include <filesystem>
 #include <iostream>
 #include <sys/file.h>
@@ -305,8 +304,8 @@ TgFocusData::set_api_id (std::string &&in) const
   if (as_num < INT_MIN || as_num > INT_MAX)
     return;
 
-  if (fmt::format ("{}", as_num) != in)
-    return;
+  // if (fmt::format ("{}", as_num) != in)
+  // return;
 
   auto path = this->path_api_id ();
   auto filename = path.c_str ();

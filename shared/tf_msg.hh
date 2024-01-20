@@ -9,7 +9,6 @@
 #include <uchar.h>
 #include <vector>
 
-#include "fmt/core.h"
 #include "common.hh"
 
 class TgMsg
@@ -40,9 +39,21 @@ public:
 
   std::string to_string () const
   {
-    std::string ret = fmt::format (
-      "Telegram Message-<title,{}>-<sender,{}>-<txt,{}>-<tstamp,{}>",
-      this->title_, this->sender_, this->txt_, this->tstamp_);
+    std::string ret = "";
+
+    ret += "Telegram Message";
+    ret += "-<title,";
+    ret += this->title_;
+    ret += ">";
+    ret += "-<sender,";
+    ret += this->sender_;
+    ret += ">";
+    ret += "-<txt,";
+    ret += this->txt_;
+    ret += ">";
+    ret += "-<tstamp,";
+    ret += this->tstamp_;
+    ret += ">";
 
     return ret;
   }

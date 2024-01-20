@@ -181,7 +181,7 @@ TdAuth::on_authorization_state_update ()
 	this->is_authorized = true;
 
 	// persistant
-	tf_data.set_api_id (fmt::format ("{}", this->api_id_));
+	tf_data.set_api_id (std::to_string (this->api_id_));
 	tf_data.set_api_hash (std::move (this->api_hash_));
 	tf_data.set_auth_hint (true);
 

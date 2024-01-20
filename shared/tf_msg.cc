@@ -41,27 +41,58 @@ TgMsg::to_locale_string () const
     {
       //
       case tgf::Lang::zh_CN: {
-	ret = fmt::format (R"([ 群组 ] {}
-[ 用户 ] {}
-[ 信息 ] {}
-[ 时间 ] {}
-[ 标识 ] {}
-)",
-			   this->title_, this->sender_, this->txt_,
-			   this->tstamp_, -1);
+	ret += "[ 群组 ] ";
+	ret += this->title_;
+	ret += "\n";
+	ret += "[ 用户 ] ";
+	ret += this->sender_;
+	ret += "\n";
+	ret += "[ 信息 ] ";
+	ret += this->txt_;
+	ret += "\n";
+	ret += "[ 时间 ] ";
+	ret += this->tstamp_;
+	ret += "\n";
+	ret += "[ 标识 ] ";
+	ret += "-1";
+	ret += "\n";
+	// 	ret = fmt::format (R"([ 群组 ] {}
+	// [ 用户 ] {}
+	// [ 信息 ] {}
+	// [ 时间 ] {}
+	// [ 标识 ] {}
+	// )",
+	// 			   this->title_, this->sender_, this->txt_,
+	// 			   this->tstamp_, -1);
 
 	break;
       }
 
       default: {
-	ret = fmt::format (R"([ CHAT ] {}
-[ SENDER ] {}
-[ CONTENT ] {}
-[ DATE ] {}
-[ ID ] {}
-)",
-			   this->title_, this->sender_, this->txt_,
-			   this->tstamp_, -1);
+	ret += "[ CHAT ] ";
+	ret += this->title_;
+	ret += "\n";
+	ret += "[ SENDER ] ";
+	ret += this->sender_;
+	ret += "\n";
+	ret += "[ CONTENT ] ";
+	ret += this->txt_;
+	ret += "\n";
+	ret += "[ DATE ] ";
+	ret += this->tstamp_;
+	ret += "\n";
+	ret += "[ ID ] ";
+	ret += "-1";
+	ret += "\n";
+
+	// 	ret = fmt::format (R"([ CHAT ] {}
+	// [ SENDER ] {}
+	// [ CONTENT ] {}
+	// [ DATE ] {}
+	// [ ID ] {}
+	// )",
+	// 			   this->title_, this->sender_, this->txt_,
+	// 			   this->tstamp_, -1);
 	break;
       }
     }
@@ -92,7 +123,12 @@ decor_pos_to_str (const std::vector<std::tuple<int, int>> &pos)
   std::string ret;
   for (auto ele : pos)
     {
-      ret += fmt::format ("<{},{}>,", std::get<0> (ele), std::get<1> (ele));
+      ret += "<";
+      ret += std::get<0> (ele);
+      ret += ",";
+      ret += std::get<1> (ele);
+      ret += ">";
+      // ret += fmt::format ("<{},{}>,", std::get<0> (ele), std::get<1> (ele));
     }
   return ret;
 }

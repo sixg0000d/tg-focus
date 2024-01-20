@@ -1,7 +1,6 @@
 #include <mutex>
 #include <atomic>
 #include <thread>
-#include <fmt/core.h>
 #include <iostream>
 
 #include "lv_log.hh"

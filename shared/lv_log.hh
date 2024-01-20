@@ -2,7 +2,6 @@
 #define _LV_LOG_H
 
 #include <iostream>
-#include "fmt/core.h"
 
 enum LogLv
 {
