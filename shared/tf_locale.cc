@@ -873,3 +873,11 @@ try_ensure_locale ()
 }
 
 } // namespace tgf
+
+auto
+fmt::formatter<tgf::Lang>::format (tgf::Lang c, format_context &ctx) const
+  -> format_parse_context::iterator
+{
+  string_view name = "unknown";
+  return formatter<string_view>::format (name, ctx);
+}

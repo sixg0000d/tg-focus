@@ -9,15 +9,13 @@
 void
 handle_opts (int argc, char *argv[])
 {
-  // TODO: --prefer-lang
-
   if (argc > 1)
     {
       for (int i = 1; i < argc; i++)
 	{
 	  if (strcmp (argv[i], "--verbose") == 0)
 	    g_log_lv = LogLv::DEBUG;
-	  if (strcmp (argv[i], "--prefer-lang") && i + 1 < argc
+	  if (strcmp (argv[i], "--prefer-lang") == 0 && i + 1 < argc
 	      && strlen (argv[i + 1]) >= 5)
 	    tgf::PREFER_LANG = tgf::lang_from_cstr (argv[++i]);
 	}
@@ -29,12 +27,17 @@ main (int argc, char *argv[])
 {
   using namespace std;
 
+  handle_opts (argc, argv);
+
   if (!tgf::try_ensure_locale ())
     {
       lv_log (LogLv::WARNING, "WARN! Available utf8 locales not found");
     }
-
-  handle_opts (argc, argv);
+  else
+    {
+      // std::cout << "HOST_LANG: " << tgf::HOST_LANG << endl;
+      lv_log (LogLv::WARNING, tgf::HOST_LANG);
+    }
 
   while (!tf_data.get_auth_hint ())
     {
