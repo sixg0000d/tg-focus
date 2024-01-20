@@ -56,20 +56,18 @@ TgMsg::to_locale_string () const
 	ret += "[ 标识 ] ";
 	ret += "-1";
 	ret += "\n";
-	// 	ret = fmt::format (R"([ 群组 ] {}
+
+	// R"([ 群组 ] {}
 	// [ 用户 ] {}
 	// [ 信息 ] {}
 	// [ 时间 ] {}
 	// [ 标识 ] {}
-	// )",
-	// 			   this->title_, this->sender_, this->txt_,
-	// 			   this->tstamp_, -1);
-
+	// )"
 	break;
       }
 
       default: {
-	ret += "[ CHAT ] ";
+	ret += "[ XCHAT ] ";
 	ret += this->title_;
 	ret += "\n";
 	ret += "[ SENDER ] ";
@@ -85,14 +83,12 @@ TgMsg::to_locale_string () const
 	ret += "-1";
 	ret += "\n";
 
-	// 	ret = fmt::format (R"([ CHAT ] {}
+	// R"([ CHAT ] {}
 	// [ SENDER ] {}
 	// [ CONTENT ] {}
 	// [ DATE ] {}
 	// [ ID ] {}
-	// )",
-	// 			   this->title_, this->sender_, this->txt_,
-	// 			   this->tstamp_, -1);
+	// )"
 	break;
       }
     }
@@ -128,7 +124,8 @@ decor_pos_to_str (const std::vector<std::tuple<int, int>> &pos)
       ret += ",";
       ret += std::get<1> (ele);
       ret += ">";
-      // ret += fmt::format ("<{},{}>,", std::get<0> (ele), std::get<1> (ele));
+      ret += ",";
+      // "<{},{}>,"
     }
   return ret;
 }

@@ -40,7 +40,7 @@ tst_files_existence ()
   assert (fs::exists (tfdata.path_filters_tmp ()));
   assert (fs::is_regular_file (tfdata.path_filters_tmp ()));
 
-  // auto expected = fmt::format ("{}/{}/abc", PRED_HOME, tfdata.name_droot ());
+  // "{}/{}/abc"
   string expected = "";
   expected += PRED_HOME;
   expected += "/";

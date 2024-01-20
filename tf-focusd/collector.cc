@@ -301,7 +301,7 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	      sender_name += get_chat_title (casted->chat_id_);
 	      sender_name += "(chat)";
 	      // sender_name
-	      // = fmt::format ("{}(chat)", get_chat_title (casted->chat_id_));
+	      // "{}(chat)"
 	      break;
 	    }
 	  }
@@ -326,7 +326,7 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	      text += "(";
 	      text += std::move (orig_txt_ctn);
 	      text += ")";
-	      // text = fmt::format ("<photo>({})", std::move (orig_txt_ctn));
+	      // "<photo>({})"
 	      break;
 	    }
 
@@ -338,7 +338,7 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	      text += "(";
 	      text += std::move (orig_txt_ctn);
 	      text += ")";
-	      // text = fmt::format ("<emoji>({})", std::move (orig_txt_ctn));
+	      // "<emoji>({})"
 	      break;
 	    }
 
@@ -350,15 +350,14 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
 	      text += "(";
 	      text += std::move (orig_txt_ctn);
 	      text += ")";
-	      // text = fmt::format ("<sticker>({})", std::move (orig_txt_ctn));
+	      // "<sticker>({})"
 	      break;
 	    }
 
 	    default: {
 	      text += "ignored message with ID ";
 	      text += casted->message_->content_->get_id ();
-	      // text = fmt::format ("ignored message with ID {}",
-	      // casted->message_->content_->get_id ());
+	      // "ignored message with ID {}"
 	      break;
 	    }
 	  }
