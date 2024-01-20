@@ -156,9 +156,9 @@ decor_pos_to_str (const std::vector<std::tuple<int, int>> &pos)
   return ret;
 }
 
-namespace lang_en {
+namespace l_en_us {
 std::optional<size_t>
-get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_chat (std::vector<char16_t> &cuseq, size_t begi)
 {
   if (cuseq[begi] == 0x5b && begi + 7 < cuseq.size ())
     if (cuseq[begi + 1] == ' ' && cuseq[begi + 2] == 'C'
@@ -171,7 +171,7 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_sender (std::vector<char16_t> &cuseq, size_t begi)
 {
   if (cuseq[begi] == 0x5b && begi + 9 < cuseq.size ())
     if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x53
@@ -185,7 +185,7 @@ get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_content (std::vector<char16_t> &cuseq, size_t begi)
 {
   if (cuseq[begi] == 0x5b && begi + 10 < cuseq.size ())
     if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x43
@@ -199,7 +199,7 @@ get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_date (std::vector<char16_t> &cuseq, size_t begi)
 {
   if (cuseq[begi] == 0x5b && begi + 7 < cuseq.size ())
     if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x44
@@ -212,7 +212,7 @@ get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_id (std::vector<char16_t> &cuseq, size_t begi)
 {
   if (cuseq[begi] == 0x5b && begi + 5 < cuseq.size ())
     if (cuseq[begi + 1] == 0x20 && cuseq[begi + 2] == 0x49
@@ -222,12 +222,12 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 
   return {};
 }
-} // namespace lang_en
+} // namespace l_en_us
 
-namespace lang_tc { // --------------------------------------------------------
+namespace l_zh_tw { // --------------------------------------------------------
 
 std::optional<size_t>
-get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_chat (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -240,7 +240,7 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_sender (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -253,7 +253,7 @@ get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_content (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -266,7 +266,7 @@ get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_date (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -279,7 +279,7 @@ get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_id (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -290,12 +290,12 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 
   return {};
 }
-} // namespace lang_tc
+} // namespace l_zh_tw
 
-namespace lang_sc {
+namespace l_zh_cn {
 
 std::optional<size_t>
-get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_chat (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -308,7 +308,7 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_sender (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -321,7 +321,7 @@ get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_content (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -334,7 +334,7 @@ get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_date (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -347,7 +347,7 @@ get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
 }
 
 std::optional<size_t>
-get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_id (std::vector<char16_t> &cuseq, size_t begi)
 {
   constexpr size_t n = 5;
   if (cuseq[begi] == 0x5b && begi + n < cuseq.size ())
@@ -358,10 +358,10 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
 
   return {};
 }
-} // namespace lang_sc
+} // namespace l_zh_cn
 
 std::optional<size_t>
-get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_chat (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (tgf::HOST_LANG)
     {
@@ -369,18 +369,18 @@ get_end_chat_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_HK:
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
-      return lang_en::get_end_chat_seq (cuseq, begi);
+      return l_en_us::get_endi_chat (cuseq, begi);
     case tgf::Lang::zh_TW:
-      return lang_tc::get_end_chat_seq (cuseq, begi);
+      return l_zh_tw::get_endi_chat (cuseq, begi);
     case tgf::Lang::zh_CN:
-      return lang_sc::get_end_chat_seq (cuseq, begi);
+      return l_zh_cn::get_endi_chat (cuseq, begi);
     default:
       return {};
     }
 }
 
 std::optional<size_t>
-get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_sender (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (tgf::HOST_LANG)
     {
@@ -388,18 +388,18 @@ get_end_sender_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_HK:
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
-      return lang_en::get_end_sender_seq (cuseq, begi);
+      return l_en_us::get_endi_sender (cuseq, begi);
     case tgf::Lang::zh_TW:
-      return lang_tc::get_end_sender_seq (cuseq, begi);
+      return l_zh_tw::get_endi_sender (cuseq, begi);
     case tgf::Lang::zh_CN:
-      return lang_sc::get_end_sender_seq (cuseq, begi);
+      return l_zh_cn::get_endi_sender (cuseq, begi);
     default:
       return {};
     }
 }
 
 std::optional<size_t>
-get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_content (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (tgf::HOST_LANG)
     {
@@ -407,18 +407,18 @@ get_end_content_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_HK:
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
-      return lang_en::get_end_content_seq (cuseq, begi);
+      return l_en_us::get_endi_content (cuseq, begi);
     case tgf::Lang::zh_TW:
-      return lang_tc::get_end_content_seq (cuseq, begi);
+      return l_zh_tw::get_endi_content (cuseq, begi);
     case tgf::Lang::zh_CN:
-      return lang_sc::get_end_content_seq (cuseq, begi);
+      return l_zh_cn::get_endi_content (cuseq, begi);
     default:
       return {};
     }
 }
 
 std::optional<size_t>
-get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_date (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (tgf::HOST_LANG)
     {
@@ -426,18 +426,18 @@ get_end_date_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_HK:
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
-      return lang_en::get_end_date_seq (cuseq, begi);
+      return l_en_us::get_endi_date (cuseq, begi);
     case tgf::Lang::zh_TW:
-      return lang_tc::get_end_date_seq (cuseq, begi);
+      return l_zh_tw::get_endi_date (cuseq, begi);
     case tgf::Lang::zh_CN:
-      return lang_sc::get_end_date_seq (cuseq, begi);
+      return l_zh_cn::get_endi_date (cuseq, begi);
     default:
       return {};
     }
 }
 
 std::optional<size_t>
-get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
+get_endi_id (std::vector<char16_t> &cuseq, size_t begi)
 {
   switch (tgf::HOST_LANG)
     {
@@ -445,11 +445,11 @@ get_end_id_seq (std::vector<char16_t> &cuseq, size_t begi)
     case tgf::Lang::en_HK:
     case tgf::Lang::en_GB:
     case tgf::Lang::en_US:
-      return lang_en::get_end_id_seq (cuseq, begi);
+      return l_en_us::get_endi_id (cuseq, begi);
     case tgf::Lang::zh_TW:
-      return lang_tc::get_end_id_seq (cuseq, begi);
+      return l_zh_tw::get_endi_id (cuseq, begi);
     case tgf::Lang::zh_CN:
-      return lang_sc::get_end_id_seq (cuseq, begi);
+      return l_zh_cn::get_endi_id (cuseq, begi);
     default:
       return {};
     }
@@ -494,23 +494,23 @@ get_decor_pos (const std::string &str)
   std::vector<std::tuple<int, int>> ret;
   for (size_t i = 0; i < cuseq.size (); i++)
     {
-      if (auto endi = get_end_chat_seq (cuseq, i))
+      if (auto endi = get_endi_chat (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
-      if (auto endi = get_end_sender_seq (cuseq, i))
+      if (auto endi = get_endi_sender (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
-      if (auto endi = get_end_content_seq (cuseq, i))
+      if (auto endi = get_endi_content (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
-      if (auto endi = get_end_date_seq (cuseq, i))
+      if (auto endi = get_endi_date (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
-      if (auto endi = get_end_id_seq (cuseq, i))
+      if (auto endi = get_endi_id (cuseq, i))
 	{
 	  ret.emplace_back (std::make_tuple (i, *endi + 1));
 	}
