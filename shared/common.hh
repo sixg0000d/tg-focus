@@ -126,8 +126,9 @@ is_valid_int32 (const std::string &in)
 
   if (as_num < INT_MIN || as_num > INT_MAX)
     return false;
-  // if (fmt::format ("{}", as_num) != in)
-  // return false;
+
+  if (std::to_string (as_num) != in)
+    return false;
 
   return true;
 }

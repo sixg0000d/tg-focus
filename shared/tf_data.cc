@@ -304,8 +304,8 @@ TgFocusData::set_api_id (std::string &&in) const
   if (as_num < INT_MIN || as_num > INT_MAX)
     return;
 
-  // if (fmt::format ("{}", as_num) != in)
-  // return;
+  if (std::to_string (as_num) != in)
+    return;
 
   auto path = this->path_api_id ();
   auto filename = path.c_str ();
