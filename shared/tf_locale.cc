@@ -477,8 +477,8 @@ try_ensure_locale ()
 {
   using namespace std;
 
-  if (HOST_LANG != unknown)
-    return true;
+  // if (HOST_LANG != unknown)
+  // return true;
 
   vector<tuple<string, Lang>> lclist = {
     // {"C.UTF-8", unknown}, // we dont need this
@@ -536,13 +536,12 @@ try_ensure_locale ()
   };
 
   vector<Lang> supported = {};
-  std::cout << PREFER_LANG << "___ " << std::endl;
 
   for (const tuple<string, Lang> &t : lclist)
     if (setlocale (LC_ALL, get<0> (t).c_str ()) != nullptr)
       {
 	auto lc = get<1> (t);
-	std::cout << PREFER_LANG << " " << lc << std::endl;
+
 	if (lc == PREFER_LANG)
 	  {
 	    HOST_LANG = lc;

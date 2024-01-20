@@ -13,7 +13,7 @@ clean:
 	rm -rf ./build
 	@echo "--------------- MAKE CLEAN END ---------------"
 
-test: build
+test:
 	@echo "--------------- MAKE TEST BEG ---------------"
 	cmake --build build -j$(nproc) && ctest --test-dir build -j$(nproc)
 	@echo "--------------- MAKE TEST END ---------------"
