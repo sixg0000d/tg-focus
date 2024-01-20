@@ -79,7 +79,7 @@ handle_auth_reset ()
   if (del_res == static_cast<std::uintmax_t> (-1))
     return 1;
 
-  lv_log (LogLv::INFO, "Reset successfully");
+  lvlog (LogLv::INFO, "Reset successfully");
 
   return 0;
 }
@@ -96,7 +96,7 @@ handle_filters ()
   // std::system (fmt::format ("$EDITOR {}", fpath_cstr).c_str ());
   std::system (fmt::format ("nano {}", fpath_cstr).c_str ());
 
-  lv_log (LogLv::INFO, "Verifying filters...");
+  lvlog (LogLv::INFO, "Verifying filters...");
 
   bool is_invalid_toml = false;
   toml::value res;
@@ -111,17 +111,17 @@ handle_filters ()
     }
 
   if (is_invalid_toml)
-    lv_log (LogLv::ERROR, "ERROR: Invalid toml");
+    lvlog (LogLv::ERROR, "ERROR: Invalid toml");
   else
     {
       FileReader reader{fpath_cstr};
       if (FocusFilterList::is_valid (reader.read_to_string ().value_or ("-")))
 	{
-	  lv_log (LogLv::INFO, "Saving filters...");
+	  lvlog (LogLv::INFO, "Saving filters...");
 	  tf_data.set_filters (tf_data.get_filters_tmp ());
 	}
       else
-	lv_log (LogLv::ERROR, "ERROR: Invalid filters");
+	lvlog (LogLv::ERROR, "ERROR: Invalid filters");
     }
 
   return 0;
@@ -141,7 +141,7 @@ main (int argc, char *argv[])
 {
   if (!tgf::try_ensure_locale ())
     {
-      lv_log (LogLv::WARNING, "Available locales not found");
+      lvlog (LogLv::WARNING, "Available locales not found");
     }
 
   if (argc != 2)
