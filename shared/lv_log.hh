@@ -38,14 +38,14 @@ lv_log (LogLv lv, fmt::format_string<Args...> fmt, Args &&...args)
 }
 template <class T>
 void
-print (T t)
+print_all (T t)
 {
   std::cout << t;
 }
 
 template <class T, class... Args>
 void
-print (T t, Args... args)
+print_all (T t, Args... args)
 {
   std::cout << t;
   print (args...);
@@ -60,7 +60,7 @@ lvlog (LogLv lv, const Args &...args)
       std::cout << "[tgf ";
       std::cout << lv;
       std::cout << "] ";
-      print (args...);
+      print_all (args...);
       std::cout << std::endl;
       std::cout << std::flush;
     }
