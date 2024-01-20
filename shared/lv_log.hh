@@ -12,6 +12,9 @@ enum LogLv
   DEBUG = 4,
 };
 
+std::ostream &
+operator<< (std::ostream &os, LogLv lv);
+
 extern LogLv g_log_lv;
 
 template <class... Args>
@@ -32,6 +35,24 @@ lv_log (LogLv lv, fmt::format_string<Args...> fmt, Args &&...args)
       std::cout << header << fmt::format (fmt, std::forward<Args> (args)...)
 		<< std::endl;
     }
+}
+
+template <class... Args>
+void
+lvlog (LogLv lv, Args &&...args)
+{
+  if (g_log_lv >= lv)
+    {
+      std::cout << "[tgf ";
+      std::cout << g_log_lv;
+      std::cout << "] ";
+      for (const auto arg : {args...})
+	{
+	  std::cout << arg;
+	}
+    }
+  std::cout << std::endl;
+  std::cout << std::flush;
 }
 
 template <class... Args>

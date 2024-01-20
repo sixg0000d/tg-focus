@@ -36,7 +36,7 @@ main (int argc, char *argv[])
   else
     {
       // std::cout << "HOST_LANG: " << tgf::HOST_LANG << endl;
-      lv_log (LogLv::WARNING, tgf::HOST_LANG);
+      lvlog (LogLv::WARNING, tgf::HOST_LANG);
     }
 
   while (!tf_data.get_auth_hint ())

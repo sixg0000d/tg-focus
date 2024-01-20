@@ -1,7 +1,7 @@
 #ifndef _TF_LOCALE_H
 #define _TF_LOCALE_H
 
-#include <fmt/base.h>
+#include <iostream>
 
 namespace tgf {
 
@@ -182,9 +182,5 @@ std::ostream &
 operator<< (std::ostream &os, const Lang l);
 
 } // namespace tgf
-
-template <> struct fmt::formatter<tgf::Lang> : formatter<string_view>
-{
-};
 
 #endif
