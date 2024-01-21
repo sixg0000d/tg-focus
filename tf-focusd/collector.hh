@@ -33,8 +33,6 @@ public:
   // initialize td client
   void init ();
 
-  void xxx ();
-
   //
   // create collector chat
   void create_tgfocus_group ();
