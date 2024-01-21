@@ -91,22 +91,6 @@ no message!
 ...
    */
 
-  send_query (td_api::make_object<td_api::getChats> (nullptr, 50),
-	      [this] (Object object) {
-		if (object->get_id () == td_api::chats::ID)
-		  {
-		    td_api::object_ptr<td_api::chats> chats
-		      = td::move_tl_object_as<td_api::chats> (object);
-
-		    lvlog (LogLv::INFO, " chats",
-			   " total_count_:", chats->total_count_);
-		    for (td_api::int53 el : chats->chat_ids_)
-		      {
-			lvlog (LogLv::INFO, " chatid:", el);
-		      }
-		  }
-	      });
-
   if (this->is_authorized && !this->tried_create_collector
       && !this->done_create_collector)
     {
@@ -194,6 +178,78 @@ TdCollector::fetch_updates ()
     }
 }
 
+void
+TdCollector::xxx ()
+{
+  send_query (
+    td_api::make_object<td_api::getChats> (nullptr, 50),
+    [this] (Object object) {
+      if (object->get_id () == td_api::chats::ID)
+	{
+	  td_api::object_ptr<td_api::chats> chats
+	    = td::move_tl_object_as<td_api::chats> (object);
+
+	  lvlog (LogLv::INFO, " chats", " total_count_:", chats->total_count_);
+	  for (td_api::int53 curr_chatid : chats->chat_ids_)
+	    {
+	      lvlog (LogLv::INFO, " chatid:", curr_chatid);
+
+	      send_query (
+		td_api::make_object<td_api::getChat> (curr_chatid),
+		[this, curr_chatid] (Object object) {
+		  if (object->get_id () == td_api::chat::ID)
+		    {
+		      auto chat = td::move_tl_object_as<td_api::chat> (object);
+
+		      auto bgrp = static_cast<td_api::chatTypeBasicGroup *> (
+			chat->type_.get ());
+
+		      if (bgrp != nullptr)
+			{
+			  lvlog (LogLv::INFO, " basic group ",
+				 " title_:", chat->title_,
+				 " id_:", bgrp->basic_group_id_);
+			  auto bgrp_id = bgrp->basic_group_id_;
+
+			  send_query (
+			    td_api::make_object<td_api::getBasicGroupFullInfo> (
+			      bgrp_id),
+			    [this, bgrp_id] (Object object) {
+			      if (object->get_id ()
+				  == td_api::basicGroupFullInfo::ID)
+				{
+				  auto bgrp_info = td::move_tl_object_as<
+				    td_api::basicGroupFullInfo> (object);
+
+				  lvlog (
+				    LogLv::INFO, " basic group ",
+				    " id_:", bgrp_id,
+				    " creatorid_:", bgrp_info->creator_user_id_,
+				    " invitelink_:",
+				    bgrp_info->invite_link_->invite_link_,
+				    " members_:", bgrp_info->members_.size (),
+				    " description_:", bgrp_info->description_);
+				}
+			    });
+			}
+
+		      // auto sgrp = static_cast<td_api::chatTypeSupergroup *> (
+		      // 	chat->type_.get ());
+
+		      // if (sgrp != nullptr)
+		      // 	{
+		      // 	  lvlog (LogLv::INFO, " super group ",
+		      // 		 " title_:", chat->title_,
+		      // 		 " id_:", sgrp->supergroup_id_,
+		      // 		 " is_channel_:", sgrp->is_channel_);
+		      // 	}
+		    }
+		});
+	    }
+	}
+    });
+}
+
 // private
 
 void
@@ -216,10 +272,12 @@ TdCollector::process_response (td::ClientManager::Response response)
     {
       return;
     }
+
   if (response.request_id == 0)
     {
       return process_update (std::move (response.object));
     }
+
   auto it = handlers_.find (response.request_id);
   if (it != handlers_.end ())
     {
