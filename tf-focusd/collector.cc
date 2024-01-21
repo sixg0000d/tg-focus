@@ -90,6 +90,23 @@ no message!
 no message!
 ...
    */
+
+  send_query (td_api::make_object<td_api::getChats> (nullptr, 50),
+	      [this] (Object object) {
+		if (object->get_id () == td_api::chats::ID)
+		  {
+		    td_api::object_ptr<td_api::chats> chats
+		      = td::move_tl_object_as<td_api::chats> (object);
+
+		    lvlog (LogLv::INFO, " chats",
+			   " total_count_:", chats->total_count_);
+		    for (td_api::int53 el : chats->chat_ids_)
+		      {
+			lvlog (LogLv::INFO, " chatid:", el);
+		      }
+		  }
+	      });
+
   if (this->is_authorized && !this->tried_create_collector
       && !this->done_create_collector)
     {
