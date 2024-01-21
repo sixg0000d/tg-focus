@@ -101,9 +101,9 @@ no message!
 		      {
 			auto chat
 			  = td::move_tl_object_as<td_api::chat> (object);
-			lvlog (LogLv::INFO,
-			       "group created, chat id:{}, chat title:{}",
-			       chat->id_, chat->title_);
+			lvlog (LogLv::INFO, " group created",
+			       " chat id:", chat->id_,
+			       " chat title:", chat->title_);
 			this->collector_id = chat->id_;
 			this->done_create_collector = true;
 		      }
@@ -168,8 +168,10 @@ TdCollector::fetch_updates ()
   auto response = client_manager_->receive (60);
   if (response.object)
     {
-      lvlog (LogLv::DEBUG, "producer_iter:{}, td-client, resp recv id:{}",
-	     it_cnt_producer.load (std::memory_order_relaxed),
+      lvlog (LogLv::DEBUG,
+	     "producer_iter:", it_cnt_producer.load (std::memory_order_relaxed),
+	     " td-client, resp recv id:",
+
 	     response.object->get_id ());
       process_response (std::move (response));
     }
