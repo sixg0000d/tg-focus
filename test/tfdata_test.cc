@@ -222,6 +222,13 @@ keywords = ["xyz"]
 	  }
       }
   }
+
+  // change api_hash
+  {
+    tfdata.set_tgfid (-4115780813);
+    int64_t strdata = tfdata.get_tgfid ();
+    assert (strdata == -4115780813);
+  }
 }
 
 int
