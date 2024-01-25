@@ -227,6 +227,13 @@ TgFocusData::path_filters_tmp () const
   return tmp.append (FILE_FILTERS_TMP);
 }
 
+std::filesystem::path
+TgFocusData::path_tgfid () const
+{
+  auto tmp = this->data_root;
+  return tmp.append (FILE_TGFID);
+}
+
 bool
 TgFocusData::prepare_filters_tmp () const
 {
@@ -369,4 +376,43 @@ TgFocusData::set_filters (std::string &&in) const
   // UNLOCK
   if (!unlock_stream (this->lck_filters))
     return;
+}
+
+void
+TgFocusData::set_tgfid (int64_t in) const
+{
+  auto path = this->path_tgfid ();
+  auto filename = path.c_str ();
+  FILE *f = std::fopen (filename, "wb");
+
+  int64_t tmp = in;
+  for (int i = 0; i < 8; i++)
+    {
+      if (i > 0)
+	tmp = tmp >> 8;
+      char curr = static_cast<char> (tmp & 0xff);
+      fwrite (&curr, 1, 1, f);
+    }
+
+  fclose (f);
+}
+
+int64_t
+TgFocusData::get_tgfid () const
+{
+  auto path = this->path_tgfid ();
+  auto filename = path.c_str ();
+  FILE *f = fopen (filename, "rb");
+
+  int64_t res = 0;
+  for (int i = 0; i < 8; i++)
+    {
+      uint8_t b = 0;
+      fread (&b, 1, 1, f);
+      res = ((static_cast<int64_t> (b) << (8 * i)) | res);
+    }
+
+  fclose (f);
+
+  return res;
 }

@@ -223,7 +223,7 @@ keywords = ["xyz"]
       }
   }
 
-  // change api_hash
+  // change tgfid
   {
     tfdata.set_tgfid (-4115780813);
     int64_t strdata = tfdata.get_tgfid ();
