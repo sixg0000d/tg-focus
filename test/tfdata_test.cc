@@ -223,11 +223,30 @@ keywords = ["xyz"]
       }
   }
 
-  // change tgfid
+  {
+    int64_t strdata = tfdata.get_tgfid ();
+    assert (strdata == 0);
+  }
+
+  // set tgfid
   {
     tfdata.set_tgfid (-4115780813);
     int64_t strdata = tfdata.get_tgfid ();
     assert (strdata == -4115780813);
+  }
+
+  // set tgfid
+  {
+    tfdata.set_tgfid (-4162446887);
+    int64_t strdata = tfdata.get_tgfid ();
+    assert (strdata == -4162446887);
+  }
+
+  // set tgfid
+  {
+    tfdata.set_tgfid (-4101385855);
+    int64_t strdata = tfdata.get_tgfid ();
+    assert (strdata == -4101385855);
   }
 }
 
