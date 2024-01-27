@@ -61,42 +61,14 @@ TdCollector::init ()
 }
 
 void
-TdCollector::create_tgfocus_group ()
+TdCollector::try_create_tgfchat () // FIXME: is try
 {
-  // the handle call time maybe a little late, one possible order:
-  /*
-no message!
-no message!
-Authorization is completed
-no message!
-no message!
-...
- msg:xxx
- left: 0
- consume_cnt: 91
-...
- msg:xxx
- left: 0
- consume_cnt: 97
-...
- msg:xxx
- left: 0
- consume_cnt: 100
-...
-no message!
-no message!
-group created!  chat id:-4078504482 chat title:TG-FOCUS
-no message!
-no message!
-...
-   */
-
-  if (this->is_authorized && !this->tried_create_collector
-      && !tf_data.is_tgfid_valid ())
-    // if (this->is_authorized && !this->tried_create_collector
+  if (this->is_authorized && !tf_data.is_tgfid_valid ()
+      && !this->tried_create_tgfchat)
+    // if (this->is_authorized && !this->tried_create_tgfchat
     // && !this->done_create_collector)
     {
-      this->tried_create_collector = true;
+      this->tried_create_tgfchat = true;
       send_query (td_api::make_object<td_api::createNewBasicGroupChat> (
 		    std::vector<td::td_api::int53> (0), TF_COLL_CHAT_TITLE, 0),
 		  [this] (Object object) {
@@ -169,8 +141,15 @@ TdCollector::collect_msg (const TgMsg &msg, size_t c_count)
     else if (object->get_id () == td_api::error::ID)
       {
 	auto error = td::move_tl_object_as<td_api::error> (object);
-	lvlog (LogLv::DEBUG, " msg not collected",
-	       " error:", to_string (error));
+	lvlog (LogLv::ERROR, " msg not collected", " error code:", error->code_,
+	       " error message:", error->message_);
+	if (error->message_.find ("Have no write access to the chat")
+	      != std::string::npos
+	    || error->message_.find ("Chat not found") != std::string::npos)
+	  {
+	    this->tried_create_tgfchat = false;
+	    tf_data.set_tgfid (-1);
+	  }
       }
   });
 }

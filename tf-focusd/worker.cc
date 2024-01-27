@@ -51,9 +51,9 @@ focusd_consumer ()
 
       is_csm_mq.wait (false, std::memory_order_acquire);
 
-      if (!tf_data.is_tgfid_valid () && !collector.tried_create_collector)
+      if (!tf_data.is_tgfid_valid () && !collector.tried_create_tgfchat)
 	{
-	  collector.create_tgfocus_group ();
+	  collector.try_create_tgfchat ();
 	  continue;
 	}
 

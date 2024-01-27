@@ -24,7 +24,7 @@ namespace td_api = td::td_api;
 class TdCollector
 {
 public:
-  bool tried_create_collector{false};
+  bool tried_create_tgfchat{false};
   // bool done_create_collector{false};
 
   TdCollector () = default;
@@ -35,7 +35,7 @@ public:
 
   //
   // create collector chat
-  void create_tgfocus_group ();
+  void try_create_tgfchat ();
   //
   // send message to collector chat
   void collect_msg (const TgMsg &msg, size_t c_count);
