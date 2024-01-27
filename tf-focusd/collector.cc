@@ -123,9 +123,9 @@ decorate_msg (const std::string &msg)
   auto pos_info = get_decor_pos (msg);
 
   // FIXME: only when very verbose
-  lvlog (LogLv::DEBUG, "consumer_cnt:{}, decorating u8str:{} pos_info:{}",
-	 it_cnt_consumer.load (std::memory_order_relaxed), msg,
-	 decor_pos_to_str (pos_info));
+  lvlog (LogLv::DEBUG,
+	 "consumer_cnt:", it_cnt_consumer.load (std::memory_order_relaxed),
+	 " decorating u8str:", msg, " pos_info:", decor_pos_to_str (pos_info));
 
   auto deco_list = td_api::array<td_api::object_ptr<td_api::textEntity>> ();
 
@@ -149,6 +149,7 @@ TdCollector::collect_msg (const TgMsg &msg, size_t c_count)
   auto message_text
     = td_api::make_object<td_api::formattedText> (tfmsg_str,
 						  std::move (text_deco_list));
+
   td_api::object_ptr<td_api::Function> send_message_request
     = td_api::make_object<td_api::sendMessage> (
       // this->collector_id, //
@@ -161,9 +162,15 @@ TdCollector::collect_msg (const TgMsg &msg, size_t c_count)
     if (object->get_id () == td_api::message::ID)
       {
 	// FIXME: do not use operator <<
-	lvlog (LogLv::INFO, "consumer_cnt:{} msg collected:{}",
+	lvlog (LogLv::INFO, "consumer_cnt:",
 	       it_cnt_consumer.load (std::memory_order_relaxed),
-	       msg.to_string ());
+	       " msg collected:", msg.to_string ());
+      }
+    else if (object->get_id () == td_api::error::ID)
+      {
+	auto error = td::move_tl_object_as<td_api::error> (object);
+	lvlog (LogLv::DEBUG, " msg not collected",
+	       " error:", to_string (error));
       }
   });
 }
@@ -215,9 +222,8 @@ TdCollector::process_response (td::ClientManager::Response response)
   if (it != handlers_.end ())
     {
       lvlog (LogLv::DEBUG,
-	     "producer_iter:{}, td-client, handlers_.size():{} it->first:{}",
-	     it_cnt_producer.load (std::memory_order_relaxed),
-	     handlers_.size (), it->first);
+	     "producer_iter:", it_cnt_producer.load (std::memory_order_relaxed),
+	     " handlers_.size():", handlers_.size (), " it->first:", it->first);
 
       it->second (std::move (response.object));
       handlers_.erase (it);
@@ -386,10 +392,9 @@ TdCollector::process_update (td_api::object_ptr<td_api::Object> update)
       }
 
       default: {
-	lvlog (LogLv::DEBUG,
-	       "producer_iter:{}, td-client, ignored update with id:{}",
+	lvlog (LogLv::DEBUG, "producer_iter:",
 	       it_cnt_producer.load (std::memory_order_relaxed),
-	       update->get_id ());
+	       " ignored update with id:", update->get_id ());
 	break;
       }
     }

@@ -164,17 +164,18 @@ title = ".*"
   // tgfid
   namespace fs = std::filesystem;
   fs::path p_tgfid = droot_dir / FILE_TGFID;
-  {
-    FILE *fstrm = fopen (p_tgfid.c_str (), "w");
+  if (!fs::exists (p_tgfid))
+    {
+      FILE *fstrm = fopen (p_tgfid.c_str (), "w");
 
-    if (fstrm)
-      {
-	char b = 0xff;
-	for (int i = 0; i < 8; i++)
-	  fwrite (&b, 1, 1, fstrm);
-	fclose (fstrm);
-      }
-  }
+      if (fstrm)
+	{
+	  char b = 0xff;
+	  for (int i = 0; i < 8; i++)
+	    fwrite (&b, 1, 1, fstrm);
+	  fclose (fstrm);
+	}
+    }
 
   // UNLOCK
   if (!unlock_stream (this->lck_droot))

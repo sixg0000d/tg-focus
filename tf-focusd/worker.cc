@@ -15,8 +15,9 @@ focusd_producer ()
     {
       is_csm_mq.wait (true, std::memory_order_acquire);
 
-      lvlog (LogLv::DEBUG, "producer_iter:{}, mq size: {}",
-	     it_cnt_producer.load (std::memory_order_relaxed), mq.size ());
+      lvlog (LogLv::DEBUG,
+	     "producer_iter:", it_cnt_producer.load (std::memory_order_relaxed),
+	     " mq size:", mq.size ());
 
       collector.fetch_updates ();
 
@@ -50,7 +51,7 @@ focusd_consumer ()
 
       is_csm_mq.wait (false, std::memory_order_acquire);
 
-      if (!collector.tried_create_collector)
+      if (!tf_data.is_tgfid_valid () && !collector.tried_create_collector)
 	{
 	  collector.create_tgfocus_group ();
 	  continue;
@@ -63,15 +64,14 @@ focusd_consumer ()
 	// if (mq.size () > 0 && collector.done_create_collector)
 	if (mq.size () > 0 && tf_data.is_tgfid_valid ())
 	  {
-	    lvlog (LogLv::DEBUG,
-		   "consumer_iter:{}, mq consumable, mq.size():{} ",
+	    lvlog (LogLv::DEBUG, "consumer_iter:",
 		   it_cnt_consumer.load (std::memory_order_relaxed),
-		   mq.size ());
+		   " mq consumable, mq.size():", mq.size ());
 
 	    for (auto it = mq.begin (); it != mq.end (); it += 1)
 	      {
 		auto curr_msg = *it;
-		break; // stop collect
+		// break; // stop collect
 		if (!curr_msg.is_from_tgfocus ())
 		  {
 		    // FIXME: too many disk io incurred by need_collect
@@ -125,9 +125,9 @@ focusd_switcher ()
 
       if (is_csm_mq.load (std::memory_order_acquire))
 	{
-	  lvlog (LogLv::INFO,
-		 "switcher cnt:{}, has msg, consumer maybe handling...",
-		 it_cnt_switcher.load (std::memory_order_relaxed));
+	  lvlog (LogLv::INFO, "switcher cnt:",
+		 it_cnt_switcher.load (std::memory_order_relaxed),
+		 " has msg, consumer maybe handling...");
 	  continue;
 	}
 
