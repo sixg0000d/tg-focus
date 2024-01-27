@@ -92,7 +92,9 @@ no message!
    */
 
   if (this->is_authorized && !this->tried_create_collector
-      && !this->done_create_collector)
+      && !tf_data.is_tgfid_valid ())
+    // if (this->is_authorized && !this->tried_create_collector
+    // && !this->done_create_collector)
     {
       this->tried_create_collector = true;
       send_query (td_api::make_object<td_api::createNewBasicGroupChat> (
@@ -105,8 +107,9 @@ no message!
 			lvlog (LogLv::INFO, " group created",
 			       " chat id:", chat->id_,
 			       " chat title:", chat->title_);
-			this->collector_id = chat->id_;
-			this->done_create_collector = true;
+			// this->collector_id = chat->id_;
+			tf_data.set_tgfid (static_cast<int64_t> (chat->id_));
+			// this->done_create_collector = true;
 		      }
 		  });
     }
@@ -148,7 +151,9 @@ TdCollector::collect_msg (const TgMsg &msg, size_t c_count)
 						  std::move (text_deco_list));
   td_api::object_ptr<td_api::Function> send_message_request
     = td_api::make_object<td_api::sendMessage> (
-      this->collector_id, 0, nullptr, nullptr, nullptr,
+      // this->collector_id, //
+      tf_data.get_tgfid (), //
+      0, nullptr, nullptr, nullptr,
       td_api::make_object<td_api::inputMessageText> (std::move (message_text),
 						     nullptr, true));
 

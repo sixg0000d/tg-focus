@@ -60,7 +60,8 @@ focusd_consumer ()
       {
 	std::lock_guard<std::mutex> mq_guard (mq_lock);
 
-	if (mq.size () > 0 && collector.done_create_collector)
+	// if (mq.size () > 0 && collector.done_create_collector)
+	if (mq.size () > 0 && tf_data.is_tgfid_valid ())
 	  {
 	    lvlog (LogLv::DEBUG,
 		   "consumer_iter:{}, mq consumable, mq.size():{} ",
