@@ -52,6 +52,8 @@ public:
 
   int64_t get_tgfid () const;
 
+  bool is_tgfid_valid () const;
+
   // setter
 
   void set_api_id (std::string &&in) const;

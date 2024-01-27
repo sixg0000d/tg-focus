@@ -161,6 +161,21 @@ title = ".*"
       fclose (fstrm);
   }
 
+  // tgfid
+  namespace fs = std::filesystem;
+  fs::path p_tgfid = droot_dir / FILE_TGFID;
+  {
+    FILE *fstrm = fopen (p_tgfid.c_str (), "w");
+
+    if (fstrm)
+      {
+	char b = 0xff;
+	for (int i = 0; i < 8; i++)
+	  fwrite (&b, 1, 1, fstrm);
+	fclose (fstrm);
+      }
+  }
+
   // UNLOCK
   if (!unlock_stream (this->lck_droot))
     return;
@@ -402,7 +417,7 @@ TgFocusData::get_tgfid () const
 {
   auto path = this->path_tgfid ();
   auto filename = path.c_str ();
-  FILE *f = fopen (filename, "rb");
+  FILE *f = fopen (filename, "r");
 
   int64_t res = 0;
   for (int i = 0; i < 8; i++)
@@ -415,4 +430,24 @@ TgFocusData::get_tgfid () const
   fclose (f);
 
   return res;
+}
+
+bool
+TgFocusData::is_tgfid_valid () const
+{
+  auto path = this->path_tgfid ();
+  auto filename = path.c_str ();
+  FILE *f = fopen (filename, "r");
+
+  int64_t res = 0;
+  for (int i = 0; i < 8; i++)
+    {
+      uint8_t b = 0;
+      fread (&b, 1, 1, f);
+      res = ((static_cast<int64_t> (b) << (8 * i)) | res);
+    }
+
+  fclose (f);
+
+  return res != -1;
 }
