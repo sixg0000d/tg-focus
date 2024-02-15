@@ -199,7 +199,7 @@ If you've logged in successfully, the last three lines will be:
 [tgf INFO] Closed
 ```
 
-**(Optional) Step 3:**
+**Step 3: (Optional)**
 
  Using different language other than default(English) by:
 
@@ -248,7 +248,7 @@ filters...")
 
 **Step 7:**
 
-Done
+Done.
 
 
 ### Using Docker Image
@@ -282,7 +282,7 @@ If you've logged in successfully, the last three lines will be:
 [tgf INFO] Closed
 ```
 
-**(Optional) Step 3:**
+**Step 3: (Optional)**
 
 Using different language other than default(English) by:
 
@@ -319,9 +319,9 @@ output shall be "Saving filters...")
 
 **Step 6:**
 
-Done
+Done.
 
-**(Optional) Step 7:**
+**Step 7: (Optional)**
 
 Use following command if you want to destroy the
 instance and its Telegram-related credentials and resource:
@@ -529,7 +529,7 @@ platforms.
 
 ## Building
 
-Check `docs/development.org`.
+See `docs/development.org`.
 
 # Contributing
 
