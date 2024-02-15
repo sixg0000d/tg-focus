@@ -21,7 +21,6 @@
 - [Q & A](#qa)
   - [Can I trust tg-focus?](#can-i-trust-tg-focus)
   - [What makes tg-focus a gentle User Bot?](#what-makes-tg-focus-a-gentle-user-bot)
-hould-i-do)
 - [Development](#development)
   - [Dependencies](#dependencies)
   - [Buidling](#building)

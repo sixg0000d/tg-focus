@@ -1,0 +1,23 @@
+
+* Essential Files
+
+- /i18n.csv/: internationalization configuration.
+  
+- /sync-versions.bash/: synchronize versions embedded in source files,
+  versions are:
+  - pick-src-tdlib: the linkage of TDLib targeted by tg-focus.
+  - pick-ver-tdlib: the version of TDLib targeted by tg-focus.
+  - pick-ver-tgfocus: the current release version of tg-focus.
+  Note: running the script should result in no effect most of the
+  time, because picking versions should be an infrequent operation.
+  
+- /deb10-gcc12.bash/: a script that prepares the dedicated
+  toolchain(GCC) on the dedicated platform(Debian). Note: the
+  corresponding preparation script must sync with this file.
+
+
+
+
+* Update TDLib version
+
+xxx
