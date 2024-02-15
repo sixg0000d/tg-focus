@@ -190,13 +190,12 @@ can be obtained in https://my.telegram.org:
 ```
 If you've logged in successfully, the last three lines will be:
 ```
-# ...
 [tgf INFO] Log in successfully!
 [tgf INFO] Closing...
 [tgf INFO] Closed
 ```
 
-(Optional) Using different language other than default(English) by:
+4. (Optional) Using different language other than default(English) by:
 
 ```sh
 /path/to/tgf-conf lang XX-YY
@@ -206,7 +205,7 @@ Note: XX is the language code, YY is the region code, e.g. "en-US" represents
 All valid codes can be found at 
 http://www.lingoes.net/en/translator/langcode.htm 
 
-3. Launch tg-focus daemon:
+5. Launch tg-focus daemon:
 
 ```sh
 # run in foreground
@@ -216,11 +215,11 @@ http://www.lingoes.net/en/translator/langcode.htm
 nohup /path/to/tgf-focusd &
 ```
 
-4. If logined successfullly, a new chat named `TG-FOCUS` will be
+6. If logined successfullly, a new chat named `TG-FOCUS` will be
    created, the subsequent messages will be filtered and forwarded to
    this chat.
 
-5. Note that by default, tg-focus will forward **all** messages
+7. Note that by default, tg-focus will forward **all** messages
    you receive. You can change the *Focus Filter*s(the filter
    configuration) any time you like, to custom the messages you'd like
    to receive on that chat. See [examples](#filter-examples).
@@ -235,7 +234,7 @@ editor for configuration modification. After modification, press
 configuration is valid, the last line of output shall be "Saving
 filters...") 
 
-6. Done
+8. Done
 
 
 ### Using Docker Image
@@ -260,13 +259,12 @@ docker exec -it CONTAINER-NAME tgf-conf auth
 ```
 If you've logged in successfully, the last three lines will be:
 ```
-# ...
 [tgf INFO] Log in successfully!
 [tgf INFO] Closing...
 [tgf INFO] Closed
 ```
 
-(Optional) Using different language other than default(English) by:
+3. (Optional) Using different language other than default(English) by:
 
 ```sh
 docker exec -it CONTAINER-NAME tgf-conf lang XX-YY
@@ -276,11 +274,11 @@ Note: XX is the language code, YY is the region code, e.g. "en-US" represents
 All valid codes can be found at 
 http://www.lingoes.net/en/translator/langcode.htm 
 
-3. If logined successfullly, a new chat named *TG-FOCUS* will be
+4. If logined successfullly, a new chat named *TG-FOCUS* will be
    created, the subsequent messages will be filtered and forwarded to
    this chat.
 
-4. Note that by default, tg-focus will forward **all** messages
+5. Note that by default, tg-focus will forward **all** messages
    you receive. You can change the *Focus Filter*s(the filter
    configuration) any time you like, to custom the messages you'd like
    to receive on that chat. See [examples](#filter-examples).
@@ -291,19 +289,18 @@ docker exec -it CONTAINER-NAME tgf-conf filters
 
 (NOTE: This will open the embeded [GNU
 nano](https://www.nano-editor.org/) editor for configuration
-modification. After modification, press Ctrl-O, Enter, Ctrl-X to
-finish the work. If the modified one is valid, the last line of
+modification. After modification, press **Ctrl-O**, **Enter**, **Ctrl-X**
+to finish the work. If the modified one is valid, the last line of
 output shall be "Saving filters...")
 
-5. Done
+6. Done
 
-6. (Optional) Use following command if one wants to destroy the
+7. (Optional) Use following command if you want to destroy the
    instance and its Telegram-related credentials and resource:
 
 ```sh
 docker rm --force CONTAINER-NAME
 ```
-
 
 
 # Filtering Rules
