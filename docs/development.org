@@ -1,4 +1,17 @@
 
+* Requirement
+
+- Unix (Linux or BSDs)
+- Bash (any version)
+- Git (any version)
+- GCC (version >= 11) or LLVM Clang (version >= 11)
+- CMake (version >= 3.5)
+  
+** Third-party dependencies
+
+- TDLib (https://github.com/tdlib/td)
+- toml11 (https://github.com/ToruNiina/toml11)
+
 * Essential Files
 
 - =i18n.csv=: internationalization configuration.
@@ -17,4 +30,29 @@
   
   Note: the corresponding preparation steps in CICD workflow must sync
   with this file.
+
+  
+* Building & Testing
+
+*Note:* Ensure TDLib is built and installed properly before building
+tg-focus. Otherwise follow the installation instructions provided by
+TDLib: https://tdlib.github.io/td/build.html
+
+#+begin_src bash
+
+  # Download third party dependencies. Network connection required.
+  bash dev/install-deps-oci-only.bash
+
+  # Setup a debug build.
+  cmake -B build
+  # or a release build.
+  cmake -DCMAKE_BUILD_TYPE=Release -B build
+
+  # Build.
+  cd build && make -j$(nproc)
+
+  # Test. UTC timezone is required.
+  cd build && TZ=UTC make test
+
+#+end_src
 
