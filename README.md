@@ -177,13 +177,13 @@ There are two different way to deploy:
 
 ### Using Prebuilt Binaries
 
-**1:**
+**Step 1:**
 
 Download the binaries at GitHub releases
 [page](https://github.com/micl2e2/tg-focus/releases). Please check
 whether your [platform](#supported-platforms) is supported or not.
 
-**2:**
+**Step 2:**
 
 Login your Telegram account first, it needs API ID, API HASH,
 your phone number(in international format) and a login code, the first two
