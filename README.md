@@ -199,7 +199,9 @@ If you've logged in successfully, the last three lines will be:
 [tgf INFO] Closed
 ```
 
-3. (Optional) Using different language other than default(English) by:
+**(Optional) Step 3:**
+
+ Using different language other than default(English) by:
 
 ```sh
 /path/to/tgf-conf lang XX-YY
@@ -209,7 +211,9 @@ Note: XX is the language code, YY is the region code, e.g. "en-US" represents
 All valid codes can be found at 
 http://www.lingoes.net/en/translator/langcode.htm 
 
-4. Launch tg-focus daemon:
+**Step 4:**
+
+Launch tg-focus daemon:
 
 ```sh
 # run in foreground
@@ -219,15 +223,18 @@ http://www.lingoes.net/en/translator/langcode.htm
 nohup /path/to/tgf-focusd &
 ```
 
-5. If logined successfullly, a new chat named `TG-FOCUS` will be
-   created, the subsequent messages will be filtered and forwarded to
-   this chat.
+**Step 5:**
 
+If logined successfullly, a new chat named `TG-FOCUS` will be
+created, the subsequent messages will be filtered and forwarded to
+this chat.
 
-6. Note that by default, tg-focus will forward **all** messages
-   you receive. You can change the *Focus Filter*s(the filter
-   configuration) any time you like, to custom the messages you'd like
-   to receive on that chat. See [examples](#filter-examples).
+**Step 6:**
+
+Note that by default, tg-focus will forward **all** messages
+you receive. You can change the *Focus Filter*s(the filter
+configuration) any time you like, to custom the messages you'd like
+to receive on that chat. See [examples](#filter-examples).
 
 ```sh
 /path/to/tgf-conf filters
@@ -239,7 +246,9 @@ editor for configuration modification. After modification, press
 configuration is valid, the last line of output shall be "Saving
 filters...") 
 
-7. Done
+**Step 7:**
+
+Done
 
 
 ### Using Docker Image
@@ -247,7 +256,9 @@ filters...")
 Make sure have [Docker](https://docs.docker.com/engine/) or
 [Podman](https://podman.io/) installed on your machine:
 
-1. Pull the image and run it in the background, assuming the newly
+**Step 1:**
+
+Pull the image and run it in the background, assuming the newly
 created container's name is CONTAINER-NAME: 
 
 ```sh
@@ -255,7 +266,9 @@ docker pull docker.io/micl2e2/tg-focus:latest
 docker run -d docker.io/micl2e2/tg-focus
 ```
 
-2. Login your telegram account first, here you should provide API ID,
+**Step 2:**
+
+Login your telegram account first, here you should provide API ID,
 API HASH, your phone number(in international format), and a login
 code, the first two can be obtained in https://my.telegram.org:
 
@@ -269,7 +282,9 @@ If you've logged in successfully, the last three lines will be:
 [tgf INFO] Closed
 ```
 
-3. (Optional) Using different language other than default(English) by:
+**(Optional) Step 3:**
+
+Using different language other than default(English) by:
 
 ```sh
 docker exec -it CONTAINER-NAME tgf-conf lang XX-YY
@@ -279,14 +294,18 @@ Note: XX is the language code, YY is the region code, e.g. "en-US" represents
 All valid codes can be found at 
 http://www.lingoes.net/en/translator/langcode.htm 
 
-4. If logined successfullly, a new chat named *TG-FOCUS* will be
-   created, the subsequent messages will be filtered and forwarded to
-   this chat.
+**Step 4:**
 
-5. Note that by default, tg-focus will forward **all** messages
-   you receive. You can change the *Focus Filter*s(the filter
-   configuration) any time you like, to custom the messages you'd like
-   to receive on that chat. See [examples](#filter-examples).
+If logined successfullly, a new chat named *TG-FOCUS* will be
+created, the subsequent messages will be filtered and forwarded to
+this chat.
+
+**Step 5:**
+
+Note that by default, tg-focus will forward **all** messages
+you receive. You can change the *Focus Filter*s(the filter
+configuration) any time you like, to custom the messages you'd like
+to receive on that chat. See [examples](#filter-examples).
 
 ```sh
 docker exec -it CONTAINER-NAME tgf-conf filters
@@ -298,10 +317,14 @@ modification. After modification, press **Ctrl-O**, **Enter**, **Ctrl-X**
 to finish the work. If the modified one is valid, the last line of
 output shall be "Saving filters...")
 
-6. Done
+**Step 6:**
 
-7. (Optional) Use following command if you want to destroy the
-   instance and its Telegram-related credentials and resource:
+Done
+
+**(Optional) Step 7:**
+
+Use following command if you want to destroy the
+instance and its Telegram-related credentials and resource:
 
 ```sh
 docker rm --force CONTAINER-NAME
