@@ -195,7 +195,7 @@ If you've logged in successfully, the last three lines will be:
 [tgf INFO] Closed
 ```
 
-4. (Optional) Using different language other than default(English) by:
+3. (Optional) Using different language other than default(English) by:
 
 ```sh
 /path/to/tgf-conf lang XX-YY
@@ -205,7 +205,7 @@ Note: XX is the language code, YY is the region code, e.g. "en-US" represents
 All valid codes can be found at 
 http://www.lingoes.net/en/translator/langcode.htm 
 
-5. Launch tg-focus daemon:
+4. Launch tg-focus daemon:
 
 ```sh
 # run in foreground
@@ -215,11 +215,11 @@ http://www.lingoes.net/en/translator/langcode.htm
 nohup /path/to/tgf-focusd &
 ```
 
-6. If logined successfullly, a new chat named `TG-FOCUS` will be
+5. If logined successfullly, a new chat named `TG-FOCUS` will be
    created, the subsequent messages will be filtered and forwarded to
    this chat.
 
-7. Note that by default, tg-focus will forward **all** messages
+**6**. Note that by default, tg-focus will forward **all** messages
    you receive. You can change the *Focus Filter*s(the filter
    configuration) any time you like, to custom the messages you'd like
    to receive on that chat. See [examples](#filter-examples).
@@ -234,7 +234,7 @@ editor for configuration modification. After modification, press
 configuration is valid, the last line of output shall be "Saving
 filters...") 
 
-8. Done
+7. Done
 
 
 ### Using Docker Image
