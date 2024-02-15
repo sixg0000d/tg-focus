@@ -1,9 +1,9 @@
 
 * Essential Files
 
-- /i18n.csv/: internationalization configuration.
+- _i18n.csv_: internationalization configuration.
   
-- /sync-versions.bash/: synchronize versions embedded in source files,
+- _sync-versions.bash_: synchronize versions embedded in source files,
   versions are:
   - pick-src-tdlib: the linkage of TDLib targeted by tg-focus.
   - pick-ver-tdlib: the version of TDLib targeted by tg-focus.
