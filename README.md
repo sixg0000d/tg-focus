@@ -177,11 +177,15 @@ There are two different way to deploy:
 
 ### Using Prebuilt Binaries
 
-1. Download the binaries at GitHub releases
+#### 1
+
+Download the binaries at GitHub releases
 [page](https://github.com/micl2e2/tg-focus/releases). Please check
 whether your [platform](#supported-platforms) is supported or not.
 
-2. Login your Telegram account first, it needs API ID, API HASH,
+#### 2
+
+Login your Telegram account first, it needs API ID, API HASH,
 your phone number(in international format) and a login code, the first two
 can be obtained in https://my.telegram.org:
 
@@ -219,7 +223,8 @@ nohup /path/to/tgf-focusd &
    created, the subsequent messages will be filtered and forwarded to
    this chat.
 
-**6**. Note that by default, tg-focus will forward **all** messages
+
+6. Note that by default, tg-focus will forward **all** messages
    you receive. You can change the *Focus Filter*s(the filter
    configuration) any time you like, to custom the messages you'd like
    to receive on that chat. See [examples](#filter-examples).
