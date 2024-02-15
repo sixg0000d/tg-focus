@@ -14,8 +14,8 @@
 - [How To Use](#how-to-use)
   - [Hardware Requirement](#hardware-requirement)
   - [Deployment](#deployment)
-	- [Using Docker Image(recommended)](#using-docker-imagerecommended)
 	- [Using Prebuilt Binaries](#using-prebuilt-binaries)
+	- [Using Docker Image](#using-docker-image)
 - [Filtering Rules](#filtering-rules)
   - [Filter Examples](#filter-examples)
 - [Q & A](#qa)
@@ -175,7 +175,63 @@ with about 30 public chats, most of which have over 1000 members and
 
 There are two different way to deploy:
 
-### Using Docker Image(recommended)
+### Using Prebuilt Binaries
+
+1. Download the binaries at GitHub releases
+[page](https://github.com/micl2e2/tg-focus/releases). Please check
+whether your [platform](#supported-platforms) is supported or not.
+
+2. Login your Telegram account first, it needs API ID, API HASH,
+your phone number(in international format) and a login code, the first two
+can be obtained in https://my.telegram.org:
+
+```sh
+/path/to/tgf-conf auth
+```
+
+(Optional) Using different language other than default(English) by:
+
+```sh
+/path/to/tgf-conf lang XX-YY
+```
+Note: XX is the language code, YY is the region code, e.g. "en-US" represents
+"English (United States)", "en-GB" represents "English (United Kingdom)", etc. 
+All valid codes can be found at 
+http://www.lingoes.net/en/translator/langcode.htm 
+
+3. Launch tg-focus daemon:
+
+```sh
+# run in foreground
+/path/to/tgf-focusd
+
+# or run in background
+nohup /path/to/tgf-focusd &
+```
+
+4. If logined successfullly, a new chat named `TG-FOCUS` will be
+   created, the subsequent messages will be filtered and forwarded to
+   this chat.
+
+5. Note that by default, tg-focus will forward **all** messages
+   you receive. You can change the *Focus Filter*s(the filter
+   configuration) any time you like, to custom the messages you'd like
+   to receive on that chat. See [examples](#filter-examples).
+
+```sh
+/path/to/tgf-conf filters
+```
+
+(NOTE: This will open the [GNU nano](https://www.nano-editor.org/)
+editor for configuration modification. After modification, press
+**Ctrl-O**, **Enter**, **Ctrl-X** to finish the work. As long as the
+configuration is valid, the last line of output shall be "Saving
+filters...") 
+
+6. Done
+
+
+### Using Docker Image
 
 Make sure have [Docker](https://docs.docker.com/engine/) or
 [Podman](https://podman.io/) installed on your machine:
@@ -195,6 +251,16 @@ code, the first two can be obtained in https://my.telegram.org:
 ```sh
 docker exec -it CONTAINER-NAME tgf-conf auth
 ```
+
+(Optional) Using different language other than default(English) by:
+
+```sh
+docker exec -it CONTAINER-NAME tgf-conf lang XX-YY
+```
+Note: XX is the language code, YY is the region code, e.g. "en-US" represents
+"English (United States)", "en-GB" represents "English (United Kingdom)", etc. 
+All valid codes can be found at 
+http://www.lingoes.net/en/translator/langcode.htm 
 
 3. If logined successfullly, a new chat named *TG-FOCUS* will be
    created, the subsequent messages will be filtered and forwarded to
@@ -224,52 +290,6 @@ output shall be "Saving filters...")
 docker rm --force CONTAINER-NAME
 ```
 
-
-### Using Prebuilt Binaries
-
-1. Download the binaries at GitHub releases
-   [page](https://github.com/micl2e2/tg-focus/releases). Please check
-   whether your [platform](#supported-platforms) is supported or not.
-
-2. Login your Telegram account first, it needs API ID, API HASH,
-your phone number(in international format) and a login code, the first two
-can be obtained in https://my.telegram.org:
-
-```sh
-/path/to/tgf-conf auth
-```
-
-3. Launch tg-focus daemon:
-
-```sh
-# run in foreground
-/path/to/tgf-focusd
-
-# or run in background
-nohup /path/to/tgf-focusd &
-```
-
-4. If logined successfullly, a new chat named `TG-FOCUS` will be
-   created, the subsequent messages will be filtered and forwarded to
-   this chat.
-
-
-5. Note that by default, tg-focus will forward **all** messages
-   you receive. You can change the *Focus Filter*s(the filter
-   configuration) any time you like, to custom the messages you'd like
-   to receive on that chat. See [examples](#filter-examples).
-
-```sh
-/path/to/tgf-conf filters
-```
-
-(NOTE: This will open the [GNU nano](https://www.nano-editor.org/)
-editor for configuration modification. After modification, press
-**Ctrl-O**, **Enter**, **Ctrl-X** to finish the work. As long as the
-configuration is valid, the last line of output shall be "Saving
-filters...") 
-
-6. Done
 
 
 # Filtering Rules
@@ -415,7 +435,7 @@ software](https://www.gnu.org/philosophy/free-sw.en.html).
 tg-focus inherits the openness of TDLib, its source as well as its 
 dependencies' source are completely open. Additionally, all its
 binaries and OCI images will **not** be built by any individual, but
-by Github-hosted machines. All build details can be found in the
+by Github-hosted machines. All build details can be found in a
 dedicated repository
 [tg-focus-cicd](https://github.com/micl2e2/tg-focus-cicd). 
 
@@ -425,8 +445,8 @@ authorization process, tg-focus needs to log in user's account,
 which in turn needs a phone number and login code,
 just as any functional Telegram client would require. It only saves
 API ID/HASH on the user's machine because these two are
-required each time TDLib initializes. But **under no
-circumstances** would tg-focus save the user's phone number or any
+required each time client initialization. But **under no
+circumstances** would tg-focus save user's phone number or any
 other credentials.
 
 
@@ -470,26 +490,7 @@ platforms.
 
 ## Building
 
-
-```sh
-# Get the source
-git clone --depth=1 https://github.com/micl2e2/tg-focus
-
-# Make sure in the source root directory
-cd tg-focus
-
-# Prepare the dependencies of tg-focus. This takes a long time.
-bash dev/install-deps.bash
-
-# Setup a release build
-cmake -DCMAKE_BUILD_TYPE=Release -B build
-
-# Build
-cd build && make
-
-# Test
-cd build && TZ=UTC make test
-```
+Check `docs/development.org`.
 
 # Contributing
 

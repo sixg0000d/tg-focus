@@ -9,8 +9,10 @@
   
 ** Third-party dependencies
 
-- TDLib (https://github.com/tdlib/td)
-- toml11 (https://github.com/ToruNiina/toml11)
+- TDLib (https://github.com/tdlib/td, using version specified in
+  =pick-ver-tdlib= and =pick-src-tdlib=)
+- toml11 (https://github.com/ToruNiina/toml11, using version specified
+  in =pick-src-toml11=)
 
 * Essential Files
 
@@ -34,9 +36,12 @@
   
 * Building & Testing
 
-*Note:* Ensure TDLib is built and installed properly before building
-tg-focus. Otherwise follow the installation instructions provided by
-TDLib: https://tdlib.github.io/td/build.html
+*Notice:* Before building tg-focus, make sure TDLib is installed
+properly and the installed one's version should match =pick-ver-tdlib=
+and =pick-src-tdlib= *exactly*. Otherwise prepare specific version
+indicated by =pick-ver-tdlib= and =pick-src-tdlib=, and then follow
+the installation instructions provided by TDLib:
+https://tdlib.github.io/td/build.html
 
 #+begin_src bash
 
