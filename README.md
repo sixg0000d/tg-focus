@@ -188,6 +188,13 @@ can be obtained in https://my.telegram.org:
 ```sh
 /path/to/tgf-conf auth
 ```
+If you've logged in successfully, the last three lines will be:
+```
+# ...
+[tgf INFO] Log in successfully!
+[tgf INFO] Closing...
+[tgf INFO] Closed
+```
 
 (Optional) Using different language other than default(English) by:
 
@@ -250,6 +257,13 @@ code, the first two can be obtained in https://my.telegram.org:
 
 ```sh
 docker exec -it CONTAINER-NAME tgf-conf auth
+```
+If you've logged in successfully, the last three lines will be:
+```
+# ...
+[tgf INFO] Log in successfully!
+[tgf INFO] Closing...
+[tgf INFO] Closed
 ```
 
 (Optional) Using different language other than default(English) by:
