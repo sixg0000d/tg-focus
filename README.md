@@ -22,8 +22,6 @@
   - [Can I trust tg-focus?](#can-i-trust-tg-focus)
   - [What makes tg-focus a gentle User Bot?](#what-makes-tg-focus-a-gentle-user-bot)
 - [Development](#development)
-  - [Dependencies](#dependencies)
-  - [Buidling](#building)
 - [Contributing](#contributing)
 - [License](#license)
   
@@ -517,18 +515,6 @@ updates, tg-focus will remain **gentle**.
 
 # Development
 
-**Note** that currently the development is documented only for Linux 
-platforms.
-
-## Dependencies
-
-- Bash
-- Git
-- C++20 compatible compiler
-- CMake
-
-## Building
-
 See `docs/development.org`.
 
 # Contributing
@@ -541,7 +527,7 @@ welcomed!
 - Feature Request (open an issue with label
   [![](https://img.shields.io/static/v1?label=&message=enhancement&color=lightblue)](https://github.com/micl2e2/tg-focus/issues/new))
 - Documentation Improvement
-- Code Contribution (tg-focus follows [GNU](https://www.gnu.org/prep/standards/standards.html) code style)
+- Code Contribution (tg-focus follows [GCC](https://gcc.gnu.org/) code style)
 
 
 
